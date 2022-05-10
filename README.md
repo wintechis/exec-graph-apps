@@ -9,21 +9,25 @@ Its goal is the visualisation of research data on executive managers in German b
 To use the app it has to be made available through a webserver. THis encompasses two steps, build and deployment. If oyu have obtained a pre-build version you may skip the first step.
 
 ### Build Instructions
+
 1. Clone the project to your working directory, all following commands expect to be executed in the root directoy of the project files.
 2. Make sure all dependencies are installed by executing `npm install`
 3. Build the Web App by executing `npm run build`
 4. The relevant application files can be found in `<project_root>/dist/apps/exec-graph-web`
 
 ### Deployment Instructions
+
 1. Copy the application files from the build to your webservers public directory.
 2. If needed, configure the choosen webserver to serve the files correctly. This may include setting rewrite rules.
 3. Access the folder with the index.html file through your webserver
 
 ## Development
+
 The project uses Nx.dev to manage the workspace, the core application is build using React, Sigma.js and Tailwind CSS.
 All standard nx commands may be used for development.
 
 ### NX Commands
+
 #### Generate an application
 
 Run `nx g @nrwl/react:app my-app` to generate an application.
