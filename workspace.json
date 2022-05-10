@@ -3,6 +3,7 @@
   "projects": {
     "exec-graph-web": "apps/exec-graph-web",
     "exec-graph-web-e2e": "apps/exec-graph-web-e2e",
+    "graph-data-source": "libs/graph/data-source",
     "graph-types": "libs/graph/types"
   }
 }
