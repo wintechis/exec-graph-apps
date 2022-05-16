@@ -1,3 +1,30 @@
 @tailwind components;
 @tailwind base;
+
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto'), url('./assets/fonts/Roboto-Regular.ttf') format('ttf'),
+    url('./assets/fonts/Roboto-Regular.woff2') format('woff2'),
+    url('./assets/fonts/Roboto-Regular.woff') format('woff');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto Bold'), url('./assets/fonts/Roboto-Bold.ttf') format('ttf'),
+    url('./assets/fonts/Roboto-Bold.woff2') format('woff2'),
+    url('./assets/fonts/Roboto-Bold.woff') format('woff');
+  font-weight: bold;
+}
+
 @tailwind utilities;
+
+@layer components {
+  .fau-link {
+    @apply underline decoration-fau-red decoration-2 underline-offset-2 hover:bg-fau-red hover:text-white;
+  }
+}
+
+address {
+  font-style: normal;
+}
