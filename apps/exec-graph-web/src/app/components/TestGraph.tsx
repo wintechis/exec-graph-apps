@@ -12,7 +12,9 @@ import {
   SigmaContainer,
   useLoadGraph,
   useSigma,
+  ZoomControl,
 } from '@react-sigma/core';
+
 
 import { animateNodes } from 'sigma/utils/animate';
 
@@ -37,7 +39,7 @@ const LoadGraph = () => {
 
 const FormatGraphIter = () => {
   const sigma = useSigma();
-const { positions, assign } = useLayoutForceAtlas2({ iterations: 100 });
+  const { positions, assign } = useLayoutForceAtlas2({ iterations: 100 });
 
   useEffect(() => {
     animateNodes(sigma.getGraph(), positions(), { duration: 1000 });
@@ -52,7 +54,7 @@ const { positions, assign } = useLayoutForceAtlas2({ iterations: 100 });
 
 const FormatGraph = () => {
   const sigma = useSigma();
-const { positions, assign } = useLayoutCircular();
+  const { positions, assign } = useLayoutCircular();
 
   useEffect(() => {
     animateNodes(sigma.getGraph(), positions(), { duration: 1000 });
@@ -65,16 +67,29 @@ const { positions, assign } = useLayoutCircular();
   return null;
 };
 
-export const TestGraph = ({ layoutIterative, }: { layoutIterative: boolean;}) => {
+export const TestGraph = ({
+  layoutIterative,
+}: {
+  layoutIterative: boolean;
+}) => {
+
+  
+
   return (
     <SigmaContainer>
       <LoadGraph />
-      {layoutIterative ? <FormatGraphIter  /> : <FormatGraph />}
+      {layoutIterative ? <FormatGraphIter /> : <FormatGraph />}
       <ControlsContainer position="bottom-right">
         <FullScreenControl />
         {layoutIterative ? <LayoutForceAtlas2Control /> : ''}
+      </ControlsContainer>
+      <ControlsContainer position="top-right">
         <SearchControl />
       </ControlsContainer>
+      <ControlsContainer position="top-left">
+        <ZoomControl />
+      </ControlsContainer>
+      
     </SigmaContainer>
   );
 };
