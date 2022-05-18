@@ -14,6 +14,10 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+/**
+ * 
+ * @category React Component
+ */
 export function App() {
   return (
     <div className="h-full flex flex-col">
