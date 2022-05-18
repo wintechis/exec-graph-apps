@@ -1,4 +1,4 @@
-import Graph from 'graphology';
+import * as g from 'graphology';
 import { Quad } from 'n3';
 import { RdfToGraphTranslator } from './rdf-to-graph-translator';
 
@@ -17,13 +17,13 @@ type GraphOptions = {
  * @author juliusstoerrle
  */
 export class GraphBuilder {
-  private graph: Graph;
+  private graph: g.default;
 
   constructor(
     readonly graphOptions: GraphOptions,
     private readonly translator: RdfToGraphTranslator
   ) {
-    this.graph = new Graph(graphOptions);
+    this.graph = new g.MultiDirectedGraph(graphOptions);
   }
 
   addAsNode(quad: Quad): void {
@@ -79,7 +79,7 @@ export class GraphBuilder {
     });
   }
 
-  public getGraph(): Graph {
+  public getGraph(): g.default {
     return this.graph;
   }
 

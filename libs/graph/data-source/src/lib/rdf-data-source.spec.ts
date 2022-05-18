@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { DirectedGraph } from 'graphology';
 import { areSameGraphs, haveSameNodesDeep } from 'graphology-assertions';
 import path = require('path');
@@ -20,14 +20,14 @@ describe('RdfDataSource', () => {
   });
 
   it('can process sample01 file', () => {
-    const rdf = readFileSync(path.join(__dirname, 'sample01.n3')).toString();
+    const rdf = readFileSync(path.join(__dirname, 'test-sources/sample01.n3')).toString();
     const dataSource = new RdfDataSource(rdf, DEFAULT_SCHEMA, {
       format: 'text/n3',
     });
     const dataset = dataSource.getAll();
 
     const target = JSON.parse(
-      readFileSync(path.join(__dirname, 'sample01.graph.json')).toString()
+      readFileSync(path.join(__dirname, 'test-sources/sample01.graph.json')).toString()
     );
     const targetGraph = new DirectedGraph().import(target);
 
@@ -35,5 +35,21 @@ describe('RdfDataSource', () => {
     expect(haveSameNodesDeep(targetGraph, dataset.graph));
     // There is no deep comparison of edges, since the auto
     // generated keys are random and can't be seeded
+  });
+
+  it('can process person file', () => {
+    const rdf = readFileSync(path.join(__dirname, 'test-sources/person.ttl')).toString();
+    const dataSource = new RdfDataSource(rdf, DEFAULT_SCHEMA);
+    const dataset = dataSource.getAll();
+    const target = JSON.parse(
+      readFileSync(path.join(__dirname, 'test-sources/person.graph.json')).toString()
+    );
+    const targetGraph = new DirectedGraph().import(target);
+
+    expect(areSameGraphs(targetGraph, dataset.graph));
+    /*writeFileSync(
+      path.join(__dirname, 'test-sources/person.graph.json'),
+      JSON.stringify(dataset.graph.export())
+    );*/
   });
 });
