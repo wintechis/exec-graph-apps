@@ -5,18 +5,24 @@ import TestGraphIterative from './components/TestGraph';
 import { useState } from 'react';
 
 export function App() {
-  const [layoutIterative, changeLayout] = useState(false)
+  const [layout, changeLayout] = useState(0);
 
-  function ChangeLayout () {
-    changeLayout(!layoutIterative);
+  function ChangeLayout(e: { target: { value: string | number; }; }) {
+    changeLayout(+e.target.value);
   }
-  
+
   return (
     <div>
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" style={{float: "left"}} onClick={ChangeLayout}>Change Layout</button>
-      
+      <div style={{"float": "left"}}>
+      <label>Select Layout: </label>
+      <select value={layout} onChange={ChangeLayout}>
+        <option value="0">Random</option>
+        <option value="1">Circle</option>
+        <option value="2">Atlas</option>
+      </select>
+      </div>
       <div className="GraphContainer">
-        <TestGraphIterative layoutIterative={layoutIterative}/>
+        <TestGraphIterative layout={layout} />
       </div>
     </div>
   );
