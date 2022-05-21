@@ -28,7 +28,14 @@ export class GraphBuilder {
 
   addAsNode(quad: Quad): void {
     const typeAttr = this.translator.quadToAttribute(quad);
-    this.graph.addNode(quad.subject.id, { [typeAttr.key]: typeAttr.value });
+    if (!this.graph.hasNode(quad.subject.id)) {
+      this.graph.addNode(quad.subject.id, { [typeAttr.key]: typeAttr.value });
+    } else {
+      const typeAttr = this.translator.quadToAttribute(quad);
+      this.graph.mergeNodeAttributes(quad.subject.id, {
+        [typeAttr.key]: typeAttr.value,
+      });
+    }
   }
 
   addAsEdge(quad: Quad): void {

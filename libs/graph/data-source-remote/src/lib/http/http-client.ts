@@ -29,7 +29,7 @@ export interface RequestOptions {
 export interface HttpClient {
   /**
    * Make a HTTP request
-   * 
+   *
    * @param method The HTTP Method to use
    * @param endpoint The URL
    * @param opts further request options

@@ -15,7 +15,6 @@ function Timeout(time: number): AbortController {
  * Implementation of the HttpClient using the browsers fetch() function.
  */
 export class FetchHttpClient implements HttpClient {
-  
   /**
    * @inheritdoc
    */
