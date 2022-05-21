@@ -1,0 +1,22 @@
+{
+  "sourceRoot": "libs/graph/data-source-remote/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/graph/data-source-remote/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/graph/data-source-remote"],
+      "options": {
+        "jestConfig": "libs/graph/data-source-remote/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
