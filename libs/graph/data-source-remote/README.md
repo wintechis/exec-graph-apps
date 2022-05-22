@@ -1,6 +1,6 @@
-# graph-data-source-remote
+# Library - Graph DataSourceRemote
 
-This library was generated with [Nx](https://nx.dev).
+This library provides DataSource services that enable the processing of RDF data from remote (SPARQL) endpoints.
 
 ## Running unit tests
 

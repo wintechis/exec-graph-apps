@@ -3,6 +3,7 @@ import {
   FetchHttpClient,
   HttpSparqlRepository,
   RemoteDataSource,
+  HttpError,
 } from '@exec-graph/graph/data-source-remote';
 import { DataSet } from '@exec-graph/graph/types';
 import { Component } from 'react';
@@ -10,27 +11,46 @@ import SparqlEditor from './sparql-editor/sparql-editor';
 import TableView from './table-view/table-view';
 import { AdjustmentsIcon } from '@heroicons/react/outline';
 
-
-/* eslint-disable-next-line */
 export interface ExplorerProps {
+  /** URL pointing to a remote SPARQL dndpoint */
   sparqlEndpoint: string;
 }
 
-export class Explorer extends Component<ExplorerProps, { data?: DataSet }> {
+/**
+ * Top-level view component to display the Explore page on the website.
+ * 
+ * Responsible to manage the shared state of all settings and viewer components.
+ * 
+ * @category React Component
+ */
+export class Explorer extends Component<ExplorerProps, { data?: DataSet, error?: {message: string} }> {
+  private dataSource: RemoteDataSource;
+
   constructor(props: ExplorerProps) {
     super(props);
-    this.loadSparql = this.loadSparql.bind(this);
     this.state = {};
-  }
-
-  private loadSparql(sparql: string) {
     const httpClient: HttpClient = new FetchHttpClient();
     const sparqlRepository = new HttpSparqlRepository(
-      this.props.sparqlEndpoint,
+      props.sparqlEndpoint,
       httpClient
     );
-    const dataSource: RemoteDataSource = new RemoteDataSource(sparqlRepository);
-    dataSource.getForSparql(sparql).then((ds) => this.setState({ data: ds }));
+    this.dataSource = new RemoteDataSource(sparqlRepository);
+    this.loadSparql = this.loadSparql.bind(this);
+  }
+
+  /**
+   * Takes changed queries from the SPARQL editor and executes them through the set data source
+   */
+  private loadSparql(sparql: string): void {
+    this.dataSource.getForSparql(sparql)
+    .then((ds) => this.setState({ data: ds }))
+    .catch(e => {
+      if (e instanceof HttpError) {
+        this.setState({error: {message: e.message}});
+        return;
+      }
+      throw e;
+    });
   }
 
   public override render() {
@@ -38,7 +58,7 @@ export class Explorer extends Component<ExplorerProps, { data?: DataSet }> {
       <>
         {/* Replace with your content */}
         <div className="px-4 py-6 sm:px-0">
-          <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 text-center text-gray-400 text-bold p-8">
+          <div className="border-4 border-dashed border-gray-200 rounded-lg h-80 text-center text-gray-400 text-bold p-8">
             Insert interactive graph here
           </div>
         </div>
@@ -52,6 +72,13 @@ export class Explorer extends Component<ExplorerProps, { data?: DataSet }> {
           <TableView data={this.state.data}></TableView>
         </div>
       );
+    }
+    if (this.state.error) {
+      resultsView = <div className="px-4 py-6 sm:px-0">
+      <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 text-center text-fau-red text-bold p-8">
+        Failed to load the data
+      </div>
+    </div>
     }
     return (
       <>

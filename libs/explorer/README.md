@@ -1,6 +1,6 @@
-# explorer
+# Library - Explorer
 
-This library was generated with [Nx](https://nx.dev).
+React components library for the Explorer page of `exec-graph-web`.
 
 ## Running unit tests
 

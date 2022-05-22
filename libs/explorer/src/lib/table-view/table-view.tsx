@@ -6,6 +6,11 @@ export interface TableViewProps {
   data: DataSet;
 }
 
+/**
+ * Displays the tabular data in a {@link DataSet} with a table
+ * 
+ * @category React Component
+ */
 export function TableView(props: TableViewProps) {
   const columns = useMemo(
     () =>

@@ -5,32 +5,33 @@ import {
 } from '@exec-graph/graph/data-source';
 import { DataSet, DataSource } from '@exec-graph/graph/types';
 import { Parser } from 'n3';
-import {
-  Parser as SparqlParser,
-  SparqlParser as SparqlParserInterface,
-} from 'sparqljs';
-import { SparqlRepository } from './sparql-repository';
+import { SparqlRepository } from './sparql/sparql-repository';
+import { SparqlValidator } from './sparql/sparql-validator';
 
+/**
+ * Utilises a remote SPARQL Endpoint to fetch data
+ */
 export class RemoteDataSource implements DataSource {
-  private sparqlParser: SparqlParserInterface;
+  private sparqlValidator: SparqlValidator;
 
   constructor(private readonly sparqlRepository: SparqlRepository) {
-    this.sparqlParser = new SparqlParser();
+    this.sparqlValidator = new SparqlValidator();
   }
 
+  /**
+   * @inheritdoc
+   */
   getAll(): Promise<DataSet> {
     const query = 'CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }';
     return this.queryGraph(query);
   }
 
+  /**
+   * @inheritdoc
+   */
   getForSparql(sparql: string): Promise<DataSet> {
-    const parsed = this.sparqlParser.parse(sparql);
-    if (parsed.type !== 'query' || !('queryType' in parsed)) {
-      throw new Error(
-        'Currently, only queries are supported and no modifications.'
-      );
-    }
-    switch (parsed.queryType) {
+    const queryType = this.sparqlValidator.queryTypeOf(sparql);
+    switch (queryType) {
       case 'SELECT':
         return this.select(sparql);
       case 'CONSTRUCT':
@@ -41,6 +42,12 @@ export class RemoteDataSource implements DataSource {
     }
   }
 
+  /**
+   * Processes sparql queries that produce a graph
+   * 
+   * @param sparql a SPARQL CONSTRUCT or DESCRIBE query
+   * @returns DataSet with graph data
+   */
   private queryGraph(sparql: string): Promise<DataSet> {
     return this.sparqlRepository.construct(sparql).then((res) => {
       const graphBuilder = new GraphBuilder(
@@ -58,6 +65,12 @@ export class RemoteDataSource implements DataSource {
     });
   }
 
+  /**
+   * Processes sparql queries that produce tabular data only
+   * 
+   * @param sparql a SPARQL SELECT query
+   * @returns DataSet with tabulae data
+   */
   private select(sparql: string): Promise<DataSet> {
     return this.sparqlRepository.select(sparql).then((res) => {
       const tabular = {

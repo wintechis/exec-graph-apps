@@ -1,4 +1,5 @@
 import { HttpClient, RequestOptions } from './http-client';
+import { HttpError } from './http-error';
 
 /**
  * Creates a timeout controller for the fetch() API
@@ -29,6 +30,13 @@ export class FetchHttpClient implements HttpClient {
       signal: Timeout(opts.timeout || 60).signal,
     };
 
-    return fetch(endpoint, init);
+    return fetch(endpoint, init).then((res: Response) => {
+      if (res.status >= 300) {
+        throw new HttpError(res.status, res.statusText, {body: res.text()});
+      }
+      return res;
+    }).catch((e) => {
+      throw new HttpError(0, e.message, {innerException: e});
+    });
   }
 }

@@ -1,5 +1,5 @@
 import { RdfValue } from '@exec-graph/graph/types';
-import { HttpClient, HttpMethod } from './http/http-client';
+import { HttpClient, HttpMethod } from '../http/http-client';
 
 /**
  * The format of the JSON object returned from an SPARQL endpoint
