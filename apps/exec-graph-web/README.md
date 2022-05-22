@@ -14,8 +14,8 @@ You may check out the tutorial for an introduction on using the app.
 
 To use the app it has to be made available through a webserver. This encompasses two steps, build and deployment. Instructions for both steps can be found in the {@page ~~/app-web-installation.md} [ installation guide]}.
 
-
 ## Development Notes
+
 ### Running unit tests
 
 Run `nx test exec-graph-web` to execute the unit tests via [Jest](https://jestjs.io).

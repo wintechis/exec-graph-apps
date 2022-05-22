@@ -4,6 +4,4 @@ This is the WIP end-user documentation for the exec-graph-web app. The tutorial 
 
 ## Interacting with the graph
 
-
-
 ## Searching or filtering the data

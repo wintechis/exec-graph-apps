@@ -10,6 +10,7 @@ To use the app it has to be made available through a webserver. This encompasses
 4. The relevant application files can be found in `<project_root>/dist/apps/exec-graph-web`
 
 #### Build to deploy in a subfolder
+
 If the app is deployed to a subfolder the basepath in the `environment.prod.ts` of the application has to be set and the `--deployUrl` parameter has to be passed at step 3.
 Example: `nx build --deployUrl '/<path-to-exec-graph-web>/'` (same path must be configured in the `environment.prod.ts`)
 

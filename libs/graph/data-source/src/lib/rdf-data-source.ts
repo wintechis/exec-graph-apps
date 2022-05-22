@@ -23,7 +23,7 @@ export class RdfDataSource implements DataSource {
 
   /**
    * Process the entire provided RDF string and returns it as a DataSet
-   * 
+   *
    * @returns {@link DataSet}
    */
   getAll(): DataSet {

@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
 
-export function Start() {
+/**
+ * Top-level React component that renders the 'Overview' page of the website
+ *
+ * @category React Component
+ */
+export function Overview() {
   return (
     <>
       <header className="bg-white shadow">
@@ -48,4 +53,4 @@ export function Start() {
   );
 }
 
-export default Start;
+export default Overview;

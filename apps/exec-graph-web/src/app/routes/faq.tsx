@@ -1,6 +1,10 @@
 import { Disclosure, Transition } from '@headlessui/react';
 import { Link } from 'react-router-dom';
 
+/**
+ * Ordered list of all FAQ items to be rendered on the FAQ page.
+ * This is the place to change, add or remove entries from the page.
+ */
 const FAQs = [
   {
     title: 'Who gathered the data?',
@@ -30,6 +34,11 @@ const FAQs = [
   },
 ];
 
+/**
+ * Top-level React component that renders the 'FAQ' page of the website
+ *
+ * @category React Component
+ */
 export function FAQ() {
   return (
     <>
