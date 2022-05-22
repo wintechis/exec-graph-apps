@@ -16,7 +16,8 @@
             "title": "Project Documentation",
             "source": "dev-project-documentation.md"
           },
-          { "title": "Nx Commands", "source": "dev-nx-commands.md" }
+          { "title": "Nx Commands", "source": "dev-nx-commands.md" },
+          { "title": "GraphDB", "source": "graphdb.md" }
         ]
       },
       {
