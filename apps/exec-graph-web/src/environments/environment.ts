@@ -4,4 +4,5 @@
 export const environment = {
   production: false,
   basepath: '/',
+  sparqlEndpoint: 'http://localhost:7200/repositories/fau_execgraph_devlocal01'
 };

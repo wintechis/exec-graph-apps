@@ -7,7 +7,6 @@ import { DataSet, DataSource } from '@exec-graph/graph/types';
 import { Parser } from 'n3';
 import {
   Parser as SparqlParser,
-  Query,
   SparqlParser as SparqlParserInterface,
 } from 'sparqljs';
 import { SparqlRepository } from './sparql-repository';

@@ -1,5 +1,10 @@
 import Graph from 'graphology';
 
+export interface RdfValue {
+  value: string;
+  type: 'uri' | 'literal';
+}
+
 /**
  * Embodies the result which a {@link DataSource} provides.
  *
@@ -9,6 +14,6 @@ export interface DataSet {
   graph?: Graph;
   tabular?: {
     headers: string[];
-    data: object[];
+    data: { [varkey: string]: RdfValue }[];
   };
 }

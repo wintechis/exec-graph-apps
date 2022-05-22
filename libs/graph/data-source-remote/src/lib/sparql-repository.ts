@@ -1,3 +1,4 @@
+import { RdfValue } from '@exec-graph/graph/types';
 import { HttpClient, HttpMethod } from './http/http-client';
 
 /**
@@ -5,7 +6,7 @@ import { HttpClient, HttpMethod } from './http/http-client';
  */
 export interface SparqlResponse {
   head: { vars: string[] };
-  results: { bindings: object[] };
+  results: { bindings: { [varkey: string]: RdfValue }[] };
 }
 
 /**
