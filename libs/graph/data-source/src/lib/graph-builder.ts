@@ -13,7 +13,7 @@ type GraphOptions = {
  *
  * If a quad can not be processed it will be ignored,
  * but a log entry is generated.
- * 
+ *
  * @author juliusstoerrle
  */
 export class GraphBuilder {
@@ -59,7 +59,7 @@ export class GraphBuilder {
   /**
    * Takes a list of quads and adds each to the graph using
    * the @see RdfToGraphTranslator.
-   * 
+   *
    * @param quads list of quads from an RDF document
    */
   public addQuads(quads: Quad[]): void {
