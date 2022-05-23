@@ -15,7 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@exec-graph/explorer": ["libs/explorer/src/index.ts"],
       "@exec-graph/graph/data-source": ["libs/graph/data-source/src/index.ts"],
+      "@exec-graph/graph/data-source-remote": [
+        "libs/graph/data-source-remote/src/index.ts"
+      ],
       "@exec-graph/graph/types": ["libs/graph/types/src/index.ts"]
     }
   },

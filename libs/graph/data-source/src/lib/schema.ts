@@ -24,11 +24,19 @@ export interface Schema {
 export const DEFAULT_SCHEMA: Schema = {
   nodePredicates: ['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'],
   nodeAttributePredicates: [
+    'http://www.w3.org/2000/01/rdf-schema#label',
+    'http://schema.org/givenName',
+    'http://schema.org/familyName',
+    'http://schema.org/honorificPrefix',
+    'http://schema.org/gender',
     'http://xmlns.com/foaf/0.1/familyName',
     'http://xmlns.com/foaf/0.1/givenName',
     'http://xmlns.com/foaf/0.1/name',
   ],
   edgePredicates: [
+    'http://execgraph.org/educationConnection',
+    'http://execgraph.org/workConnection',
+    'http://execgraph.org/birthPlaceConnection',
     'http://example.org/cartoons#smarterThan',
     'http://xmlns.com/foaf/0.1/knows',
   ],

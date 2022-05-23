@@ -26,7 +26,7 @@ export class RdfDataSource implements DataSource {
    *
    * @returns {@link DataSet}
    */
-  getAll(): DataSet {
+  getAll(): Promise<DataSet> {
     const parser = new Parser(this.parserOptions);
     const quads = parser.parse(this.rdf);
 
@@ -37,6 +37,6 @@ export class RdfDataSource implements DataSource {
     graphBuilder.addQuads(quads);
     const graph = graphBuilder.getGraph();
 
-    return { graph };
+    return Promise.resolve({ graph });
   }
 }

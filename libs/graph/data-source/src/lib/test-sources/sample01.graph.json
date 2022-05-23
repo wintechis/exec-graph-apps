@@ -1,0 +1,354 @@
+{
+  "options": { "type": "directed", "multi": false, "allowSelfLoops": true },
+  "attributes": {},
+  "nodes": [
+    {
+      "key": "http://dig.csail.mit.edu/2008/webdav/timbl/foaf.rdf",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/PersonalProfileDocument"
+      }
+    },
+    {
+      "key": "http://dig.csail.mit.edu/2008/webdav/timbl/foaf.rdf#dj",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Dean Jackson\""
+      }
+    },
+    {
+      "key": "http://dbpedia.org/resource/John_Gage",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"John Gage\""
+      }
+    },
+    {
+      "key": "http://dbpedia.org/resource/John_Klensin",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"John Klensin\""
+      }
+    },
+    {
+      "key": "http://dbpedia.org/resource/John_Markoff",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"John Markoff\""
+      }
+    },
+    {
+      "key": "http://dbpedia.org/resource/John_Seely_Brown",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"John Seely Brown\""
+      }
+    },
+    {
+      "key": "http://dbpedia.org/resource/Tim_Bray",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Tim Bray\""
+      }
+    },
+    {
+      "key": "http://dig.csail.mit.edu/2007/wiki/people/JoeLambda#JL",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/givenName": "\"Joe\"",
+        "http://xmlns.com/foaf/0.1/name": "\"Joe Lambda\""
+      }
+    },
+    {
+      "key": "http://dig.csail.mit.edu/2007/wiki/people/RobertHoffmann#RMH",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Robert Hoffmann\""
+      }
+    },
+    {
+      "key": "http://dig.csail.mit.edu/2008/webdav/timbl/foaf.rdf#cm",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Coralie Mercier\""
+      }
+    },
+    {
+      "key": "http://dig.csail.mit.edu/2008/webdav/timbl/foaf.rdf#edd",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Edd Dumbill\""
+      }
+    },
+    {
+      "key": "http://dig.csail.mit.edu/2008/webdav/timbl/foaf.rdf#libby",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Libby Miller\""
+      }
+    },
+    {
+      "key": "http://inamidst.com/sbp/foaf#Sean",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Sean Palmer\""
+      }
+    },
+    {
+      "key": "http://myopenlink.net/dataspace/person/kidehen#this",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Kingsley Idehen\""
+      }
+    },
+    {
+      "key": "http://norman.walsh.name/knows/who#norman-walsh",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Norman Walsh\""
+      }
+    },
+    {
+      "key": "http://people.csail.mit.edu/lkagal/foaf#me",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Lalana Kagal\""
+      }
+    },
+    {
+      "key": "http://people.w3.org/simon/foaf#i",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Simon J. Hernandez\""
+      }
+    },
+    {
+      "key": "http://qdos.com/people/tom.xrdf#me",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Tom Ilube\""
+      }
+    },
+    {
+      "key": "http://rit.mellon.org/Members/ihf/foaf.rdf#me",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Ira Fuchs\""
+      }
+    },
+    {
+      "key": "http://www.aaronsw.com/about.xrdf#aaronsw",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Aaron Swartz\""
+      }
+    },
+    {
+      "key": "http://www.dajobe.org/foaf.rdf#i",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Dave Beckett\""
+      }
+    },
+    {
+      "key": "http://www.isi.edu/~gil/foaf.rdf#me",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Yolanda Gill\""
+      }
+    },
+    {
+      "key": "http://www.w3.org/People/Berners-Lee/card#amy",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Amy van der Hiel\""
+      }
+    },
+    {
+      "key": "http://www.w3.org/People/Connolly/#me",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Dan Connolly\""
+      }
+    },
+    {
+      "key": "http://www.w3.org/People/EM/contact#me",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Eric Miller\""
+      }
+    },
+    {
+      "key": "http://www.w3.org/People/djweitzner/foaf#DJW",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Daniel J Weitzner\""
+      }
+    },
+    {
+      "key": "http://www.w3.org/People/Berners-Lee/card#i",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Tim Berners-Lee\""
+      }
+    },
+    {
+      "key": "_:n3-0",
+      "attributes": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://xmlns.com/foaf/0.1/Person",
+        "http://xmlns.com/foaf/0.1/name": "\"Danny Ayers\""
+      }
+    }
+  ],
+  "edges": [
+    {
+      "key": "geid_201_0",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "_:n3-0",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_1",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://dbpedia.org/resource/John_Gage",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_2",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://dbpedia.org/resource/John_Klensin",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_3",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://dbpedia.org/resource/John_Markoff",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_4",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://dbpedia.org/resource/John_Seely_Brown",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_5",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://dbpedia.org/resource/Tim_Bray",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_6",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://dig.csail.mit.edu/2007/wiki/people/JoeLambda#JL",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_7",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://dig.csail.mit.edu/2007/wiki/people/RobertHoffmann#RMH",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_8",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://dig.csail.mit.edu/2008/webdav/timbl/foaf.rdf#cm",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_9",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://dig.csail.mit.edu/2008/webdav/timbl/foaf.rdf#edd",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_10",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://dig.csail.mit.edu/2008/webdav/timbl/foaf.rdf#libby",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_11",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://inamidst.com/sbp/foaf#Sean",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_12",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://myopenlink.net/dataspace/person/kidehen#this",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_13",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://norman.walsh.name/knows/who#norman-walsh",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_14",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://people.csail.mit.edu/lkagal/foaf#me",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_15",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://people.w3.org/simon/foaf#i",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_16",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://qdos.com/people/tom.xrdf#me",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_17",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://rit.mellon.org/Members/ihf/foaf.rdf#me",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_18",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://www.aaronsw.com/about.xrdf#aaronsw",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_19",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://www.dajobe.org/foaf.rdf#i",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_20",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://www.isi.edu/~gil/foaf.rdf#me",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_21",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://www.w3.org/People/Berners-Lee/card#amy",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_22",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://www.w3.org/People/Connolly/#me",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_23",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://www.w3.org/People/EM/contact#me",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    },
+    {
+      "key": "geid_201_24",
+      "source": "http://www.w3.org/People/Berners-Lee/card#i",
+      "target": "http://www.w3.org/People/djweitzner/foaf#DJW",
+      "attributes": { "predicate": "http://xmlns.com/foaf/0.1/knows" }
+    }
+  ]
+}
