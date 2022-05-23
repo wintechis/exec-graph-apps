@@ -1,0 +1,32 @@
+{
+  "pluginMonorepoReadmes:rootFiles": ["project.json", "package.json"],
+  "noMissingExports": true,
+  "out": "dist/docs",
+  "name": "ExecGraph Apps",
+  "customTitle": "ExecGraph Apps | Documentation",
+  "footerDate": true,
+  "favicon": "./documentation/assets/favicon.ico",
+  "pluginPages": {
+    "source": "./documentation/pages",
+    "pages": [
+      {
+        "title": "Development",
+        "children": [
+          {
+            "title": "Project Documentation",
+            "source": "dev-project-documentation.md"
+          },
+          { "title": "Nx Commands", "source": "dev-nx-commands.md" },
+          { "title": "GraphDB", "source": "graphdb.md" }
+        ]
+      },
+      {
+        "title": "apps/exec-graph-web",
+        "children": [
+          { "title": "Installation", "source": "app-web-installation.md" },
+          { "title": "Tutorial", "source": "app-web-tutorial.md" }
+        ]
+      }
+    ]
+  }
+}
