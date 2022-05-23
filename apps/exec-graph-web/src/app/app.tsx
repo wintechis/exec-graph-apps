@@ -3,6 +3,11 @@ import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import Footer from './footer';
 
+import fauLogoSvg from '../assets/FAU_Logo_Bildmarke.svg';
+
+/**
+ * List of pages that should be featured in the navigation bar/menu
+ */
 const navigation = [
   { name: 'Overview', href: '/' },
   { name: 'Explore', href: '/explore' },
@@ -10,10 +15,19 @@ const navigation = [
   { name: 'FAQ', href: '/faq' },
 ];
 
+/**
+ * Utility function to conditionally merge css classes
+ */
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+/**
+ * Root-level React component which renders the outer app
+ * shell, including footer and navbar.
+ *
+ * @category React Component
+ */
 export function App() {
   return (
     <div className="h-full flex flex-col">
@@ -27,7 +41,7 @@ export function App() {
                     <Link to="/">
                       <img
                         className="h-16 w-16"
-                        src="http://localhost:4200/assets/FAU_Logo_Bildmarke.svg"
+                        src={fauLogoSvg}
                         alt="FAU Logo"
                       />
                     </Link>

@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './app/app';
 import About from './app/routes/about';
 import FAQ from './app/routes/faq';
-import Start from './app/routes/start';
+import Overview from './app/routes/overview';
 import { environment } from './environments/environment';
 
 const root = ReactDOM.createRoot(
@@ -19,6 +19,7 @@ root.render(
         <Route path="/" element={<App />}>
           <Route path="/" element={<Start />} />
           <Route path="explore" element={<Explorer sparqlEndpoint={environment.sparqlEndpoint} />} />
+
           <Route path="about" element={<About />} />
           <Route path="faq" element={<FAQ />} />
           <Route

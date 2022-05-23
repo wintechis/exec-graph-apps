@@ -6,10 +6,10 @@ import { Schema } from './schema';
 
 /**
  * Simple DataSource, that makes an RDF string available as
- * @see DataSet using n3.js
+ * {@link DataSet} using n3.js
  *
  * It must be configured through the consturctor with the
- * RDF source, a @see Schema and optionally the configuration
+ * RDF source, a {@link Schema} and optionally the configuration
  * for the parser (e.g. when processing text/n3 files).
  *
  * @author juliusstoerrle
@@ -23,6 +23,8 @@ export class RdfDataSource implements DataSource {
 
   /**
    * Process the entire provided RDF string and returns it as a DataSet
+   *
+   * @returns {@link DataSet}
    */
   getAll(): Promise<DataSet> {
     const parser = new Parser(this.parserOptions);
