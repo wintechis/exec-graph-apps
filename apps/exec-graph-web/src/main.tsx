@@ -1,7 +1,7 @@
-import { Explorer } from '@exec-graph/explorer';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Explorer } from '@exec-graph/explorer';
 
 import App from './app/app';
 import About from './app/routes/about';
@@ -17,7 +17,7 @@ root.render(
     <BrowserRouter basename={environment.basepath}>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="/" element={<Start />} />
+          <Route path="/" element={<Overview />} />
           <Route path="explore" element={<Explorer sparqlEndpoint={environment.sparqlEndpoint} />} />
 
           <Route path="about" element={<About />} />
