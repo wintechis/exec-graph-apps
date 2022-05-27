@@ -8,9 +8,15 @@ import LoadGraph from './utils/LoadGraph';
 import FormatGraph from './utils/FormatGraph';
 import Controls from './utils/Controls';
 
-const TestGraph = ({ layout, graphLoaded, setGraphLoaded }: { layout: number, graphLoaded: boolean, setGraphLoaded: Dispatch<SetStateAction<boolean>> }) => {
-
-  
+const TestGraph = ({
+  layout,
+  graphLoaded,
+  setGraphLoaded,
+}: {
+  layout: number;
+  graphLoaded: boolean;
+  setGraphLoaded: Dispatch<SetStateAction<boolean>>;
+}) => {
   return (
     <SigmaContainer>
       {graphLoaded ? '' : <LoadGraph setGraphLoaded={setGraphLoaded} />}

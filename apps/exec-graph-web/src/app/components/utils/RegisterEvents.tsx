@@ -4,19 +4,29 @@ import { useEffect, useState } from 'react';
 
 function RegisterEvents() {
   const sigma = useSigma();
+  const graph = sigma.getGraph();
   const registerEvents = useRegisterEvents();
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [clickedNode, setClickedNode] = useState<string | null>(null);
   const [nodeChanged, setNodeChanged] = useState<string | null>(null);
+  const [nodeDown, setNodeDown] = useState<string | null>(null);
   const setSettings = useSetSettings();
 
   const idHover = document.getElementById('ID-hover');
   const [xCoord, setXCoord] = useState(0);
   const [yCoord, setYCoord] = useState(0);
 
-  document.addEventListener('mousemove', (e) => {
-    setXCoord(e.offsetX);
-    setYCoord(e.offsetY);
+  sigma.getMouseCaptor().on('mousemove', (e) => {
+    setXCoord(e.x);
+    setYCoord(e.y);
+
+    if (nodeDown != null) {
+      e.preventSigmaDefault();
+      e.original.preventDefault();
+      e.original.stopPropagation();
+    } else {
+      e.sigmaDefaultPrevented = false;
+    }
   });
 
   useEffect(() => {
@@ -25,12 +35,25 @@ function RegisterEvents() {
       leaveNode: () => setHoveredNode(null),
       clickNode: (event) => setClickedNode(event.node),
       clickStage: () => setClickedNode(null),
+      downNode: (event) => setNodeDown(event.node),
+      mouseup: () => setNodeDown(null),
     });
   }, [registerEvents]);
 
   useEffect(() => {
     setNodeChanged(hoveredNode ? hoveredNode : clickedNode);
   }, [hoveredNode, clickedNode]);
+
+  useEffect(() => {
+    if (nodeDown) {
+      const coords = {
+        x: xCoord,
+        y: yCoord,
+      };
+      graph.setNodeAttribute(nodeDown, 'x', sigma.viewportToGraph(coords).x);
+      graph.setNodeAttribute(nodeDown, 'y', sigma.viewportToGraph(coords).y);
+    }
+  }, [graph, nodeDown, sigma, xCoord, yCoord]);
 
   useEffect(() => {
     setSettings({
