@@ -1,0 +1,41 @@
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>GraphDB | ExecGraph Apps</title><meta name="description" content="Documentation for ExecGraph Apps"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script><link rel="stylesheet" href="../assets/pages.css"/>	<link rel="icon" href="../favicon.ico" />
+</head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base=".."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">ExecGraph Apps | Documentation</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><ul class="tsd-breadcrumb"><li><a href="../modules.html">ExecGraph Apps</a></li><li><span>Development</span></li><li><a href="graphdb.html">GraphDB</a></li></ul><h1> GraphDB </h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#graphdb" id="graphdb" style="color: inherit; text-decoration: none;">
+  <h1>GraphDB</h1>
+</a>
+<p>A remote SPARQL Endpoint as DataSource can be provided by <a href="https://www.ontotext.com/products/graphdb/">GraphDB</a>.</p>
+
+<a href="#local-development" id="local-development" style="color: inherit; text-decoration: none;">
+  <h2>Local Development</h2>
+</a>
+<p>For local development the GraphDB (Free) Desktop version can be used.</p>
+<ol>
+<li>Acquire an executable of GraphDB for your OS</li>
+<li>Install &amp; start it following GraphDBs instructions</li>
+<li>Create a new local repository</li>
+<li>Import all *.ttl files of the ExecGraph project</li>
+<li>Depending on your setup, you may want to configure <code>graphdb.workbench.cors.enable true</code> and <code>graphdb.workbench.cors.origin *</code></li>
+</ol>
+
+<a href="#server" id="server" style="color: inherit; text-decoration: none;">
+  <h2>Server</h2>
+</a>
+<p>Check the server fullfills the <a href="https://graphdb.ontotext.com/documentation/free/requirements.html">following requirements (as of GraphDB 9.11)</a>:</p>
+<ul>
+<li>Java SE Development Kit 11 to 16</li>
+<li>2GB Memory</li>
+<li>2GB Disk Space</li>
+</ul>
+<ol>
+<li>Follow the instructions on <a href="https://graphdb.ontotext.com/documentation/free/quick-start-guide.html#quick-start-guide-run-gdb-as-standalone-server">this page</a></li>
+<li>Create a new repository</li>
+<li>Configure user access control to ensure read only access for the public</li>
+<li><a href="https://graphdb.ontotext.com/documentation/free/quick-start-guide.html#load-your-data">Load the data</a></li>
+<li>Configure the executable to be restarted automatically, it can be done in server only mode (<code>-s</code> flag) without the workbench</li>
+</ol>
+
+<a href="#update-data-in-an-existing-server" id="update-data-in-an-existing-server" style="color: inherit; text-decoration: none;">
+  <h2>Update data in an existing server</h2>
+</a>
+<p>Changes can be added via SPARQL, or in this specific case by purging/removing the repository and creating a new one.</p>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class=""><a href="../modules.html">Modules</a></li><li class="current pages-entry pages-entry-menu pages-entry-depth-0"><a>Development</a></li><li class=" pages-entry pages-entry-page pages-entry-depth-1"><a href="dev-project-documentation.html">Project <wbr/>Documentation</a></li><li class=" pages-entry pages-entry-page pages-entry-depth-1"><a href="dev-nx-commands.html">Nx <wbr/>Commands</a></li><li class="current pages-entry pages-entry-page pages-entry-depth-1"><a href="graphdb.html">GraphDB</a></li><li class=" tsd-kind-module"><a href="../modules/apps_exec_graph_web.html">apps/exec-<wbr/>graph-<wbr/>web</a></li><li class=" tsd-kind-module"><a href="../modules/libs_explorer.html">libs/explorer</a></li><li class=" tsd-kind-module"><a href="../modules/libs_graph_data_source.html">libs/graph/data-<wbr/>source</a></li><li class=" tsd-kind-module"><a href="../modules/libs_graph_data_source_remote.html">libs/graph/data-<wbr/>source-<wbr/>remote</a></li><li class=" tsd-kind-module"><a href="../modules/libs_graph_types.html">libs/graph/types</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li><li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a>, the 5/31/2022</p></div><div class="overlay"></div><script src="../assets/main.js"></script></body></html>

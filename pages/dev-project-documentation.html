@@ -1,0 +1,44 @@
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Project Documentation | ExecGraph Apps</title><meta name="description" content="Documentation for ExecGraph Apps"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script><link rel="stylesheet" href="../assets/pages.css"/>	<link rel="icon" href="../favicon.ico" />
+</head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base=".."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">ExecGraph Apps | Documentation</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><ul class="tsd-breadcrumb"><li><a href="../modules.html">ExecGraph Apps</a></li><li><span>Development</span></li><li><a href="dev-project-documentation.html">Project Documentation</a></li></ul><h1> Project Documentation </h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#projet-documentation" id="projet-documentation" style="color: inherit; text-decoration: none;">
+  <h1>Projet Documentation</h1>
+</a>
+<p>The project is configured to create an HTML documentation for the entire monorepo including internal libaries. To do so TypeDoc with various projects is utilised.</p>
+
+<a href="#generating-documentation" id="generating-documentation" style="color: inherit; text-decoration: none;">
+  <h2>Generating Documentation</h2>
+</a>
+<p>The documentation folder contains a custom script which adapts typedoc to generate one documentation for the entire monorepo. Therefore, to generate the documentation you must compile the custom script by running <code>npm run compile-typedoc</code> (only if the scripts changed) followed by <code>npm run generate-docs</code> to generate the actual html documentation. The output can be found at <code>./dist/docs</code>.</p>
+
+<a href="#apps-amp-libraries" id="apps-amp-libraries" style="color: inherit; text-decoration: none;">
+  <h2>Apps &amp; Libraries</h2>
+</a>
+<p>Each app and library is considered a module in the documentation. The configuration is pulled from the NX Project Configuration.
+Each app/library should maintain its own Readme.md next to its package.json or project.json, which is automatically pulled into the generated documentation.</p>
+
+<a href="#adding-additional-pages" id="adding-additional-pages" style="color: inherit; text-decoration: none;">
+  <h2>Adding additional pages</h2>
+</a>
+<p>Additional pages may be added to the <code>/documentation</code> folder, as its the case with the page you are looking at right now.
+Once added there, they have to be added to the page tree in <code>/typedoc.json</code>.</p>
+<p>At this point it is only possible to link either the markdown files (which works on github) or link to the generated html (which works in the documentation). Writing a link rewriter to make this work is still an open task.</p>
+
+<a href="#code-documentation" id="code-documentation" style="color: inherit; text-decoration: none;">
+  <h2>Code Documentation</h2>
+</a>
+<p>The code documentation is the central part of the generated documentation and the main workload is done by TypeDoc which extracts type information and JSDoc annotations.</p>
+<p>The recommendation is to use JSDoc to:</p>
+<ul>
+<li>Describe each class, attribute/variable, function/method in one sentence
+− Describe input/output parameters and rising errors (if there are any)
+− Add your author information in each module (TODO clarify module = library or file)</li>
+</ul>
+
+<a href="#react-components" id="react-components" style="color: inherit; text-decoration: none;">
+  <h3>React Components</h3>
+</a>
+<p>Since from a Typescript perspective modern React components are purely functions, the @category tag should be used to differentiate them from other functions.</p>
+<p>Example:</p>
+<pre><code><span class="hl-2">/**</span><br/><span class="hl-2"> *</span><br/><span class="hl-2"> * </span><span class="hl-3">@category</span><span class="hl-2"> React Component</span><br/><span class="hl-2"> */</span><br/><span class="hl-9">export</span><span class="hl-1"> </span><span class="hl-3">function</span><span class="hl-1"> </span><span class="hl-7">App</span><span class="hl-1">() {</span><br/><span class="hl-1">  </span><span class="hl-9">return</span><span class="hl-1"> (</span>
+</code></pre>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class=""><a href="../modules.html">Modules</a></li><li class="current pages-entry pages-entry-menu pages-entry-depth-0"><a>Development</a></li><li class="current pages-entry pages-entry-page pages-entry-depth-1"><a href="dev-project-documentation.html">Project <wbr/>Documentation</a></li><li class=" pages-entry pages-entry-page pages-entry-depth-1"><a href="dev-nx-commands.html">Nx <wbr/>Commands</a></li><li class=" pages-entry pages-entry-page pages-entry-depth-1"><a href="graphdb.html">GraphDB</a></li><li class=" tsd-kind-module"><a href="../modules/apps_exec_graph_web.html">apps/exec-<wbr/>graph-<wbr/>web</a></li><li class=" tsd-kind-module"><a href="../modules/libs_explorer.html">libs/explorer</a></li><li class=" tsd-kind-module"><a href="../modules/libs_graph_data_source.html">libs/graph/data-<wbr/>source</a></li><li class=" tsd-kind-module"><a href="../modules/libs_graph_data_source_remote.html">libs/graph/data-<wbr/>source-<wbr/>remote</a></li><li class=" tsd-kind-module"><a href="../modules/libs_graph_types.html">libs/graph/types</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li><li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a>, the 5/31/2022</p></div><div class="overlay"></div><script src="../assets/main.js"></script></body></html>
