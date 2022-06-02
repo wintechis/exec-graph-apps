@@ -39,4 +39,8 @@ export class RdfDataSource implements DataSource {
 
     return Promise.resolve({ graph });
   }
+
+  getForSparql(sparql: string): Promise<DataSet> {
+    throw new Error('Method not implemented.');
+  }
 }
