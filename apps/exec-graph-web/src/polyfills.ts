@@ -5,3 +5,12 @@
  */
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+
+/**
+ * Some dependency uses global, which is not available in the browser
+ * Best workaround: https://github.com/nrwl/nx/issues/3673
+ */
+if (!('global' in window)) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (window as any).global = window;
+}
