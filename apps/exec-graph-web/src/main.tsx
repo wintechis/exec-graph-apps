@@ -17,9 +17,14 @@ root.render(
     <BrowserRouter basename={environment.basepath}>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="/" element={<Overview />} />
-          <Route path="explore" element={<Explorer sparqlEndpoint={environment.sparqlEndpoint} />} />
-
+          <Route
+            path="/"
+            element={<Overview sparqlEndpoint={environment.sparqlEndpoint} />}
+          />
+          <Route
+            path="explore"
+            element={<Explorer sparqlEndpoint={environment.sparqlEndpoint} />}
+          />
           <Route path="about" element={<About />} />
           <Route path="faq" element={<FAQ />} />
           <Route
