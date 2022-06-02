@@ -1,4 +1,5 @@
 import Graph from 'graphology';
+import { Schema } from './schema';
 
 export interface RdfValue {
   value: string;
@@ -11,6 +12,7 @@ export interface RdfValue {
  * Depending on the query to the {@link DataSource} the data can be in a different format.
  */
 export interface DataSet {
+  schema: Schema;
   graph?: Graph;
   tabular?: {
     headers: string[];

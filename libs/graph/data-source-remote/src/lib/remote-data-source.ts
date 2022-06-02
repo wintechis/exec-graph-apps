@@ -3,7 +3,7 @@ import {
   GraphBuilder,
   RdfToGraphTranslator,
 } from '@exec-graph/graph/data-source';
-import { DataSet, DataSource } from '@exec-graph/graph/types';
+import { DataSet, DataSource, Schema } from '@exec-graph/graph/types';
 import { Parser } from 'n3';
 import { SparqlRepository } from './sparql/sparql-repository';
 import { SparqlValidator } from './sparql/sparql-validator';
@@ -14,7 +14,10 @@ import { SparqlValidator } from './sparql/sparql-validator';
 export class RemoteDataSource implements DataSource {
   private sparqlValidator: SparqlValidator;
 
-  constructor(private readonly sparqlRepository: SparqlRepository) {
+  constructor(
+    private readonly sparqlRepository: SparqlRepository,
+    private readonly schema: Schema = DEFAULT_SCHEMA
+  ) {
     this.sparqlValidator = new SparqlValidator();
   }
 
@@ -44,7 +47,7 @@ export class RemoteDataSource implements DataSource {
 
   /**
    * Processes sparql queries that produce a graph
-   * 
+   *
    * @param sparql a SPARQL CONSTRUCT or DESCRIBE query
    * @returns DataSet with graph data
    */
@@ -61,13 +64,13 @@ export class RemoteDataSource implements DataSource {
 
       const graph = graphBuilder.getGraph();
       console.log(graph.order);
-      return { graph };
+      return { graph, schema: this.schema };
     });
   }
 
   /**
    * Processes sparql queries that produce tabular data only
-   * 
+   *
    * @param sparql a SPARQL SELECT query
    * @returns DataSet with tabulae data
    */
@@ -77,7 +80,7 @@ export class RemoteDataSource implements DataSource {
         headers: res.head.vars,
         data: res.results.bindings,
       };
-      return { tabular };
+      return { tabular, schema: this.schema };
     });
   }
 }

@@ -1,0 +1,22 @@
+{
+  "sourceRoot": "libs/detail-view/src",
+  "projectType": "library",
+  "tags": ["lib:view", "area:explorer"],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/detail-view/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/detail-view"],
+      "options": {
+        "jestConfig": "libs/detail-view/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

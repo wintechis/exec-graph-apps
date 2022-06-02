@@ -1,5 +1,5 @@
+import { Schema } from '@exec-graph/graph/types';
 import { Quad } from 'n3';
-import { Schema } from './schema';
 
 /**
  * Utility class to helps to map RDF quads as graph

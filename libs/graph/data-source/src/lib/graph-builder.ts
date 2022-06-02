@@ -23,7 +23,7 @@ export class GraphBuilder {
     readonly graphOptions: GraphOptions,
     private readonly translator: RdfToGraphTranslator
   ) {
-    this.graph = new g.MultiDirectedGraph(graphOptions);
+    this.graph = new g.MultiDirectedGraph({ ...graphOptions, multi: true });
   }
 
   addAsNode(quad: Quad): void {
@@ -32,8 +32,13 @@ export class GraphBuilder {
       this.graph.addNode(quad.subject.id, { [typeAttr.key]: typeAttr.value });
     } else {
       const typeAttr = this.translator.quadToAttribute(quad);
+      let value = this.graph.getNodeAttribute(quad.subject.id, typeAttr.key);
+      if (!Array.isArray(value)) {
+        value = [value];
+      }
+      value.push(typeAttr.value);
       this.graph.mergeNodeAttributes(quad.subject.id, {
-        [typeAttr.key]: typeAttr.value,
+        [typeAttr.key]: value,
       });
     }
   }
