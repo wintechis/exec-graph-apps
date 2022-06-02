@@ -8,25 +8,31 @@ export interface SparqlEditorProps {
 
 /**
  * Displays an editor for SPARQL queries
- * 
+ *
  * @category React Component
  */
 export class SparqlEditor extends Component<
   SparqlEditorProps,
-  { sparql: string, valid: boolean }
+  { sparql: string; valid: boolean }
 > {
   private sparqlValidator: SparqlValidator;
 
   constructor(props: Readonly<SparqlEditorProps>) {
     super(props);
     this.sparqlValidator = new SparqlValidator();
-    this.state = { sparql: props.sparql, valid: this.sparqlValidator.validate(props.sparql) };
+    this.state = {
+      sparql: props.sparql,
+      valid: this.sparqlValidator.validate(props.sparql),
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    this.setState({ sparql: event.target.value, valid: this.sparqlValidator.validate(event.target.value) });
+    this.setState({
+      sparql: event.target.value,
+      valid: this.sparqlValidator.validate(event.target.value),
+    });
   }
 
   handleSubmit(event: React.FormEvent) {
@@ -35,7 +41,11 @@ export class SparqlEditor extends Component<
   }
 
   override render() {
-    const validationError = this.state.valid ? null : <div className='text-fau-red'>Invalid SPARQL: Please check your query.</div>;
+    const validationError = this.state.valid ? null : (
+      <div className="text-fau-red">
+        Invalid SPARQL: Please check your query.
+      </div>
+    );
     return (
       <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
         <h3 className="text-lg font-bold leading-6">SPARQL Query Editor</h3>
@@ -58,8 +68,12 @@ export class SparqlEditor extends Component<
             <button
               disabled={!this.state.valid}
               type="submit"
-              className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-fau-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${!this.state.valid ? "bg-gray-400" : ""}`}
-            >Execute</button>
+              className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-fau-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                !this.state.valid ? 'bg-gray-400' : ''
+              }`}
+            >
+              Execute
+            </button>
           </div>
         </form>
       </div>

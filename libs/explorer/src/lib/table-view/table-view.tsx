@@ -8,7 +8,7 @@ export interface TableViewProps {
 
 /**
  * Displays the tabular data in a {@link DataSet} with a table
- * 
+ *
  * @category React Component
  */
 export function TableView(props: TableViewProps) {
