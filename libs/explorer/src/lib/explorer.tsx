@@ -9,6 +9,7 @@ import { DataSet } from '@exec-graph/graph/types';
 import { Component } from 'react';
 import SparqlEditor from './sparql-editor/sparql-editor';
 import TableView from './table-view/table-view';
+import { MemoizedGraphView } from './graph-view/graph-view';
 import { AdjustmentsIcon } from '@heroicons/react/outline';
 import DetailView from './detail-view/detail-view';
 
@@ -31,13 +32,20 @@ export class Explorer extends Component<
     error?: { message: string };
     selectedObject?: string | null;
     detailData?: DataSet;
+    hoveredNode: string | null;
+    clickedNode: string | null;
+    nodeDown: string | null;
   }
 > {
   private dataSource: RemoteDataSource;
 
   constructor(props: ExplorerProps) {
     super(props);
-    this.state = {};
+    this.state = {
+      hoveredNode: null,
+      clickedNode: null,
+      nodeDown: null,
+    };
     const httpClient: HttpClient = new FetchHttpClient();
     const sparqlRepository = new HttpSparqlRepository(
       props.sparqlEndpoint,
@@ -46,6 +54,7 @@ export class Explorer extends Component<
     this.dataSource = new RemoteDataSource(sparqlRepository);
     this.loadSparql = this.loadSparql.bind(this);
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
+    this.changeState = this.changeState.bind(this);
   }
 
   handleSelectionChange(uri: string) {
@@ -73,7 +82,52 @@ export class Explorer extends Component<
       });
   }
 
+  private changeState(param: {
+    hoveredNode?: string | null;
+    clickedNode?: string | null;
+    nodeDown?: string | null;
+  }): void {
+    if (param.hoveredNode) this.setState({ hoveredNode: param.hoveredNode });
+    if (param.clickedNode) this.setState({ clickedNode: param.clickedNode });
+    if (param.nodeDown) this.setState({ nodeDown: param.nodeDown });
+  }
+
   public override render() {
+    let resultsView = (
+      <div className="px-4 py-6 sm:px-0">
+        <div className="border-4 border-dashed border-gray-200 rounded-lg h-80 text-center text-gray-400 text-bold p-8">
+          Run SPARQL query to show content
+        </div>
+      </div>
+    );
+    if (this.state.data?.graph) {
+      console.log(this.state.data.graph);
+      resultsView = (
+        <div className="max-w-7xl mx-auto mb-4">
+          <MemoizedGraphView
+            data={this.state.data}
+            changeState={this.changeState}
+          ></MemoizedGraphView>
+        </div>
+      );
+    }
+    if (this.state.data?.tabular) {
+      console.log(this.state.data.tabular);
+      resultsView = (
+        <div className="max-w-7xl mx-auto mb-4">
+          <TableView data={this.state.data}></TableView>
+        </div>
+      );
+    }
+    if (this.state.error) {
+      resultsView = (
+        <div className="px-4 py-6 sm:px-0">
+          <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 text-center text-fau-red text-bold p-8">
+            Failed to load the data
+          </div>
+        </div>
+      );
+    }
     return (
       <>
         <header className="bg-white shadow">
