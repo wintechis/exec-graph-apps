@@ -9,6 +9,7 @@ import { DataSet } from '@exec-graph/graph/types';
 import { Component } from 'react';
 import SparqlEditor from './sparql-editor/sparql-editor';
 import TableView from './table-view/table-view';
+import GraphView from './graph-view/graph-view';
 import { AdjustmentsIcon } from '@heroicons/react/outline';
 
 export interface ExplorerProps {
@@ -55,16 +56,20 @@ export class Explorer extends Component<ExplorerProps, { data?: DataSet, error?:
 
   public override render() {
     let resultsView = (
-      <>
-        {/* Replace with your content */}
         <div className="px-4 py-6 sm:px-0">
           <div className="border-4 border-dashed border-gray-200 rounded-lg h-80 text-center text-gray-400 text-bold p-8">
-            Insert interactive graph here
+            Run SPARQL query to show content
           </div>
         </div>
-        {/* /End replace */}
-      </>
     );
+    if (this.state.data?.graph) {
+      console.log(this.state.data.graph);
+      resultsView = (
+        <div className="max-w-7xl mx-auto mb-4">
+          <GraphView data={this.state.data}></GraphView>
+        </div>
+      );
+    }
     if (this.state.data?.tabular) {
       console.log(this.state.data.tabular);
       resultsView = (
