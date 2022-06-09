@@ -9,6 +9,7 @@ import { DataSet } from '@exec-graph/graph/types';
 import { Component } from 'react';
 import SparqlEditor from './sparql-editor/sparql-editor';
 import TableView from './table-view/table-view';
+import { MemoizedGraphView } from './graph-view/graph-view';
 import { AdjustmentsIcon } from '@heroicons/react/outline';
 import { DetailView } from '@exec-graph/detail-view';
 
@@ -36,7 +37,6 @@ export class Explorer extends Component<
 
   constructor(props: ExplorerProps) {
     super(props);
-    this.state = {};
     const httpClient: HttpClient = new FetchHttpClient();
     const sparqlRepository = new HttpSparqlRepository(
       props.sparqlEndpoint,
@@ -69,6 +69,16 @@ export class Explorer extends Component<
         }
         throw e;
       });
+  }
+
+  private changeState(param: {
+    hoveredNode?: string | null;
+    clickedNode?: string | null;
+    nodeDown?: string | null;
+  }): void {
+    //if (param.hoveredNode) this.setState({ hoveredNode: param.hoveredNode });
+    if (param.clickedNode) this.setState({ selectedObject: param.clickedNode });
+    //if (param.nodeDown) this.setState({ nodeDown: param.nodeDown });
   }
 
   public override render() {
@@ -114,12 +124,22 @@ export class Explorer extends Component<
         {/* Replace with your content */}
         <div className="px-4 py-6 sm:px-0">
           <div className="border-4 border-dashed border-gray-200 rounded-lg h-80 text-center text-gray-400 text-bold p-8">
-            Insert interactive graph here
+            Run SPARQL query to show content
           </div>
         </div>
         {/* /End replace */}
       </>
     );
+    if (this.state.data?.graph) {
+      resultsView = (
+        <div className="max-w-7xl mx-auto mb-4">
+          <MemoizedGraphView
+            data={this.state.data}
+            changeState={this.changeState}
+          ></MemoizedGraphView>
+        </div>
+      );
+    }
     if (this.state.data?.tabular) {
       resultsView = (
         <div className="max-w-7xl mx-auto mb-4">
