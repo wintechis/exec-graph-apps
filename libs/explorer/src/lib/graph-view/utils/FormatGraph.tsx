@@ -6,13 +6,13 @@ import { animateNodes } from 'sigma/utils/animate';
 function FormatGraph() {
   const sigma = useSigma();
   const graph = sigma.getGraph();
-  const animationDuration = 1000
-  
+  const animationDuration = 1000;
+
   const { reset } = useCamera({ duration: animationDuration, factor: 1.5 });
   const { positions } = useLayoutCirclepack();
 
   useEffect(() => {
-    setLayout()
+    setLayout();
   });
 
   function setLayout() {

@@ -1,0 +1,22 @@
+{
+  "sourceRoot": "libs/query-editor/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/query-editor/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/query-editor"],
+      "options": {
+        "jestConfig": "libs/query-editor/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

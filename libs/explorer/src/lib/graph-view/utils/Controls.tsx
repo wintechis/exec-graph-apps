@@ -5,7 +5,6 @@ import {
   ZoomControl,
 } from '@react-sigma/core';
 
-
 function Controls() {
   return (
     <div>

@@ -21,7 +21,11 @@
       "@exec-graph/graph/data-source-remote": [
         "libs/graph/data-source-remote/src/index.ts"
       ],
-      "@exec-graph/graph/types": ["libs/graph/types/src/index.ts"]
+      "@exec-graph/graph/types": ["libs/graph/types/src/index.ts"],
+      "@exec-graph/query-editor": ["libs/query-editor/src/index.ts"],
+      "@exec-graph/ui-react/button-toggle": [
+        "libs/ui-react/button-toggle/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -28,9 +28,7 @@ function GraphView(props: GraphViewProps) {
   return (
     <SigmaContainer graph={props.data.graph} style={{ height: '800px' }}>
       <FormatGraph />
-      <RegisterEvents
-        changeState={props.changeState}
-      />
+      <RegisterEvents changeState={props.changeState} />
       <Controls />
     </SigmaContainer>
   );

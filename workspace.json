@@ -7,6 +7,8 @@
     "explorer": "libs/explorer",
     "graph-data-source": "libs/graph/data-source",
     "graph-data-source-remote": "libs/graph/data-source-remote",
-    "graph-types": "libs/graph/types"
+    "graph-types": "libs/graph/types",
+    "query-editor": "libs/query-editor",
+    "ui-react-button-toggle": "libs/ui-react/button-toggle"
   }
 }
