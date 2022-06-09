@@ -20,7 +20,9 @@ export const DEFAULT_SCHEMA: Schema = {
     'http://xmlns.com/foaf/0.1/familyName',
     'http://xmlns.com/foaf/0.1/givenName',
     'http://xmlns.com/foaf/0.1/name',
+    'http://schema.org/description',
     'http://dbpedia.org/property/birthYear',
+    'http://dbpedia.org/property/deathYear',
     'http://schema.org/mainEntityOfPage',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#bafinID',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#inDivision',
@@ -31,6 +33,11 @@ export const DEFAULT_SCHEMA: Schema = {
     'http://schema.org/startDate',
     'http://schema.org/endDate',
     'http://schema.org/tickerSymbol',
+    'http://schema.org/sameAs',
+    'http://schema.org/dateCreated',
+    'http://schema.org/endTime',
+    'http://schema.org/price',
+    'http://schema.org/priceCurrency',
     'http://www.wikidata.org/prop/direct/P18', // WikiData Image
     'http://www.wikidata.org/prop/direct/P154', // WikiData Logo Image
     'http://www.wikidata.org/prop/direct/P17', // WikiData Country
@@ -77,5 +84,7 @@ export const DEFAULT_SCHEMA: Schema = {
     'http://example.org/cartoons#smarterThan',
     'http://xmlns.com/foaf/0.1/knows',
     'http://schema.org/birthPlace',
+    'http://schema.org/author',
+    'http://schema.org/sourceOrganization',
   ],
 };

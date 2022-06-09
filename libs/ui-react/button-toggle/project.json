@@ -1,0 +1,22 @@
+{
+  "sourceRoot": "libs/ui-react/button-toggle/src",
+  "projectType": "library",
+  "tags": ["lib:ui"],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/ui-react/button-toggle/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/ui-react/button-toggle"],
+      "options": {
+        "jestConfig": "libs/ui-react/button-toggle/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

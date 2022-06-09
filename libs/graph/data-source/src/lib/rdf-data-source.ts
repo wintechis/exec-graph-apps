@@ -52,3 +52,29 @@ export class RdfDataSource implements DataSource {
     throw new Error('Method not implemented.');
   }
 }
+
+/*
+  getAll(): Promise<DataSet> {
+    const parser = new Parser(this.parserOptions);
+
+    return new Promise((resolve, reject) => {
+      const quads: Quad[] = [];
+      parser.parse(this.rdf, (e, q, prefixes) => {
+        if (e) {
+          reject(e);
+        }
+        if (q) {
+          quads.push(q);
+        } else {
+          console.log('reached end');
+          console.log(prefixes);
+          const graphBuilder = new GraphBuilder(
+            { multi: true, type: 'directed' },
+            new RdfToGraphTranslator(this.schema)
+          );
+          graphBuilder.addQuads(quads);
+          const graph = graphBuilder.getGraph();
+          resolve({ graph, schema: this.schema });
+        }
+      });
+    });*/

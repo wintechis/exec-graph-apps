@@ -1,7 +1,9 @@
 import { SparqlValidator } from '@exec-graph/graph/data-source-remote';
 import { Component } from 'react';
 
-export interface SparqlEditorProps {
+// by class.ttl
+
+export interface FilterEditorProps {
   sparql: string;
   onSubmit: (sparql: string) => void;
 }
@@ -11,13 +13,13 @@ export interface SparqlEditorProps {
  *
  * @category React Component
  */
-export class SparqlEditor extends Component<
-  SparqlEditorProps,
+export class FilterEditor extends Component<
+  FilterEditorProps,
   { sparql: string; valid: boolean }
 > {
   private sparqlValidator: SparqlValidator;
 
-  constructor(props: Readonly<SparqlEditorProps>) {
+  constructor(props: Readonly<FilterEditorProps>) {
     super(props);
     this.sparqlValidator = new SparqlValidator();
     this.state = {
@@ -81,4 +83,4 @@ export class SparqlEditor extends Component<
   }
 }
 
-export default SparqlEditor;
+export default FilterEditor;

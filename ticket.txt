@@ -1,0 +1,41 @@
+Creating documentation for entire monorepo without published packages
+
+## Search Terms
+
+monorepo, nrwl, nx.dev, internal packages
+
+## Problem
+
+Goal: Generate one documentation for (all) libraries/apps in a (nx.dev) monorepo, including non-published ones.
+
+Main Problem: None of the existing strategies suits this case.
+The packages strategy requires a package.json, which not published libraries usually do not have.
+The resolve & expand strategies require a root level tsconfig project, which is not existing in the case of nx.dev repos.
+
+Further issues (Things to keep in mind while finding a solution)
+- In the case of nx.dev entrypoints could be different in each package, like main.tsx, index.ts, (others possible)
+- The module/package name must be obtained from the configuration or defined somewhere specifically for typedoc.
+
+## Suggested Solution
+Here are some thoughts I had on different ideas to solve the issue:
+
+A) Develop a very flexible strategy to discover entrypoints/tsconfig files from a glob
+- (-) Unlikely that it will be able to cover arbitray use cases, so likely at somepoint someone may ask for a even more flexible strategy
+- (-) Only sensible way to define module name seems to be passing a Regex in the options to extract part of the entrypoint path as name
+- (-) Hard to maintain (flexible is hard to test if end user setup not known)
+
+B) Allow custom strategies to be passed from the outside
+- (I did not check what changes this might involve)
+- (+) Could allow other projects (like nx.dev) or individuals to supply reusable strategies
+
+C) Create an additional method `Application.convertEntryPoints`  and pass the responsibility to the library user to provide a valid  DocumentationEntryPoint[]`
+- (+) Could allow other projects (like nx.dev) or individuals to create the list from their existing configuration or even hard coded 
+- (+) Seems to be truly flexible
+
+D) Dont touch typedoc and have downstream users/packages extend `Application` to realise option C
+- The external implementation may rely on internal elements that are not considered when evaluating for breaking changes. (In particular checks in the Application.convert() method may be overseen downstream)
+
+---
+So far I have hacked together something locally using approach C as it allowed me to keep the typedoc code largely untouched, but I realise I could have gone with Option D too. However, before developing a clean solution I wanted to get other opinions on the best way forward and check I did not oversee something.
+
+

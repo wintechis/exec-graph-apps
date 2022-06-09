@@ -1,7 +1,7 @@
+import { ButtonToggle } from '@exec-graph/ui-react/button-toggle';
 import Graph from 'graphology';
 import { NeighborEntry } from 'graphology-types';
 import { Component } from 'react';
-import ButtonToggle from '../button-toggle/button-toggle';
 import DetailEntry from '../detail-entry/detail-entry';
 import { EdgeDirection, getNeighborsOf, getEdgesOf } from '../graph.utils';
 import {

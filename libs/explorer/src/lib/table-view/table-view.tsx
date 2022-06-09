@@ -25,7 +25,7 @@ export function TableView(props: TableViewProps) {
     useTable({ columns: columns ?? [], data: props.data.tabular?.data ?? [] });
 
   return (
-    <div className="px-4 py-5 bg-white space-y-6 sm:p-6 overflow-x-auto">
+    <div className="bg-white overflow-x-auto">
       <table {...getTableProps()} className="table-auto w-full">
         <thead>
           {headerGroups.map((headerGroup) => (

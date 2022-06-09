@@ -7,11 +7,11 @@ import {
 } from '@exec-graph/graph/data-source-remote';
 import { DataSet } from '@exec-graph/graph/types';
 import { Component } from 'react';
-import SparqlEditor from './sparql-editor/sparql-editor';
 import TableView from './table-view/table-view';
 import { MemoizedGraphView } from './graph-view/graph-view';
 import { AdjustmentsIcon } from '@heroicons/react/outline';
 import DetailView from './detail-view/detail-view';
+import { QueryEditor } from '@exec-graph/query-editor';
 
 export interface ExplorerProps {
   /** URL pointing to a remote SPARQL dndpoint */
@@ -51,6 +51,7 @@ export class Explorer extends Component<
       props.sparqlEndpoint,
       httpClient
     );
+    this.state = {};
     this.dataSource = new RemoteDataSource(sparqlRepository);
     this.loadSparql = this.loadSparql.bind(this);
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
@@ -70,7 +71,7 @@ export class Explorer extends Component<
       .then((ds) =>
         this.setState({
           data: ds,
-          selectedObject: ds.graph?.nodes()[70],
+          selectedObject: ds.graph?.nodes()[10] || null,
         })
       )
       .catch((e) => {
@@ -147,15 +148,16 @@ export class Explorer extends Component<
           </div>
         </header>
         <main>
-          <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto mb-4 mt-4">
             {this.resultsView()}
           </div>
-          <div className="bg-white">
-            <div className="max-w-7xl mx-auto">
-              <SparqlEditor
+          <div className="mb-4">
+            <div className="max-w-7xl mx-auto shadow">
+              <QueryEditor
+                dataSource={this.dataSource}
                 sparql="CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }"
                 onSubmit={this.loadSparql}
-              ></SparqlEditor>
+              ></QueryEditor>
             </div>
           </div>
           {this.detailView()}
@@ -178,8 +180,11 @@ export class Explorer extends Component<
     );
     if (this.state.data?.tabular) {
       resultsView = (
-        <div className="max-w-7xl mx-auto mb-4">
-          <TableView data={this.state.data}></TableView>
+        <div className="mb-4">
+          <MemoizedGraphView
+            data={this.state?.data}
+            changeState={this.changeState}
+          ></MemoizedGraphView>
         </div>
       );
     }
