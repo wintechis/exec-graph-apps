@@ -8,9 +8,18 @@ import random from 'graphology-layout/random';
 import RegisterEvents from './utils/RegisterEvents';
 import Controls from './utils/Controls';
 import FormatGraph from './utils/FormatGraph';
+import { memo } from 'react';
 
 export interface GraphViewProps {
   data: DataSet;
+  // hoveredNode: string | null
+  // clickedNode: string | null
+  // nodeDown: string | null
+  changeState: (param: {
+    hoveredNode?: string | null;
+    clickedNode?: string | null;
+    nodeDown?: string | null;
+  }) => void;
 }
 
 function GraphView(props: GraphViewProps) {
@@ -19,10 +28,12 @@ function GraphView(props: GraphViewProps) {
   return (
     <SigmaContainer graph={props.data.graph} style={{ height: '800px' }}>
       <FormatGraph />
-      <RegisterEvents />
+      <RegisterEvents
+        changeState={props.changeState}
+      />
       <Controls />
     </SigmaContainer>
   );
 }
 
-export default GraphView;
+export const MemoizedGraphView = memo(GraphView);

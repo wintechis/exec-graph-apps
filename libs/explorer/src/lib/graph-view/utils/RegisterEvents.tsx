@@ -1,30 +1,55 @@
 import { useRegisterEvents, useSetSettings, useSigma } from '@react-sigma/core';
 import { Attributes } from 'graphology-types';
 import { useEffect, useState } from 'react';
+export interface NodeProps {
+  changeState: (param: {
+    hoveredNode?: string | null;
+    clickedNode?: string | null;
+    nodeDown?: string | null;
+  }) => void;
+}
 
-function RegisterEvents() {
+function RegisterEvents(props: NodeProps) {
   const sigma = useSigma();
   const graph = sigma.getGraph();
   const registerEvents = useRegisterEvents();
   const setSettings = useSetSettings();
   // const mouseCaptor = sigma.getMouseCaptor();
 
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
-  const [clickedNode, setClickedNode] = useState<string | null>(null);
-  const [nodeDown, setNodeDown] = useState<string | null>(null);
-
   const idHover = document.getElementById('ID-hover');
   const [xCoord, setXCoord] = useState(0);
   const [yCoord, setYCoord] = useState(0);
 
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [clickedNode, setClickedNode] = useState<string | null>(null);
+  const [nodeDown, setNodeDown] = useState<string | null>(null);
+
   useEffect(() => {
     registerEvents({
-      enterNode: (event) => setHoveredNode(event.node),
-      leaveNode: () => setHoveredNode(null),
-      clickNode: (event) => setClickedNode(event.node),
-      clickStage: () => setClickedNode(null),
-      downNode: (event) => setNodeDown(event.node),
-      mouseup: (event) => setNodeDown(null),
+      enterNode: (event) => {
+        props.changeState({ hoveredNode: event.node });
+        setHoveredNode(event.node);
+      },
+      leaveNode: () => {
+        props.changeState({ hoveredNode: null });
+        setHoveredNode(null);
+      },
+      clickNode: (event) => {
+        props.changeState({ clickedNode: event.node });
+        setClickedNode(event.node);
+      },
+      clickStage: () => {
+        props.changeState({ clickedNode: null });
+        setClickedNode(null);
+      },
+      downNode: (event) => {
+        props.changeState({ nodeDown: event.node });
+        setNodeDown(event.node);
+      },
+      mouseup: () => {
+        props.changeState({ nodeDown: null });
+        setNodeDown(null);
+      },
       mousemove: (event) => {
         setXCoord(event.x);
         setYCoord(event.y);
@@ -38,7 +63,7 @@ function RegisterEvents() {
         }
       },
     });
-  }, [nodeDown, registerEvents]);
+  }, [nodeDown, props, registerEvents]);
 
   useEffect(() => {
     if (nodeDown) {
@@ -91,7 +116,7 @@ function RegisterEvents() {
       },
       enableEdgeWheelEvents: false,
     });
-  }, [clickedNode, graph, hoveredNode, setSettings]);
+  }, [graph, clickedNode, hoveredNode, setSettings]);
 
   return (
     <div
@@ -102,7 +127,7 @@ function RegisterEvents() {
               position: 'absolute',
               left: xCoord + 'px',
               top: yCoord - (idHover ? idHover.clientHeight : 0) + 'px',
-              pointerEvents: "none",
+              pointerEvents: 'none',
             }
           : { display: 'none' }
       }
