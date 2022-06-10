@@ -133,7 +133,14 @@ function RegisterEvents(props: NodeProps) {
       }
       className="bg-gray-300 rounded-lg py-1 px-1 mb-4 text-base text-gray-800 mb-3"
     >
-      {hoveredNode}
+      {hoveredNode
+        ? graph
+            .getNodeAttribute(
+              hoveredNode,
+              'http://www.w3.org/2000/01/rdf-schema#label'
+            )
+            ?.replaceAll('"', '') || hoveredNode
+        : ''}
     </div>
   );
 }
