@@ -9,12 +9,10 @@ import { Schema } from '@exec-graph/graph/types';
  * other ontologies may can be created.
  */
 export const DEFAULT_SCHEMA: Schema = {
-  nodePredicates: [
-    'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-    'http://www.w3.org/1999/02/22/rdf-syntax-ns#type',
-  ],
+  nodePredicates: ['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'],
   nodeAttributePredicates: [
     'http://www.w3.org/2000/01/rdf-schema#label',
+    'http://schema.org/sameAs',
     'http://schema.org/givenName',
     'http://schema.org/familyName',
     'http://schema.org/honorificPrefix',
@@ -33,6 +31,18 @@ export const DEFAULT_SCHEMA: Schema = {
     'http://schema.org/startDate',
     'http://schema.org/endDate',
     'http://schema.org/tickerSymbol',
+    'http://www.wikidata.org/prop/direct/P18', // WikiData Image
+    'http://www.wikidata.org/prop/direct/P154', // WikiData Logo Image
+    'http://www.wikidata.org/prop/direct/P17', // WikiData Country
+    'http://www.wikidata.org/prop/direct/P159', // WikiData HQ Location
+    'http://www.wikidata.org/prop/direct/P452', // WikiData Industry
+    'http://www.wikidata.org/prop/direct/P571', // WikiData Inception
+    'http://www.wikidata.org/prop/direct/P856', // WikiData Official Website
+    'http://www.wikidata.org/prop/direct/P1128', // WikiData Employees
+    'http://www.wikidata.org/prop/direct/P1451', // WikiData motto
+    'http://www.wikidata.org/prop/direct/P1454', // WikiData legal type
+    'http://www.wikidata.org/prop/direct/P2196', // WikiData students count
+    'http://www.wikidata.org/prop/direct/P8687', // WikiData social media followers
   ],
   edgePredicates: [
     'http://execgraph.org/educationConnection',

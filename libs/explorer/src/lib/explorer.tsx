@@ -10,7 +10,7 @@ import { Component } from 'react';
 import SparqlEditor from './sparql-editor/sparql-editor';
 import TableView from './table-view/table-view';
 import { AdjustmentsIcon } from '@heroicons/react/outline';
-import { DetailView } from '@exec-graph/detail-view';
+import DetailView from './detail-view/detail-view';
 
 export interface ExplorerProps {
   /** URL pointing to a remote SPARQL dndpoint */
@@ -30,6 +30,7 @@ export class Explorer extends Component<
     data?: DataSet;
     error?: { message: string };
     selectedObject?: string | null;
+    detailData?: DataSet;
   }
 > {
   private dataSource: RemoteDataSource;
@@ -60,6 +61,7 @@ export class Explorer extends Component<
       .then((ds) =>
         this.setState({
           data: ds,
+          selectedObject: ds.graph?.nodes()[70],
         })
       )
       .catch((e) => {
@@ -140,20 +142,16 @@ export class Explorer extends Component<
   }
 
   private detailView(): JSX.Element | null {
-    if (!this.state.data?.graph || !this.state.selectedObject) {
+    if (!this.state.selectedObject) {
       return null;
     }
     return (
-      <div className="bg-white">
-        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-0">
-          <DetailView
-            data={this.state.data}
-            selectedObject={this.state.selectedObject}
-            schema={this.state.data.schema}
-            onSelect={this.handleSelectionChange}
-          ></DetailView>
-        </div>
-      </div>
+      <DetailView
+        mainDataSource={this.dataSource}
+        data={this.state.detailData || this.state.data}
+        selectedObject={this.state.selectedObject}
+        onSelect={this.handleSelectionChange}
+      ></DetailView>
     );
   }
 }

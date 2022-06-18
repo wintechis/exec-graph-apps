@@ -16,15 +16,13 @@ type GraphOptions = {
  *
  * @author juliusstoerrle
  */
-export class GraphBuilder {
-  private graph: g.default;
+export abstract class AbstractGraphBuilder {
+  private retryQuads: Quad[] = [];
 
   constructor(
-    readonly graphOptions: GraphOptions,
-    private readonly translator: RdfToGraphTranslator
-  ) {
-    this.graph = new g.MultiDirectedGraph({ ...graphOptions, multi: true });
-  }
+    protected readonly graph: g.default,
+    protected readonly translator: RdfToGraphTranslator
+  ) {}
 
   addAsNode(quad: Quad): void {
     const typeAttr = this.translator.quadToAttribute(quad);
@@ -45,10 +43,12 @@ export class GraphBuilder {
 
   addAsEdge(quad: Quad): void {
     if (!this.graph.hasNode(quad.subject.id)) {
+      this.retryQuads.push(quad);
       this.logUnkownNodeError('edge', 'subject', quad.subject.id);
       return;
     }
     if (!this.graph.hasNode(quad.object.id)) {
+      this.retryQuads.push(quad);
       this.logUnkownNodeError('edge', 'object', quad.object.id);
       return;
     }
@@ -59,6 +59,7 @@ export class GraphBuilder {
 
   addAsAttributeToNode(quad: Quad): void {
     if (!this.graph.hasNode(quad.subject.id)) {
+      this.retryQuads.push(quad);
       this.logUnkownNodeError('attribute', 'subject', quad.subject.id);
       return;
     }
@@ -92,10 +93,11 @@ export class GraphBuilder {
   }
 
   public getGraph(): g.default {
+    this.addQuads(this.retryQuads);
     return this.graph;
   }
 
-  private logUnkownNodeError(
+  protected logUnkownNodeError(
     triedToAddQuadAs: string,
     term: string,
     id: string
@@ -103,5 +105,36 @@ export class GraphBuilder {
     console.log(
       `Warning: Could not add quad as ${triedToAddQuadAs}, ${term} not a known node: ${id}`
     );
+  }
+}
+
+/**
+ * Maps from RDF Quads to a Graphology graph using the provided translator.
+ *
+ * If a quad can not be processed it will be ignored,
+ * but a log entry is generated.
+ *
+ * @author juliusstoerrle
+ */
+export class GraphBuilder extends AbstractGraphBuilder {
+  constructor(graphOptions: GraphOptions, translator: RdfToGraphTranslator) {
+    super(
+      new g.MultiDirectedGraph({ ...graphOptions, multi: true }),
+      translator
+    );
+  }
+}
+
+/**
+ * Maps from RDF Quads to an existing Graphology graph using the provided translator.
+ *
+ * If a quad can not be processed it will be ignored,
+ * but a log entry is generated.
+ *
+ * @author juliusstoerrle
+ */
+export class AddToGraphBuilder extends AbstractGraphBuilder {
+  constructor(graph: g.default, translator: RdfToGraphTranslator) {
+    super(graph, translator);
   }
 }

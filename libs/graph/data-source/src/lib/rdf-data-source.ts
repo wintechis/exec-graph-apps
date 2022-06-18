@@ -1,4 +1,6 @@
 import { DataSet, DataSource, Schema } from '@exec-graph/graph/types';
+import graphology from 'graphology';
+import { Attributes } from 'graphology-types';
 import { Parser, ParserOptions, Quad } from 'n3';
 import { GraphBuilder } from './graph-builder';
 import { RdfToGraphTranslator } from './rdf-to-graph-translator';
@@ -40,6 +42,13 @@ export class RdfDataSource implements DataSource {
   }
 
   getForSparql(sparql: string): Promise<DataSet> {
+    throw new Error('Method not implemented.');
+  }
+
+  addInformation(
+    oldGraph: graphology<Attributes, Attributes, Attributes>,
+    sparql: string
+  ): Promise<DataSet> {
     throw new Error('Method not implemented.');
   }
 }

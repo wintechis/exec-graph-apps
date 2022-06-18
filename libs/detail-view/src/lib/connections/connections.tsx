@@ -5,6 +5,7 @@ import ButtonToggle from '../button-toggle/button-toggle';
 import DetailEntry from '../detail-entry/detail-entry';
 import { EdgeDirection, getNeighborsOf, getEdgesOf } from '../graph.utils';
 import {
+  getObjectLabel,
   renderClickableObjectLabel,
   renderRdfTerm,
 } from '../rdf-rendering.utils';
@@ -77,6 +78,13 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
     neighbors: IterableIterator<NeighborEntry>,
     edgeGetter: (target: string) => string[]
   ) {
+    const getObjectLabelFromGraph = (uri: string) =>
+      getObjectLabel(
+        uri,
+        this.props.graph.hasNode(uri)
+          ? this.props.graph.getNodeAttributes(uri)
+          : {}
+      );
     const neighborsOutput: JSX.Element[] = [];
     for (const entry of neighbors) {
       neighborsOutput.push(
@@ -91,7 +99,7 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
           {edgeGetter(entry.neighbor).map((relationPredicate) => (
             <DetailEntry
               label="Relationship"
-              value={renderRdfTerm(relationPredicate, false)}
+              value={getObjectLabelFromGraph(relationPredicate)}
             ></DetailEntry>
           ))}
         </div>
@@ -107,6 +115,13 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
     neighbors: IterableIterator<NeighborEntry>,
     edgeGetter: (target: string) => string[]
   ) {
+    const getObjectLabelFromGraph = (uri: string) =>
+      getObjectLabel(
+        uri,
+        this.props.graph.hasNode(uri)
+          ? this.props.graph.getNodeAttributes(uri)
+          : {}
+      );
     const output: JSX.Element[] = [];
     const structure: RelationshipFirstStructure =
       this.mapToRelationshipFirstStructure(neighbors, edgeGetter);
@@ -114,7 +129,7 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
       output.push(
         <div className="mb-4">
           <span className="font-bold">
-            {renderRdfTerm(relationship, false)}
+            {getObjectLabelFromGraph(relationship)} ({objects.length})
           </span>
           <div className="flex flex-wrap">
             {objects.map(({ neighbor, attributes }) => (

@@ -1,4 +1,6 @@
+import * as g from 'graphology';
 import {
+  AddToGraphBuilder,
   DEFAULT_SCHEMA,
   GraphBuilder,
   RdfToGraphTranslator,
@@ -63,7 +65,28 @@ export class RemoteDataSource implements DataSource {
       graphBuilder.addQuads(quads);
 
       const graph = graphBuilder.getGraph();
-      console.log(graph.order);
+      return { graph, schema: this.schema };
+    });
+  }
+
+  /**
+   * Processes sparql queries that produce a graph
+   *
+   * @param sparql a SPARQL CONSTRUCT or DESCRIBE query
+   * @returns DataSet with graph data
+   */
+  public addInformation(oldGraph: g.default, sparql: string): Promise<DataSet> {
+    return this.sparqlRepository.construct(sparql).then((res) => {
+      const graphBuilder = new AddToGraphBuilder(
+        oldGraph,
+        new RdfToGraphTranslator(DEFAULT_SCHEMA)
+      );
+
+      const parser = new Parser();
+      const quads = parser.parse(res);
+      graphBuilder.addQuads(quads);
+
+      const graph = graphBuilder.getGraph();
       return { graph, schema: this.schema };
     });
   }
