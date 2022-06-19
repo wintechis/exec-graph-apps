@@ -9,13 +9,26 @@ import { DataSet } from '@exec-graph/graph/types';
 import { Component } from 'react';
 import TableView from './table-view/table-view';
 import { MemoizedGraphView } from './graph-view/graph-view';
-import { AdjustmentsIcon } from '@heroicons/react/outline';
+import {
+  ExclamationCircleIcon,
+  RefreshIcon,
+  SearchCircleIcon,
+} from '@heroicons/react/outline';
 import DetailView from './detail-view/detail-view';
 import { QueryEditor } from '@exec-graph/query-editor';
+import LoadingBar, { LoadingStatus, Step } from './loading-bar/loading-bar';
 
 export interface ExplorerProps {
   /** URL pointing to a remote SPARQL dndpoint */
   sparqlEndpoint: string;
+}
+
+export enum Status {
+  NO_REQUEST_MADE,
+  EXECUTING_QUERY,
+  PROCESSING_RESPONSE,
+  LOADED,
+  ERROR,
 }
 
 /**
@@ -30,28 +43,20 @@ export class Explorer extends Component<
   {
     data?: DataSet;
     error?: { message: string };
+    status: Status;
     selectedObject?: string | null;
-    detailData?: DataSet;
-    hoveredNode: string | null;
-    clickedNode: string | null;
-    nodeDown: string | null;
   }
 > {
   private dataSource: RemoteDataSource;
 
   constructor(props: ExplorerProps) {
     super(props);
-    this.state = {
-      hoveredNode: null,
-      clickedNode: null,
-      nodeDown: null,
-    };
+    this.state = { status: Status.NO_REQUEST_MADE };
     const httpClient: HttpClient = new FetchHttpClient();
     const sparqlRepository = new HttpSparqlRepository(
       props.sparqlEndpoint,
       httpClient
     );
-    this.state = {};
     this.dataSource = new RemoteDataSource(sparqlRepository);
     this.loadSparql = this.loadSparql.bind(this);
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
@@ -66,17 +71,23 @@ export class Explorer extends Component<
    * Takes changed queries from the SPARQL editor and executes them through the set data source
    */
   private loadSparql(sparql: string): void {
+    // TODO Create a loading status separation between request & response processing
+    this.setState({ ...this.state, status: Status.EXECUTING_QUERY });
     this.dataSource
       .getForSparql(sparql)
       .then((ds) =>
         this.setState({
+          status: Status.LOADED,
           data: ds,
-          selectedObject: ds.graph?.nodes()[10] || null,
+          selectedObject: ds.graph?.nodes()[20] || null,
         })
       )
       .catch((e) => {
         if (e instanceof HttpError) {
-          this.setState({ error: { message: e.message } });
+          this.setState({
+            error: { message: e.message },
+            status: Status.ERROR,
+          });
           return;
         }
         throw e;
@@ -88,65 +99,15 @@ export class Explorer extends Component<
     clickedNode?: string | null;
     nodeDown?: string | null;
   }): void {
-    if (param.hoveredNode) this.setState({ hoveredNode: param.hoveredNode });
-    if (param.clickedNode) this.setState({ clickedNode: param.clickedNode });
-    if (param.nodeDown) this.setState({ nodeDown: param.nodeDown });
+    if (param.clickedNode) {
+      this.handleSelectionChange(param.clickedNode);
+    }
   }
 
   public override render() {
-    let resultsView = (
-      <div className="px-4 py-6 sm:px-0">
-        <div className="border-4 border-dashed border-gray-200 rounded-lg h-80 text-center text-gray-400 text-bold p-8">
-          Run SPARQL query to show content
-        </div>
-      </div>
-    );
-    if (this.state.data?.graph) {
-      console.log(this.state.data.graph);
-      resultsView = (
-        <div className="max-w-7xl mx-auto mb-4">
-          <MemoizedGraphView
-            data={this.state.data}
-            changeState={this.changeState}
-          ></MemoizedGraphView>
-        </div>
-      );
-    }
-    if (this.state.data?.tabular) {
-      console.log(this.state.data.tabular);
-      resultsView = (
-        <div className="max-w-7xl mx-auto mb-4">
-          <TableView data={this.state.data}></TableView>
-        </div>
-      );
-    }
-    if (this.state.error) {
-      resultsView = (
-        <div className="px-4 py-6 sm:px-0">
-          <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 text-center text-fau-red text-bold p-8">
-            Failed to load the data
-          </div>
-        </div>
-      );
-    }
     return (
       <>
-        <header className="bg-white shadow">
-          <div className="flex max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-gray-900">Explore</h1>
-            <div className="hidden md:block ml-auto">
-              <div className="ml-4 flex items-center md:ml-6">
-                <button
-                  type="button"
-                  className="-1 rounded-full text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                >
-                  <span className="sr-only">Adjust graph design</span>
-                  <AdjustmentsIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </header>
+        {this.renderHeader()}
         <main>
           <div className="max-w-7xl mx-auto mb-4 mt-4">
             {this.resultsView()}
@@ -166,20 +127,71 @@ export class Explorer extends Component<
     );
   }
 
-  private resultsView() {
-    let resultsView = (
-      <>
-        {/* Replace with your content */}
-        <div className="px-4 py-6 sm:px-0">
-          <div className="border-4 border-dashed border-gray-200 rounded-lg h-80 text-center text-gray-400 text-bold p-8">
-            Insert interactive graph here
+  /**
+   * Creates the header bar at the top of the page
+   */
+  private renderHeader(): JSX.Element {
+    return (
+      <header className="bg-white shadow">
+        <div className="flex max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <h1 className="text-3xl font-bold text-gray-900">Explore</h1>
+          <div className="hidden md:block ml-auto">
+            <div className="ml-4 flex items-center md:ml-6">
+              {/*<button
+              type="button"
+              className="-1 rounded-full text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+            >
+              <span className="sr-only">Adjust graph design</span>
+              <AdjustmentsIcon className="h-6 w-6" aria-hidden="true" />\
+            </button>*/}
+            </div>
           </div>
         </div>
-        {/* /End replace */}
-      </>
+        <LoadingBar steps={this.loadingStatus()}></LoadingBar>
+      </header>
     );
-    if (this.state.data?.tabular) {
-      resultsView = (
+  }
+
+  private loadingStatus(): Step[] {
+    return [
+      {
+        name: 'Executing Query',
+        width: 'w-4/6',
+        status:
+          this.state.status === Status.EXECUTING_QUERY
+            ? LoadingStatus.PENDING
+            : this.state.status === Status.ERROR
+            ? LoadingStatus.ERROR
+            : this.state.status === Status.NO_REQUEST_MADE
+            ? LoadingStatus.NOT_STARTED
+            : this.state.status === Status.PROCESSING_RESPONSE ||
+              this.state.status === Status.LOADED
+            ? LoadingStatus.LOADED
+            : LoadingStatus.SKIPPED,
+      },
+      {
+        name: 'Processing Result',
+        width: 'w-2/6',
+        status:
+          this.state.status === Status.PROCESSING_RESPONSE
+            ? LoadingStatus.PENDING
+            : this.state.status === Status.ERROR
+            ? LoadingStatus.ERROR
+            : this.state.status === Status.NO_REQUEST_MADE
+            ? LoadingStatus.NOT_STARTED
+            : this.state.status === Status.LOADED
+            ? LoadingStatus.LOADED
+            : LoadingStatus.SKIPPED,
+      },
+    ];
+  }
+
+  /**
+   * Creates the section displaying the result (dataset or status)
+   */
+  private resultsView(): JSX.Element {
+    if (this.state.data?.graph) {
+      return (
         <div className="mb-4">
           <MemoizedGraphView
             data={this.state?.data}
@@ -188,16 +200,67 @@ export class Explorer extends Component<
         </div>
       );
     }
-    if (this.state.error) {
-      resultsView = (
-        <div className="px-4 py-6 sm:px-0">
-          <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 text-center text-fau-red text-bold p-8">
-            Failed to load the data
-          </div>
+    if (this.state.data?.tabular) {
+      return (
+        <div className="mb-4">
+          <TableView data={this.state?.data}></TableView>
         </div>
       );
     }
-    return resultsView;
+    // no data available, check status:
+    if (this.state.status === Status.ERROR) {
+      return this.resultSectionError();
+    } else if (
+      this.state.status === Status.EXECUTING_QUERY ||
+      this.state.status === Status.PROCESSING_RESPONSE
+    ) {
+      return this.resultSectionLoading();
+    }
+    // Status should now be NO_REQUEST_MADE
+    return this.resultSectionNoRequest();
+  }
+
+  private resultSectionNoRequest(): JSX.Element {
+    return this.inlineNotification(
+      <>
+        <SearchCircleIcon className="h-6 w-6"></SearchCircleIcon>
+        <h3 className="mt-4 text-2xl font-bold">Exploring the ExecGraph</h3>
+        <div className="max-w-prose">
+          To get started make your first query with the query editor below.
+        </div>
+      </>
+    );
+  }
+
+  private resultSectionLoading(): JSX.Element {
+    return this.inlineNotification(
+      <>
+        <RefreshIcon className="animate-spin h-6 w-6"></RefreshIcon>
+        <h3 className="mt-4 text-2xl font-bold">Loading</h3>
+        <div className="max-w-prose">The ExecGraph data is being loaded.</div>
+      </>
+    );
+  }
+
+  private resultSectionError(): JSX.Element {
+    return this.inlineNotification(
+      <>
+        <ExclamationCircleIcon className="text-fau-red h-6 w-6"></ExclamationCircleIcon>
+        <h3 className="mt-4 text-2xl text-fau-red font-bold">Error</h3>
+        <div className="max-w-prose">
+          Sorry, we have encountered an issue while loading the ExecGraph data.
+        </div>
+        <pre className="max-w-prose mt-4">{this.state.error?.message}</pre>
+      </>
+    );
+  }
+
+  private inlineNotification(content: JSX.Element): JSX.Element {
+    return (
+      <div className="px-4 py-6">
+        <div className="bg-white h-64 p-8 max-w-4xl">{content}</div>
+      </div>
+    );
   }
 
   private detailView(): JSX.Element | null {
@@ -207,7 +270,7 @@ export class Explorer extends Component<
     return (
       <DetailView
         mainDataSource={this.dataSource}
-        data={this.state.detailData || this.state.data}
+        data={this.state.data}
         selectedObject={this.state.selectedObject}
         onSelect={this.handleSelectionChange}
       ></DetailView>

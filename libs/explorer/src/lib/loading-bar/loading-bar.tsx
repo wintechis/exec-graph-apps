@@ -5,10 +5,27 @@
  */
 export enum LoadingStatus {
   NOT_STARTED = 'bg-blue-300',
-  PENDING = 'bg-fau-blue',
+  PENDING = 'bg-fau-blue text-white',
   LOADED = 'bg-green-500',
-  ERROR = 'bg-fau-red',
+  ERROR = 'bg-fau-red text-white',
   SKIPPED = 'bg-gray-300',
+}
+
+function loadingStatusLabel(status: LoadingStatus): string {
+  switch (status) {
+    case LoadingStatus.NOT_STARTED:
+      return '(Not Started)';
+    case LoadingStatus.PENDING:
+      return '(Pending)';
+    case LoadingStatus.LOADED:
+      return '(Done)';
+    case LoadingStatus.ERROR:
+      return '(Failed)';
+    case LoadingStatus.SKIPPED:
+      return '(Skipped)';
+    default:
+      return '';
+  }
 }
 
 /**
@@ -17,7 +34,7 @@ export enum LoadingStatus {
 export interface Step {
   name: string;
   status: LoadingStatus;
-  width: string;
+  width: 'w-1/6' | 'w-2/6' | 'w-3/6' | 'w-4/6' | 'w-5/6';
 }
 
 export interface LoadingBarProps {
@@ -37,7 +54,7 @@ export function LoadingBar(props: LoadingBarProps) {
           <div
             key={index}
             className={
-              `w-${step.width} transition-all group-hover:p-1 ` +
+              `${step.width} transition-all group-hover:p-1 ` +
               step.status +
               (step.status === LoadingStatus.PENDING
                 ? ' motion-safe:animate-pulse'
@@ -45,7 +62,7 @@ export function LoadingBar(props: LoadingBarProps) {
               (index > 0 ? ' border-l' : '')
             }
           >
-            {step.name}
+            {step.name} {loadingStatusLabel(step.status)}
           </div>
         ))}
       </div>

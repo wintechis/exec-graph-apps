@@ -165,17 +165,17 @@ export class DetailView extends Component<DetailViewProps, DetailViewState> {
     return [
       {
         name: 'Graph Data',
-        width: '1/6',
+        width: 'w-1/6',
         status: LoadingStatus.LOADED,
       },
       {
         name: 'All Details',
-        width: '3/6',
+        width: 'w-3/6',
         status: this.state.detailsStatus,
       },
       {
         name: 'WikiData.org',
-        width: '2/6',
+        width: 'w-2/6',
         status: this.state.wikidataStatus,
       },
     ];

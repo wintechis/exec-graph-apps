@@ -57,7 +57,7 @@ export function DetailView(props: DetailViewProps) {
     selectedNodeAttrs[PROPERTY_WIKIDATA_IMAGE] ? (
       // eslint-disable-next-line jsx-a11y/img-redundant-alt
       <img
-        className="ml-auto max-w-xs md:max-w-sm w-[7rem] sm:w-[20%] max-h-[10rem]"
+        className="ml-auto max-w-xs md:max-w-sm w-[7rem] sm:w-[20%] max-h-[10rem] object-contain"
         src={
           selectedNodeAttrs[PROPERTY_WIKIDATA_LOGO] ||
           selectedNodeAttrs[PROPERTY_WIKIDATA_IMAGE]

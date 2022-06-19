@@ -7,17 +7,17 @@ describe('LoadingBar', () => {
     const steps = [
       {
         name: 'Graph Data',
-        width: '1/6',
+        width: 'w-1/6',
         status: LoadingStatus.LOADED,
       },
       {
         name: 'All Details',
-        width: '3/6',
+        width: 'w-3/6',
         status: LoadingStatus.NOT_STARTED,
       },
       {
         name: 'WikiData.org',
-        width: '2/6',
+        width: 'w-2/6',
         status: LoadingStatus.ERROR,
       },
     ];
