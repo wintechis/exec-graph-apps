@@ -8,7 +8,8 @@ import {
 import { DataSet } from '@exec-graph/graph/types';
 import { Component } from 'react';
 import TableView from './table-view/table-view';
-import { MemoizedGraphView } from './graph-view/graph-view';
+import { MemoizedGraphView} from './graph-view/graph-view';
+import { SetLayout } from './graph-view/utils/layoutController';
 import { AdjustmentsIcon } from '@heroicons/react/outline';
 import { DetailView } from '@exec-graph/detail-view';
 import { QueryEditor } from '@exec-graph/query-editor';
@@ -31,12 +32,14 @@ export class Explorer extends Component<
     data?: DataSet;
     error?: { message: string };
     selectedObject?: string | null;
+    selectedObjectChangeFromOthers?: string | null;
   }
 > {
   private dataSource: RemoteDataSource;
 
   constructor(props: ExplorerProps) {
     super(props);
+    this.state = {};
     const httpClient: HttpClient = new FetchHttpClient();
     const sparqlRepository = new HttpSparqlRepository(
       props.sparqlEndpoint,
@@ -44,11 +47,17 @@ export class Explorer extends Component<
     );
     this.dataSource = new RemoteDataSource(sparqlRepository);
     this.loadSparql = this.loadSparql.bind(this);
-    this.handleSelectionChange = this.handleSelectionChange.bind(this);
+    this.handleSelectionChangeFromOthers =
+      this.handleSelectionChangeFromOthers.bind(this);
+    this.setSelectedObject = this.setSelectedObject.bind(this);
   }
 
-  handleSelectionChange(uri: string) {
-    this.setState({ selectedObject: uri });
+  handleSelectionChangeFromOthers(uri: string | null) {
+    this.setState({ selectedObjectChangeFromOthers: uri });
+  }
+
+  private setSelectedObject(clickedNode: string | null): void {
+    this.setState({ selectedObject: clickedNode });
   }
 
   /**
@@ -57,6 +66,10 @@ export class Explorer extends Component<
   private loadSparql(sparql: string): void {
     this.dataSource
       .getForSparql(sparql)
+      .then((ds) => {
+        if (ds.graph) ds.graph = SetLayout(ds.graph);
+        return ds;
+      })
       .then((ds) =>
         this.setState({
           data: ds,
@@ -69,16 +82,6 @@ export class Explorer extends Component<
         }
         throw e;
       });
-  }
-
-  private changeState(param: {
-    hoveredNode?: string | null;
-    clickedNode?: string | null;
-    nodeDown?: string | null;
-  }): void {
-    //if (param.hoveredNode) this.setState({ hoveredNode: param.hoveredNode });
-    if (param.clickedNode) this.setState({ selectedObject: param.clickedNode });
-    //if (param.nodeDown) this.setState({ nodeDown: param.nodeDown });
   }
 
   public override render() {
@@ -121,22 +124,24 @@ export class Explorer extends Component<
 
   private resultsView() {
     let resultsView = (
-      <>
-        {/* Replace with your content */}
-        <div className="px-4 py-6 sm:px-0">
-          <div className="border-4 border-dashed border-gray-200 rounded-lg h-80 text-center text-gray-400 text-bold p-8">
-            Run SPARQL query to show content
-          </div>
+      <div className="px-4 py-6 sm:px-0">
+        <div className="border-4 border-dashed border-gray-200 rounded-lg h-80 text-center text-gray-400 text-bold p-8">
+          Run SPARQL query to show content
         </div>
-        {/* /End replace */}
-      </>
+      </div>
     );
     if (this.state.data?.graph) {
       resultsView = (
         <div className="max-w-7xl mx-auto mb-4">
           <MemoizedGraphView
             data={this.state.data}
-            changeState={this.changeState}
+            setSelectedObject={this.setSelectedObject}
+            selectedObjectChangeFromDetails={
+              this.state.selectedObjectChangeFromOthers
+            }
+            handleSelectionChangeFromOthers={
+              this.handleSelectionChangeFromOthers
+            }
           ></MemoizedGraphView>
         </div>
       );
@@ -171,7 +176,7 @@ export class Explorer extends Component<
             data={this.state.data}
             selectedObject={this.state.selectedObject}
             schema={this.state.data.schema}
-            onSelect={this.handleSelectionChange}
+            onSelect={this.handleSelectionChangeFromOthers}
           ></DetailView>
         </div>
       </div>

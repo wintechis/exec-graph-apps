@@ -16,6 +16,7 @@
     "@react-sigma/core": "^2.0.2",
     "@react-sigma/layout-circlepack": "^2.0.2",
     "@react-sigma/layout-circular": "^2.0.2",
+    "@react-sigma/layout-random": "^2.0.2",
     "autoprefixer": "^10.4.7",
     "core-js": "^3.6.5",
     "graphology": "^0.24.1",
