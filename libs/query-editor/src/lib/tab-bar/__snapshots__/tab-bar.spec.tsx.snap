@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TabBar should render successfully 1`] = `
+<DocumentFragment>
+  <div
+    class="flex px-4"
+  >
+    <button
+      class="px-6 py-2 bg-gray-200 font-bold text-fau-blue"
+      type="button"
+    >
+      Null
+    </button>
+    <button
+      class="px-6 py-2"
+      type="button"
+    >
+      Eins
+    </button>
+  </div>
+</DocumentFragment>
+`;

@@ -1,12 +1,12 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { DirectedGraph } from 'graphology';
+import { DirectedGraph, MultiDirectedGraph } from 'graphology';
 import { areSameGraphs, haveSameNodesDeep } from 'graphology-assertions';
 import path = require('path');
 import { RdfDataSource } from './rdf-data-source';
 import { DEFAULT_SCHEMA } from './schema';
 
 describe('RdfDataSource', () => {
-  it('can process Tom and Jerry RDF', () => {
+  it('can process Tom and Jerry RDF', async () => {
     const ds = new RdfDataSource(
       `PREFIX c: <http://example.org/cartoons#>
     c:Tom a c:Cat.
@@ -14,9 +14,8 @@ describe('RdfDataSource', () => {
             c:smarterThan c:Tom.`,
       DEFAULT_SCHEMA
     );
-    const dataset = ds.getAll();
-    console.log(JSON.stringify(dataset.graph.export()));
-    expect(dataset.graph.order).toEqual(2);
+    const { graph } = await ds.getAll();
+    expect(graph?.order).toEqual(2);
   });
 
   it('can process sample01 file', async () => {
@@ -61,9 +60,8 @@ describe('RdfDataSource', () => {
         path.join(__dirname, 'test-sources/person.graph.json')
       ).toString()
     );
-    const targetGraph = new DirectedGraph().import(target);
-
-    expect(areSameGraphs(targetGraph, dataset.graph));
+    const targetGraph = new MultiDirectedGraph().import(target);
+    expect(areSameGraphs(targetGraph, graph));
     /*writeFileSync(
       path.join(__dirname, 'test-sources/person.graph.json'),
       JSON.stringify(dataset.graph.export())

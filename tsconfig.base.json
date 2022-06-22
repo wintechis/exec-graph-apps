@@ -15,12 +15,21 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@exec-graph/detail-view": ["libs/detail-view/src/index.ts"],
       "@exec-graph/explorer": ["libs/explorer/src/index.ts"],
       "@exec-graph/graph/data-source": ["libs/graph/data-source/src/index.ts"],
       "@exec-graph/graph/data-source-remote": [
         "libs/graph/data-source-remote/src/index.ts"
       ],
-      "@exec-graph/graph/types": ["libs/graph/types/src/index.ts"]
+      "@exec-graph/graph/types": ["libs/graph/types/src/index.ts"],
+      "@exec-graph/query-editor": ["libs/query-editor/src/index.ts"],
+      "@exec-graph/ui-react/button-toggle": [
+        "libs/ui-react/button-toggle/src/index.ts"
+      ],
+      "@exec-graph/ui-react/help-button": [
+        "libs/ui-react/help-button/src/index.ts"
+      ],
+      "@exec-graph/utils": ["libs/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ButtonToggle should render successfully 1`] = `
+<DocumentFragment>
+  <div
+    class="border border-gray-400 rounded-md flex undefined"
+  >
+    <div
+      class="p-2 bg-gray-100 rounded-l-md"
+    >
+      Group by
+    </div>
+    <button
+      class="p-2 px-4 border-gray-400 bg-white bg-fau-blue text-white border-l"
+      type="button"
+    >
+      Null
+    </button>
+    <button
+      class="p-2 px-4 border-gray-400 bg-white rounded-r-md border-l"
+      type="button"
+    >
+      Eins
+    </button>
+  </div>
+</DocumentFragment>
+`;

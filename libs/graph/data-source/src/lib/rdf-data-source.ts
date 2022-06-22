@@ -1,8 +1,9 @@
-import { DataSet, DataSource } from '@exec-graph/graph/types';
-import { Parser, ParserOptions } from 'n3';
+import { DataSet, DataSource, Schema } from '@exec-graph/graph/types';
+import graphology from 'graphology';
+import { Attributes } from 'graphology-types';
+import { Parser, ParserOptions, Quad } from 'n3';
 import { GraphBuilder } from './graph-builder';
 import { RdfToGraphTranslator } from './rdf-to-graph-translator';
-import { Schema } from './schema';
 
 /**
  * Simple DataSource, that makes an RDF string available as
@@ -37,10 +38,43 @@ export class RdfDataSource implements DataSource {
     graphBuilder.addQuads(quads);
     const graph = graphBuilder.getGraph();
 
-    return Promise.resolve({ graph });
+    return Promise.resolve({ graph, schema: this.schema });
   }
 
   getForSparql(sparql: string): Promise<DataSet> {
     throw new Error('Method not implemented.');
   }
+
+  addInformation(
+    oldGraph: graphology<Attributes, Attributes, Attributes>,
+    sparql: string
+  ): Promise<DataSet> {
+    throw new Error('Method not implemented.');
+  }
 }
+
+/*
+  getAll(): Promise<DataSet> {
+    const parser = new Parser(this.parserOptions);
+
+    return new Promise((resolve, reject) => {
+      const quads: Quad[] = [];
+      parser.parse(this.rdf, (e, q, prefixes) => {
+        if (e) {
+          reject(e);
+        }
+        if (q) {
+          quads.push(q);
+        } else {
+          console.log('reached end');
+          console.log(prefixes);
+          const graphBuilder = new GraphBuilder(
+            { multi: true, type: 'directed' },
+            new RdfToGraphTranslator(this.schema)
+          );
+          graphBuilder.addQuads(quads);
+          const graph = graphBuilder.getGraph();
+          resolve({ graph, schema: this.schema });
+        }
+      });
+    });*/
