@@ -11,12 +11,14 @@ exports[`ButtonToggle should render successfully 1`] = `
       Group by
     </div>
     <button
-      class="p-2 px-4 border-l border-gray-400 bg-fau-blue text-white"
+      class="p-2 px-4 border-gray-400 bg-white bg-fau-blue text-white border-l"
+      type="button"
     >
       Null
     </button>
     <button
-      class="p-2 px-4 border-l border-gray-400 rounded-r-md"
+      class="p-2 px-4 border-gray-400 bg-white rounded-r-md border-l"
+      type="button"
     >
       Eins
     </button>

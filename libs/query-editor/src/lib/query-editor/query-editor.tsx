@@ -1,7 +1,13 @@
 import { SparqlValidator } from '@exec-graph/graph/data-source-remote';
 import { DataSource } from '@exec-graph/graph/types';
+import { SearchIcon } from '@heroicons/react/outline';
 import { Component } from 'react';
-import FormEditor from '../form-editor/form-editor';
+import AdvancedEditor from '../advanced-editor/advanced-editor';
+import {
+  RdfAutocompletionContext,
+  RdfAutocompletionService,
+  RdfAutocompletionState,
+} from '../rdf-autocompletion.service';
 import SparqlEditor from '../sparql-editor/sparql-editor';
 import TabBar from '../tab-bar/tab-bar';
 
@@ -17,6 +23,7 @@ interface QueryEditorState {
   editorKey: EditorKey;
   sparql: string;
   valid: boolean;
+  rdfAutocompletion: RdfAutocompletionState;
 }
 
 /**
@@ -24,18 +31,37 @@ interface QueryEditorState {
  */
 export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
   private sparqlValidator: SparqlValidator;
+  private rdfAutocompletionService: RdfAutocompletionService;
 
   constructor(props: Readonly<QueryEditorProps>) {
     super(props);
     this.sparqlValidator = new SparqlValidator();
+    this.rdfAutocompletionService = new RdfAutocompletionService(
+      props.dataSource
+    );
     this.state = {
       editorKey: 'form',
       sparql: props.sparql,
       valid: this.sparqlValidator.validate(props.sparql),
+      rdfAutocompletion: this.rdfAutocompletionService.initState(
+        (updatedState) =>
+          this.setState({
+            ...this.state,
+            rdfAutocompletion: {
+              ...this.state.rdfAutocompletion,
+              ...updatedState,
+            },
+          }),
+        () => this.state.rdfAutocompletion
+      ),
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.switchTo = this.switchTo.bind(this);
+  }
+
+  override componentDidMount() {
+    this.state.rdfAutocompletion.loadProperties();
   }
 
   handleChange(sparql: string) {
@@ -67,11 +93,11 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
 
     const currentEditor =
       this.state.editorKey === 'form' ? (
-        <FormEditor
+        <AdvancedEditor
           sparql={this.state.sparql}
           onChange={this.handleChange}
-          dataSource={this.props.dataSource}
-        ></FormEditor>
+          rdfAutocompletionService={this.rdfAutocompletionService}
+        ></AdvancedEditor>
       ) : (
         <SparqlEditor
           sparql={this.state.sparql}
@@ -89,13 +115,19 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
             <TabBar
               selected={this.state.editorKey}
               options={[
-                { label: 'Filter', value: 'form' },
+                { label: 'Advanced', value: 'form' },
                 { label: 'SPARQL', value: 'sparql' },
               ]}
               onChange={this.switchTo}
             ></TabBar>
           </div>
-          <div className="overflow-y-scroll shrink grow">{currentEditor}</div>
+          <div className="overflow-y-scroll shrink grow">
+            <RdfAutocompletionContext.Provider
+              value={this.state.rdfAutocompletion}
+            >
+              {currentEditor}
+            </RdfAutocompletionContext.Provider>
+          </div>
           <div className="bg-white p-4 flex flex-wrap">
             {validationError}
             <div className="text-right mt-4 ml-auto">
@@ -106,6 +138,7 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
                   !this.state.valid ? 'bg-gray-400' : ''
                 }`}
               >
+                <SearchIcon className="w-5 h-5 mr-2"></SearchIcon>
                 Execute
               </button>
             </div>

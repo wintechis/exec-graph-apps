@@ -6,9 +6,10 @@ export interface QueryModifiersProps {
 }
 
 /**
+ * Displays form elements to configure query modifiers
  *
- * @todo autocompletion
- * @todo ASC/DESC Order
+ * Includes: Order, Limit and Offset
+ *
  * @category React component
  */
 export function QueryModifiers(props: QueryModifiersProps) {
@@ -19,6 +20,7 @@ export function QueryModifiers(props: QueryModifiersProps) {
         modifiers[mod] =
           event.target.value !== null ? event.target.value : null;
       } else if (mod === 'orderByDir') {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         modifiers[mod] = event.target.value;
       } else {
@@ -47,7 +49,7 @@ export function QueryModifiers(props: QueryModifiersProps) {
               name="modOrder"
               value={props.modifiers.orderByDir || ''}
               onChange={onChange('orderByDir')}
-              className="w-2/5 lg:w-1/4 sm:text-sm rounded-l-md p-2"
+              className="w-2/5 lg:w-1/4 sm:text-sm rounded-l-md p-2 bg-white"
             >
               <option value="">Disabled</option>
               <option value="DESCENDING">Descending</option>

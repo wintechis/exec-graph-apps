@@ -33,8 +33,8 @@ export function DescribeTargets(props: DescribeTargetsProps) {
     <div>
       <h4 className="font-bold mb-2">Show details of...</h4>
       {props.targets?.map((t, i) => (
-        <div className="flex items-end mb-4">
-          <div key={i} className="grow mr-2">
+        <div key={i} className="flex items-end mb-4">
+          <div className="grow mr-2">
             <label
               htmlFor="propertyFilterValue_0"
               className="block text-sm font-medium text-gray-700"

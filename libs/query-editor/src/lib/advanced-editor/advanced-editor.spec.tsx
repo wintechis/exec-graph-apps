@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import Explorer from './explorer';
+import AdvancedEditor from './advanced-editor';
 
-describe('Explorer', () => {
+describe('AdvancedEditor', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Explorer />);
+    const { baseElement } = render(<AdvancedEditor />);
     expect(baseElement).toBeTruthy();
   });
 });

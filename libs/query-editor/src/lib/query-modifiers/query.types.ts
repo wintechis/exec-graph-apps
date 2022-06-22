@@ -2,7 +2,16 @@ import { QueryType } from '@exec-graph/graph/data-source-remote';
 
 export type SparqlQueryType = 'DESCRIBE' | 'SELECT' | 'CONSTRUCT' | 'ASK';
 
-type Term = object;
+export interface Triple {
+  predicate: string;
+  object: string;
+  subject: string;
+}
+
+export type Term = {
+  termType: 'Variable' | 'NamedNode' | 'Literal' | 'BlankNode' | 'Quad';
+  value: string;
+};
 
 export interface Modifiers {
   orderByDir: '' | 'ASCENDING' | 'DESCENDING';
@@ -14,7 +23,7 @@ export interface Modifiers {
 interface GeneratorQuery {
   queryType: SparqlQueryType;
   variables?: object[];
-  template?: { subject: Term; predicate: Term; object: Term };
+  template?: { subject: Term; predicate: Term; object: Term }[];
   where?: object[];
   limit?: number;
   offset?: number;
@@ -36,17 +45,21 @@ export class QueryBuilder {
     this.query = { queryType };
   }
 
-  public static term(t: string): {
-    termType: 'Variable' | 'NamedNode' | 'Literal';
-    value: string;
-  } {
-    if (t.charAt(0) === '?') {
+  public static term(t: string): Term {
+    if (t?.charAt(0) === '?') {
       return { termType: 'Variable', value: t.substring(1) };
     }
     if (URI_REGEX.test(t)) {
       return { termType: 'NamedNode', value: t };
     }
-    return { termType: 'Literal', value: t };
+    return { termType: 'Literal', value: String(t) };
+  }
+
+  public static termToString(t: Term): string {
+    if (t.termType === 'Variable') {
+      return '?' + t.value;
+    }
+    return t.value;
   }
 
   public addModifiers(modifiers: Modifiers) {
@@ -77,16 +90,24 @@ export class QueryBuilder {
     }));
   }
 
-  public select(variables: object[]) {
+  public select(variables: Term[]) {
     if (this.query.queryType === 'SELECT') {
       this.query.variables = variables;
     } else {
-      this.query.template = {
-        subject: variables[0],
-        predicate: variables[1],
-        object: variables[2],
-      };
+      this.query.template = [
+        {
+          subject: variables[0],
+          predicate: variables[1],
+          object: variables[2],
+        },
+      ];
     }
+  }
+
+  public template(
+    template: { subject: Term; predicate: Term; object: Term }[]
+  ) {
+    this.query.template = template;
   }
 
   public getQuery(): GeneratorQuery {

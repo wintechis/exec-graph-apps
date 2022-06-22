@@ -9,6 +9,8 @@
     "graph-data-source-remote": "libs/graph/data-source-remote",
     "graph-types": "libs/graph/types",
     "query-editor": "libs/query-editor",
-    "ui-react-button-toggle": "libs/ui-react/button-toggle"
+    "ui-react-button-toggle": "libs/ui-react/button-toggle",
+    "ui-react-help-button": "libs/ui-react/help-button",
+    "utils": "libs/utils"
   }
 }
