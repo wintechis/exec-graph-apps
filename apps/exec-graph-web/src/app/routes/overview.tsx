@@ -7,6 +7,7 @@ import {
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import GraphStatistics from '../graph-statistics/graph-statistics';
+import OverviewGraph from '../overview-graph/overview-graph';
 
 interface OverviewProps {
   /** URL pointing to a remote SPARQL dndpoint */
@@ -60,13 +61,7 @@ export class Overview extends Component<OverviewProps> {
         </header>
         <main>
           <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            {/* Replace with your content */}
-            <div className="px-4 py-6 sm:px-0">
-              <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 text-center text-gray-400 text-bold p-8">
-                A high level graph with minimal interaction
-              </div>
-            </div>
-            {/* /End replace */}
+            <OverviewGraph dataSource={this.dataSource} />
           </div>
           <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-white">
             <div className="px-4 py-6 sm:px-0 bg-white">
