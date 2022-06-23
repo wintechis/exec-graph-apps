@@ -1,8 +1,13 @@
-import { useCamera, useRegisterEvents, useSetSettings, useSigma } from '@react-sigma/core';
+import {
+  useCamera,
+  useRegisterEvents,
+  useSetSettings,
+  useSigma,
+} from '@react-sigma/core';
 import { Attributes } from 'graphology-types';
 import { useEffect, useState } from 'react';
 
-const NODE_FADE_COLOR = "#bbb";
+const NODE_FADE_COLOR = '#eee';
 // const EDGE_FADE_COLOR = "#eee";
 
 export interface EventControllerProps {
@@ -15,7 +20,7 @@ export function EventsController(props: EventControllerProps) {
   const graph = sigma.getGraph();
   const registerEvents = useRegisterEvents();
   const setSettings = useSetSettings();
-  const {reset} = useCamera({ duration: 1500, factor: 1.5 });
+  const { reset } = useCamera({ duration: 1500, factor: 1.5 });
 
   const [xCoord, setXCoord] = useState(0);
   const [yCoord, setYCoord] = useState(0);
@@ -28,7 +33,7 @@ export function EventsController(props: EventControllerProps) {
     if (props.selectedObjectChangeFromDetails) {
       props.setSelectedObject(props.selectedObjectChangeFromDetails);
       setClickedNode(props.selectedObjectChangeFromDetails);
-      reset()
+      reset();
     }
   }, [props, reset]);
 
@@ -74,10 +79,10 @@ export function EventsController(props: EventControllerProps) {
   }, [graph, nodeDown, sigma, xCoord, yCoord]);
 
   useEffect(() => {
-    const relevantNode = clickedNode
-      ? clickedNode
-      : hoveredNode
+    const relevantNode = hoveredNode
       ? hoveredNode
+      : clickedNode
+      ? clickedNode
       : null;
 
     setSettings({
@@ -94,7 +99,7 @@ export function EventsController(props: EventControllerProps) {
             node === relevantNode ||
             graph.neighbors(relevantNode).includes(node)
           ) {
-            if(node === relevantNode) newAttr['highlighted'] = true;
+            if (node === relevantNode) newAttr['highlighted'] = true;
           } else {
             newAttr['color'] = NODE_FADE_COLOR;
             newAttr['highlighted'] = false;

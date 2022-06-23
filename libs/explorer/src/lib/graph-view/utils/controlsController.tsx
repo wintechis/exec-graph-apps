@@ -9,6 +9,7 @@ import { memo } from 'react';
 import React, { useEffect } from 'react';
 import { Attributes } from 'graphology-types';
 import { useSigma } from '@react-sigma/core';
+import { LayoutForceAtlas2Control } from '@react-sigma/layout-forceatlas2';
 
 export interface ControlsProps {
   resetLayout: () => void;
@@ -51,8 +52,9 @@ function Controls(props: ControlsProps) {
         <SearchControl />
       </ControlsContainer>
       <ControlsContainer position="top-left">
-        <FullScreenControl />
         <ZoomControl />
+        <FullScreenControl />
+        <LayoutForceAtlas2Control></LayoutForceAtlas2Control>
       </ControlsContainer>
       <ControlsContainer position="bottom-left">
         <button onClick={props.resetLayout} title="Reset Layout">

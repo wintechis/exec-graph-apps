@@ -5,8 +5,7 @@ import { SigmaContainer } from '@react-sigma/core';
 import { EventsController } from './utils/eventsController';
 import { memo } from 'react';
 import getNodeProgramImage from 'sigma/rendering/webgl/programs/node.image';
-import { MemorizedAppearance } from './utils/layoutController';
-
+import { MemorizedAppearance, drawLabel } from './utils/layoutController';
 
 export interface GraphViewProps {
   data: DataSet;
@@ -21,11 +20,14 @@ function GraphView(props: GraphViewProps) {
       graph={props.data.graph}
       initialSettings={{
         nodeProgramClasses: { image: getNodeProgramImage() },
-        renderLabels: true,
+        labelRenderer: drawLabel,
+        // renderLabels: false,
         // labelGridCellSize: 60,
-        labelRenderedSizeThreshold: 15,
+        labelDensity: 0.07,
+        labelGridCellSize: 60,
+        labelRenderedSizeThreshold: 20,
         defaultNodeType: 'image',
-        defaultNodeColor: 'white'
+        defaultNodeColor: 'white',
       }}
       style={{ height: '800px' }}
     >
