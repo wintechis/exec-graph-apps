@@ -70,7 +70,7 @@ export class Explorer extends Component<
     this.setState({ selectedObjectChangeFromOthers: uri });
   }
 
-  private setSelectedObject(clickedNode: string | null): void {
+  private setSelectedObject(clickedNode: string | null) {
     this.setState({ selectedObject: clickedNode });
   }
 
@@ -106,12 +106,16 @@ export class Explorer extends Component<
   }
 
   public override render() {
+    const parentDivId = "ResultViewParentDiv"
+    
     return (
       <>
         {this.renderHeader()}
         <main>
-          <div className="max-w-7xl mx-auto mb-4 mt-4">
-            {this.resultsView()}
+          <div id={parentDivId}>
+            <div className="max-w-7xl mx-auto mb-4 mt-4">
+              {this.resultsView(parentDivId)}
+            </div>
           </div>
           <div className="mb-4">
             <div className="max-w-7xl mx-auto shadow">
@@ -190,21 +194,22 @@ export class Explorer extends Component<
   /**
    * Creates the section displaying the result (dataset or status)
    */
-  private resultsView(): JSX.Element {
+  private resultsView(parentDivId: string): JSX.Element {
     if (this.state.data?.graph) {
       return (
-        <div className="mb-4">
-          <MemoizedGraphView
-            data={this.state.data}
-            setSelectedObject={this.setSelectedObject}
-            selectedObjectChangeFromDetails={
-              this.state.selectedObjectChangeFromOthers
-            }
-            handleSelectionChangeFromOthers={
-              this.handleSelectionChangeFromOthers
-            }
-          ></MemoizedGraphView>
-        </div>
+          <div className="mb-4">
+            <MemoizedGraphView
+              data={this.state.data}
+              setSelectedObject={this.setSelectedObject}
+              selectedObjectChangeFromDetails={
+                this.state.selectedObjectChangeFromOthers
+              }
+              handleSelectionChangeFromOthers={
+                this.handleSelectionChangeFromOthers
+              }
+              parentDivId={parentDivId}
+            ></MemoizedGraphView>
+          </div>
       );
     }
     if (this.state.data?.tabular) {
