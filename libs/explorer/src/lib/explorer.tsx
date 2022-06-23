@@ -5,7 +5,7 @@ import {
   RemoteDataSource,
   HttpError,
 } from '@exec-graph/graph/data-source-remote';
-import { DataSet } from '@exec-graph/graph/types';
+import { DataSet, getObjectLabel, Graph } from '@exec-graph/graph/types';
 import { Component } from 'react';
 import TableView from './table-view/table-view';
 import { MemoizedGraphView } from './graph-view/graph-view';
@@ -23,6 +23,7 @@ import { SetLayout } from './graph-view/utils/layoutController';
 import { QueryEditor } from '@exec-graph/query-editor';
 import LoadingBar, { LoadingStatus, Step } from './loading-bar/loading-bar';
 import { Dialog } from '@headlessui/react';
+import SearchDialog from './search-dialog/search-dialog';
 import ExploreDialog from './dialog/dialog';
 
 export interface ExplorerProps {
@@ -48,6 +49,7 @@ export enum Status {
 enum Dialogs {
   NONE,
   HELP,
+  SEARCH,
   QUERY_EDITOR,
   STYLE_EDITOR,
 }
@@ -64,6 +66,21 @@ WHERE {
     ?s rdf:type ?c.
     FILTER (?c IN ( schema:City,schema:Person, schema:Organization,schema:CollegeOrUniversity ) )
 }`;
+
+/**
+ * Function for local search of the current graph
+ */
+function searchGraph(graph: Graph) {
+  return (query: string) =>
+    Array.from(graph.nodeEntries())
+      .filter(({ node, attributes }) =>
+        getObjectLabel(node, attributes).includes(query)
+      )
+      .map(({ node, attributes }) => ({
+        uri: node,
+        label: getObjectLabel(node, attributes),
+      }));
+}
 
 /**
  * Top-level view component to display the Explore page on the website.
@@ -197,6 +214,18 @@ export class Explorer extends Component<
             + Styling etc.
           </p>
         </ExploreDialog>
+        <SearchDialog
+          show={this.state.dialog === Dialogs.SEARCH}
+          close={this.showDialog(Dialogs.NONE)}
+          dataSource={this.dataSource}
+          queryLocal={
+            this.state.data?.graph
+              ? searchGraph(this.state.data?.graph)
+              : undefined
+          }
+          selectLocal={this.handleSelectionChange}
+          runSparql={this.loadSparql}
+        ></SearchDialog>
         <ExploreDialog
           show={this.state.dialog === Dialogs.QUERY_EDITOR}
           close={() => this.showDialog(Dialogs.NONE)}
@@ -252,6 +281,14 @@ export class Explorer extends Component<
                   className="h-6 w-6"
                   aria-hidden="true"
                 />
+              </button>
+              <button
+                onClick={this.showDialog(Dialogs.SEARCH)}
+                type="button"
+                className="-1 rounded-full text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white mr-4"
+              >
+                <span className="sr-only">Search</span>
+                <SearchIcon className="h-6 w-6" aria-hidden="true" />
               </button>
               <button
                 onClick={this.showDialog(Dialogs.QUERY_EDITOR)}

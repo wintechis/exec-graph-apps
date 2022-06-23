@@ -1,8 +1,8 @@
-import { DataSet, Schema } from '@exec-graph/graph/types';
+import { DataSet, getObjectLabel, Schema } from '@exec-graph/graph/types';
 import Connections from '../connections/connections';
 import DetailEntry from '../detail-entry/detail-entry';
 import { extractNodeInformation } from '../graph.utils';
-import { getObjectLabel, renderRdfTerm } from '../rdf-rendering.utils';
+import { renderRdfTerm } from '../rdf-rendering.utils';
 import { toTitleCase, URI_REGEX } from '../string.utils';
 
 /**

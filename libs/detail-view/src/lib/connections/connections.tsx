@@ -1,14 +1,11 @@
+import { getObjectLabel } from '@exec-graph/graph/types';
 import { ButtonToggle } from '@exec-graph/ui-react/button-toggle';
 import Graph from 'graphology';
 import { NeighborEntry } from 'graphology-types';
 import { Component } from 'react';
 import DetailEntry from '../detail-entry/detail-entry';
 import { EdgeDirection, getNeighborsOf, getEdgesOf } from '../graph.utils';
-import {
-  getObjectLabel,
-  renderClickableObjectLabel,
-  renderRdfTerm,
-} from '../rdf-rendering.utils';
+import { renderClickableObjectLabel } from '../rdf-rendering.utils';
 
 interface RelationshipFirstStructure {
   [relation: string]: [
@@ -98,6 +95,7 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
           </span>
           {edgeGetter(entry.neighbor).map((relationPredicate) => (
             <DetailEntry
+              key={relationPredicate}
               label="Relationship"
               value={getObjectLabelFromGraph(relationPredicate)}
             ></DetailEntry>
@@ -133,7 +131,7 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
           </span>
           <div className="flex flex-wrap">
             {objects.map(({ neighbor, attributes }) => (
-              <div className="mr-4">
+              <div className="mr-4" key={neighbor}>
                 {renderClickableObjectLabel(
                   neighbor,
                   attributes,
