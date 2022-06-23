@@ -1,5 +1,6 @@
 import { SparqlValidator } from '@exec-graph/graph/data-source-remote';
 import { DataSource } from '@exec-graph/graph/types';
+import { Dialog } from '@headlessui/react';
 import { SearchIcon } from '@heroicons/react/outline';
 import { Component } from 'react';
 import AdvancedEditor from '../advanced-editor/advanced-editor';
@@ -17,6 +18,7 @@ export interface QueryEditorProps {
   dataSource: DataSource;
   sparql: string;
   onSubmit: (sparql: string) => void;
+  title?: string | JSX.Element;
 }
 
 interface QueryEditorState {
@@ -107,11 +109,13 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <div className="max-h-[48rem] flex flex-col">
-          <div className="bg-white shadow">
-            <h1 className="p-4 pb-0 text-xl font-bold leading-6 mb-4">
-              Query Editor
-            </h1>
+        <div className="max-h-[80vh] bg-white rounded flex flex-col">
+          <div className="shadow">
+            {this.props.title || (
+              <h1 className="p-4 pb-0 text-xl font-bold leading-6 mb-4">
+                Query Editor
+              </h1>
+            )}
             <TabBar
               selected={this.state.editorKey}
               options={[
@@ -121,14 +125,14 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
               onChange={this.switchTo}
             ></TabBar>
           </div>
-          <div className="overflow-y-scroll shrink grow">
+          <div className="overflow-y-scroll shrink grow bg-gray-100">
             <RdfAutocompletionContext.Provider
               value={this.state.rdfAutocompletion}
             >
               {currentEditor}
             </RdfAutocompletionContext.Provider>
           </div>
-          <div className="bg-white p-4 flex flex-wrap">
+          <div className="p-4 flex flex-wrap">
             {validationError}
             <div className="text-right mt-4 ml-auto">
               <button

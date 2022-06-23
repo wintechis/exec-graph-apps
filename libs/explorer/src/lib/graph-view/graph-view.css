@@ -1,0 +1,15 @@
+.graph {
+  --sigma-controls-margin: 1rem;
+  --sigma-controls-color: #fff;
+  --sigma-controls-border-color: #041e42;
+  --sigma-controls-background-color: #041e42;
+  --sigma-controls-size: 2rem;
+  --sigma-controls-zindex: 30;
+  --sigma-background-color: none;
+}
+
+.react-sigma-control > button {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}

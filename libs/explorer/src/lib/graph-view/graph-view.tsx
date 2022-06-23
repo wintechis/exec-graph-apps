@@ -7,12 +7,13 @@ import { memo } from 'react';
 import getNodeProgramImage from 'sigma/rendering/webgl/programs/node.image';
 import { MemorizedAppearance, drawLabel } from './utils/layoutController';
 
+import './graph-view.css';
+
 export interface GraphViewProps {
   data: DataSet;
   setSelectedObject: (clickedNode: string | null) => void;
   selectedObjectChangeFromOthers?: string | null;
   handleSelectionChangeFromOthers: (uri: string | null) => void;
-  parentDivId: string;
 }
 
 function GraphView(props: GraphViewProps) {
@@ -30,7 +31,8 @@ function GraphView(props: GraphViewProps) {
         defaultNodeType: 'image',
         defaultNodeColor: 'white',
       }}
-      style={{ height: '800px' }}
+      style={{ height: '80vh' }}
+      className="graph"
     >
       <MemorizedAppearance
         handleSelectionChangeFromOthers={props.handleSelectionChangeFromOthers}
@@ -38,7 +40,6 @@ function GraphView(props: GraphViewProps) {
       <EventsController
         setSelectedObject={props.setSelectedObject}
         selectedObjectChangeFromOthers={props.selectedObjectChangeFromOthers}
-        parentDivId={props.parentDivId}
       />
     </SigmaContainer>
   );

@@ -55,11 +55,11 @@ function Controls(props: ControlsProps) {
         <ZoomControl />
         <FullScreenControl />
         <LayoutForceAtlas2Control></LayoutForceAtlas2Control>
-      </ControlsContainer>
-      <ControlsContainer position="bottom-left">
-        <button onClick={props.resetLayout} title="Reset Layout">
-          <RefreshIcon className="h-7 w-7 align-middle" />
-        </button>
+        <div className="react-sigma-control">
+          <button onClick={props.resetLayout} title="Reset Layout">
+            <RefreshIcon className="h-5 w-5 align-middle" />
+          </button>
+        </div>
       </ControlsContainer>
     </div>
   );

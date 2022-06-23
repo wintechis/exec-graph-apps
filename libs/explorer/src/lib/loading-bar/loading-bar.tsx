@@ -48,7 +48,7 @@ export interface LoadingBarProps {
  */
 export function LoadingBar(props: LoadingBarProps) {
   return (
-    <div className="group mb-2">
+    <div className="group mt-2">
       <div className="h-1 group-hover:h-auto flex text-[0px] group-hover:text-xs motion-safe:transition-all">
         {props.steps.map((step, index) => (
           <div
