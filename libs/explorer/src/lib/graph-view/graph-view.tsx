@@ -14,6 +14,7 @@ export interface GraphViewProps {
   setSelectedObject: (clickedNode: string | null) => void;
   selectedObjectChangeFromOthers?: string | null;
   handleSelectionChangeFromOthers: (uri: string | null) => void;
+  setStateLoaded: () => void;
 }
 
 function GraphView(props: GraphViewProps) {
@@ -40,6 +41,7 @@ function GraphView(props: GraphViewProps) {
       <EventsController
         setSelectedObject={props.setSelectedObject}
         selectedObjectChangeFromOthers={props.selectedObjectChangeFromOthers}
+        setStateLoaded={props.setStateLoaded}
       />
     </SigmaContainer>
   );

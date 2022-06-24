@@ -120,6 +120,7 @@ export class Explorer extends Component<
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
     this.handleGraphSelectionChanged =
       this.handleGraphSelectionChanged.bind(this);
+    this.setStateLoaded = this.setStateLoaded.bind(this);
   }
 
   override componentDidMount() {
@@ -145,6 +146,10 @@ export class Explorer extends Component<
     this.setState({ selectedObject: clickedNode });
   }
 
+  private setStateLoaded() {
+    this.setState({ status: Status.LOADED });
+  }
+
   /**
    * Takes changed queries from the SPARQL editor and executes them through the set data source
    */
@@ -163,7 +168,6 @@ export class Explorer extends Component<
       })
       .then((ds) =>
         this.setState({
-          status: Status.LOADED,
           data: ds,
           selectedObject:
             this.state.selectedObject &&
@@ -361,6 +365,7 @@ export class Explorer extends Component<
             this.state.selectedObjectChangeFromOthers
           }
           handleSelectionChangeFromOthers={this.handleSelectionChange}
+          setStateLoaded={this.setStateLoaded}
         ></MemoizedGraphView>
       );
     }

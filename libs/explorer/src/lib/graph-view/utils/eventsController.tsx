@@ -14,6 +14,7 @@ export interface EventControllerProps {
   setSelectedObject: (clickedNode: string | null) => void;
   selectedObjectChangeFromOthers?: string | null;
   parentDivId?: string;
+  setStateLoaded: () => void;
 }
 
 export function EventsController(props: EventControllerProps) {
@@ -76,6 +77,10 @@ export function EventsController(props: EventControllerProps) {
       });
     }
   }, [nodeDown, props, registerEvents]);
+
+  useEffect(() => {
+    sigma.addListener('afterRender', () => props.setStateLoaded());
+  });
 
   useEffect(() => {
     if (nodeDown) {
