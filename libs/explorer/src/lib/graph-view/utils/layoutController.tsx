@@ -26,12 +26,10 @@ function Appearance(props: AppearanceProps) {
   const sigma = useSigma();
   const graph = sigma.getGraph();
   const animationDuration = 1500;
-
   const { reset } = useCamera({ duration: animationDuration, factor: 1.5 });
-
   const settings = forceAtlas2.inferSettings(graph);
   const { positions } = useLayoutForceAtlas2({
-    iterations: 100,
+    iterations: 30,
     settings: settings,
   });
 
@@ -144,7 +142,7 @@ export function drawLabel(
   data: PartialButFor<NodeDisplayData, 'x' | 'y' | 'size' | 'label' | 'color'>,
   settings: Settings
 ): void {
-  if (!data.label) return;
+  if (!data.label || data.color === "#eee") return;
 
   const size = settings.labelSize,
     font = settings.labelFont,

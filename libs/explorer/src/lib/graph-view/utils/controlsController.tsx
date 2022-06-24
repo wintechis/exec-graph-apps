@@ -66,38 +66,3 @@ function Controls(props: ControlsProps) {
 }
 
 export const MemorizedControls = memo(Controls);
-
-// export interface SearchControlProps {
-//   /**
-//    * HTML id
-//    */
-//   id?: string;
-
-//   /**
-//    * HTML class
-//    */
-//   className?: string;
-
-//   /**
-//    * HTML CSS style
-//    */
-//   style?: CSSProperties;
-//   handleSelectionChangeFromOthers: (uri: string | null) => void;
-// }
-
-/**
- * The `SearchControl` create an input text where user can search a node in the graph by its label.
- * There is an autocomplete based on includes & lower case.
- * When a node is found, the graph will focus on the highlighted node
- *
- * ```jsx
- * <SigmaContainer>
- *   <ControlsContainer>
- *     <SearchControl />
- *   </ControlsContainer>
- * </SigmaContainer>
- * ```
- * See [[SearchControlProps]] for more information.
- *
- * @category Component
- */

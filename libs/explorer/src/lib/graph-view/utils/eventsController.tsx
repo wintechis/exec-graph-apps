@@ -12,7 +12,7 @@ const NODE_FADE_COLOR = '#eee';
 
 export interface EventControllerProps {
   setSelectedObject: (clickedNode: string | null) => void;
-  selectedObjectChangeFromDetails?: string | null;
+  selectedObjectChangeFromOthers?: string | null;
   parentDivId: string;
 }
 
@@ -31,9 +31,9 @@ export function EventsController(props: EventControllerProps) {
   const [nodeDown, setNodeDown] = useState<string | null>(null);
 
   useEffect(() => {
-    if (props.selectedObjectChangeFromDetails) {
-      props.setSelectedObject(props.selectedObjectChangeFromDetails);
-      setClickedNode(props.selectedObjectChangeFromDetails);
+    if (props.selectedObjectChangeFromOthers) {
+      props.setSelectedObject(props.selectedObjectChangeFromOthers);
+      setClickedNode(props.selectedObjectChangeFromOthers);
       reset();
     }
   }, [props, reset]);
@@ -68,13 +68,11 @@ export function EventsController(props: EventControllerProps) {
 
     const parentDiv = document.getElementById(props.parentDivId);
     parentDiv?.addEventListener('click', (ev) => {
-      if (ev.target !== ev.currentTarget)
-        return;
+      if (ev.target !== ev.currentTarget) return;
 
       props.setSelectedObject(null);
       setClickedNode(null);
     });
-
   }, [nodeDown, props, registerEvents]);
 
   useEffect(() => {

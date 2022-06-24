@@ -10,9 +10,9 @@ import { MemorizedAppearance, drawLabel } from './utils/layoutController';
 export interface GraphViewProps {
   data: DataSet;
   setSelectedObject: (clickedNode: string | null) => void;
-  selectedObjectChangeFromDetails?: string | null;
+  selectedObjectChangeFromOthers?: string | null;
   handleSelectionChangeFromOthers: (uri: string | null) => void;
-  parentDivId: string
+  parentDivId: string;
 }
 
 function GraphView(props: GraphViewProps) {
@@ -37,7 +37,7 @@ function GraphView(props: GraphViewProps) {
       />
       <EventsController
         setSelectedObject={props.setSelectedObject}
-        selectedObjectChangeFromDetails={props.selectedObjectChangeFromDetails}
+        selectedObjectChangeFromOthers={props.selectedObjectChangeFromOthers}
         parentDivId={props.parentDivId}
       />
     </SigmaContainer>

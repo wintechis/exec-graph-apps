@@ -9,6 +9,12 @@
     "compile-typedoc": "npx tsc --project ./documentation/scripts/",
     "generate-docs": "node ./documentation/scripts/tdnx.js"
   },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest",
+      "^.+\\.svg$": "jest-svg-transformer"
+    }
+  },
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.6.1",
@@ -27,6 +33,7 @@
     "graphology-layout": "0.5.0",
     "graphology-layout-forceatlas2": "^0.8.2",
     "graphology-types": "^0.24.4",
+    "jest-svg-transformer": "^1.0.0",
     "lodash": "^4.17.21",
     "luxon": "^2.4.0",
     "n3": "^1.16.1",

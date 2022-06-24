@@ -106,8 +106,8 @@ export class Explorer extends Component<
   }
 
   public override render() {
-    const parentDivId = "ResultViewParentDiv"
-    
+    const parentDivId = 'ResultViewParentDiv';
+
     return (
       <>
         {this.renderHeader()}
@@ -197,19 +197,19 @@ export class Explorer extends Component<
   private resultsView(parentDivId: string): JSX.Element {
     if (this.state.data?.graph) {
       return (
-          <div className="mb-4">
-            <MemoizedGraphView
-              data={this.state.data}
-              setSelectedObject={this.setSelectedObject}
-              selectedObjectChangeFromDetails={
-                this.state.selectedObjectChangeFromOthers
-              }
-              handleSelectionChangeFromOthers={
-                this.handleSelectionChangeFromOthers
-              }
-              parentDivId={parentDivId}
-            ></MemoizedGraphView>
-          </div>
+        <div className="mb-4">
+          <MemoizedGraphView
+            data={this.state.data}
+            setSelectedObject={this.setSelectedObject}
+            selectedObjectChangeFromOthers={
+              this.state.selectedObjectChangeFromOthers
+            }
+            handleSelectionChangeFromOthers={
+              this.handleSelectionChangeFromOthers
+            }
+            parentDivId={parentDivId}
+          ></MemoizedGraphView>
+        </div>
       );
     }
     if (this.state.data?.tabular) {
