@@ -65,8 +65,8 @@ export class Overview extends Component<OverviewProps> {
           </div>
         </header>
         <main>
-          <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <OverviewGraph dataSource={this.dataSource} />
+          <div className="py-6 sm:px-6 lg:px-8">
+            <OverviewGraph dataSource={this.dataSource}/>
           </div>
           <div className="py-6 sm:px-6 lg:px-8 bg-white shadow-sm">
             <div className="px-4 py-6 sm:px-0 max-w-7xl mx-auto">
