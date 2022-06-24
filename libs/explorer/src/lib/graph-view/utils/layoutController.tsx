@@ -142,7 +142,7 @@ export function drawLabel(
   data: PartialButFor<NodeDisplayData, 'x' | 'y' | 'size' | 'label' | 'color'>,
   settings: Settings
 ): void {
-  if (!data.label || data.color === "#eee") return;
+  if (!data.label || data.color === '#eee') return;
 
   const size = settings.labelSize,
     font = settings.labelFont,
