@@ -15,6 +15,7 @@ import {
   SearchCircleIcon,
 } from '@heroicons/react/outline';
 import DetailView from './detail-view/detail-view';
+import { SetLayout } from './graph-view/utils/layoutController';
 import { QueryEditor } from '@exec-graph/query-editor';
 import LoadingBar, { LoadingStatus, Step } from './loading-bar/loading-bar';
 
@@ -45,6 +46,7 @@ export class Explorer extends Component<
     error?: { message: string };
     status: Status;
     selectedObject?: string | null;
+    selectedObjectChangeFromOthers?: string | null;
   }
 > {
   private dataSource: RemoteDataSource;
@@ -59,12 +61,17 @@ export class Explorer extends Component<
     );
     this.dataSource = new RemoteDataSource(sparqlRepository);
     this.loadSparql = this.loadSparql.bind(this);
-    this.handleSelectionChange = this.handleSelectionChange.bind(this);
-    this.changeState = this.changeState.bind(this);
+    this.handleSelectionChangeFromOthers =
+      this.handleSelectionChangeFromOthers.bind(this);
+    this.setSelectedObject = this.setSelectedObject.bind(this);
   }
 
-  handleSelectionChange(uri: string) {
-    this.setState({ selectedObject: uri });
+  handleSelectionChangeFromOthers(uri: string | null) {
+    this.setState({ selectedObjectChangeFromOthers: uri });
+  }
+
+  private setSelectedObject(clickedNode: string | null) {
+    this.setState({ selectedObject: clickedNode });
   }
 
   /**
@@ -75,6 +82,10 @@ export class Explorer extends Component<
     this.setState({ ...this.state, status: Status.EXECUTING_QUERY });
     this.dataSource
       .getForSparql(sparql)
+      .then((ds) => {
+        if (ds.graph) ds.graph = SetLayout(ds.graph);
+        return ds;
+      })
       .then((ds) =>
         this.setState({
           status: Status.LOADED,
@@ -94,23 +105,17 @@ export class Explorer extends Component<
       });
   }
 
-  private changeState(param: {
-    hoveredNode?: string | null;
-    clickedNode?: string | null;
-    nodeDown?: string | null;
-  }): void {
-    if (param.clickedNode) {
-      this.handleSelectionChange(param.clickedNode);
-    }
-  }
-
   public override render() {
+    const parentDivId = 'ResultViewParentDiv';
+
     return (
       <>
         {this.renderHeader()}
         <main>
-          <div className="max-w-7xl mx-auto mb-4 mt-4">
-            {this.resultsView()}
+          <div id={parentDivId}>
+            <div className="max-w-7xl mx-auto mb-4 mt-4">
+              {this.resultsView(parentDivId)}
+            </div>
           </div>
           <div className="mb-4">
             <div className="max-w-7xl mx-auto shadow">
@@ -189,13 +194,20 @@ export class Explorer extends Component<
   /**
    * Creates the section displaying the result (dataset or status)
    */
-  private resultsView(): JSX.Element {
+  private resultsView(parentDivId: string): JSX.Element {
     if (this.state.data?.graph) {
       return (
         <div className="mb-4">
           <MemoizedGraphView
-            data={this.state?.data}
-            changeState={this.changeState}
+            data={this.state.data}
+            setSelectedObject={this.setSelectedObject}
+            selectedObjectChangeFromOthers={
+              this.state.selectedObjectChangeFromOthers
+            }
+            handleSelectionChangeFromOthers={
+              this.handleSelectionChangeFromOthers
+            }
+            parentDivId={parentDivId}
           ></MemoizedGraphView>
         </div>
       );
@@ -272,7 +284,7 @@ export class Explorer extends Component<
         mainDataSource={this.dataSource}
         data={this.state.data}
         selectedObject={this.state.selectedObject}
-        onSelect={this.handleSelectionChange}
+        onSelect={this.handleSelectionChangeFromOthers}
       ></DetailView>
     );
   }
