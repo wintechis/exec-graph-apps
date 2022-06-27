@@ -8,8 +8,7 @@ import random from 'graphology-layout/random';
 import { animateNodes } from 'sigma/utils/animate';
 import { NodeDisplayData, PartialButFor } from 'sigma/types';
 import { Settings } from 'sigma/settings';
-// import { MemorizedControls } from './overviewControlsController';
-import { icons } from 'libs/explorer/src/lib/graph-view/icons/icons';
+import { icons } from '../icons/icons';
 
 export function OverviewAppearance() {
   const sigma = useSigma();
@@ -18,7 +17,7 @@ export function OverviewAppearance() {
   const { reset } = useCamera({ duration: animationDuration, factor: 1.5 });
   const settings = forceAtlas2.inferSettings(graph);
   const { positions } = useLayoutForceAtlas2({
-    iterations: 1,
+    iterations: 30,
     settings: settings,
   });
 

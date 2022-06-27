@@ -4,9 +4,9 @@ import { DataSet } from '@exec-graph/graph/types';
 import { SigmaContainer } from '@react-sigma/core';
 import getNodeProgramImage from 'sigma/rendering/webgl/programs/node.image';
 import React, { memo } from 'react';
-import { drawLabel } from 'libs/explorer/src/lib/graph-view/utils/layoutController';
 import { OverviewAppearance } from './utils/overviewLayoutController';
 import { EventsController } from './utils/overviewEventsController';
+import { drawLabel } from './utils/overviewLayoutController';
 
 interface OverviewGraphViewProps {
   data: DataSet;
@@ -25,7 +25,7 @@ function OverviewGraphView(props: OverviewGraphViewProps) {
         defaultNodeType: 'image',
         defaultNodeColor: 'white',
       }}
-      style={{ height: '500px', backgroundColor: "#F3F4F6" }}
+      style={{ height: '500px', backgroundColor: '#F3F4F6' }}
     >
       <OverviewAppearance />
       <EventsController />

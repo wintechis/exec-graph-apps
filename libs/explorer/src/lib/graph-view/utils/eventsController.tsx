@@ -13,7 +13,6 @@ const NODE_FADE_COLOR = '#eee';
 export interface EventControllerProps {
   setSelectedObject: (clickedNode: string | null) => void;
   selectedObjectChangeFromOthers?: string | null;
-  parentDivId?: string;
   setStateLoaded: () => void;
 }
 
@@ -41,6 +40,10 @@ export function EventsController(props: EventControllerProps) {
 
   useEffect(() => {
     registerEvents({
+      wheel: (event) => {
+        event.preventSigmaDefault();
+        event.sigmaDefaultPrevented = true;
+      },
       enterNode: (event) => setHoveredNode(event.node),
       leaveNode: () => setHoveredNode(null),
       clickNode: (event) => {
@@ -67,15 +70,15 @@ export function EventsController(props: EventControllerProps) {
       },
     });
 
-    if (props.parentDivId) {
-      const parentDiv = document.getElementById(props.parentDivId);
-      parentDiv?.addEventListener('click', (ev) => {
-        if (ev.target !== ev.currentTarget) return;
-
-        props.setSelectedObject(null);
-        setClickedNode(null);
+    const container = document
+      .getElementsByClassName('sigma-mouse')
+      .item(0) as HTMLElement;
+    container?.addEventListener('wheel', (ev) => {
+      window.scroll({
+        behavior: 'auto',
+        top: window.scrollY + ev.deltaY,
       });
-    }
+    });
   }, [nodeDown, props, registerEvents]);
 
   useEffect(() => {
@@ -95,10 +98,10 @@ export function EventsController(props: EventControllerProps) {
   }, [graph, nodeDown, sigma, xCoord, yCoord]);
 
   useEffect(() => {
-    const relevantNode = hoveredNode
-      ? hoveredNode
-      : clickedNode
+    const relevantNode = clickedNode
       ? clickedNode
+      : hoveredNode
+      ? hoveredNode
       : null;
 
     setSettings({

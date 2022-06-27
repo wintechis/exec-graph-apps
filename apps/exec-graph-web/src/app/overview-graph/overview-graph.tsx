@@ -29,7 +29,6 @@ export function OverviewGraph(props: OverviewGraphProps) {
   const [data, setData] = useState<DataSet | null>(null);
 
   useEffect(() => {
-    // alert(1)
     props.dataSource
       .getForSparql(OVERVIEW_QUERY)
       .then((ds) => {
@@ -47,8 +46,6 @@ export function OverviewGraph(props: OverviewGraphProps) {
   }, [error, props.dataSource]);
 
   if (data) {
-    // const graph = data?.graph;
-
     return (
       <div>
         <MemoizedOverviewGraph data={data}></MemoizedOverviewGraph>
@@ -58,10 +55,16 @@ export function OverviewGraph(props: OverviewGraphProps) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
     return (
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">Loading...</div>
+      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 text-gray-800">
+        Loading...
+      </div>
     );
   }
-  return <div>Unknown Status</div>;
+  return (
+    <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 text-gray-800">
+      Unknown Status
+    </div>
+  );
 }
 
 export default OverviewGraph;

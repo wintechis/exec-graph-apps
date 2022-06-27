@@ -1,8 +1,4 @@
-import {
-  useRegisterEvents,
-  useSetSettings,
-  useSigma,
-} from '@react-sigma/core';
+import { useRegisterEvents, useSetSettings, useSigma } from '@react-sigma/core';
 import { Attributes } from 'graphology-types';
 import { useEffect, useState } from 'react';
 
@@ -19,6 +15,10 @@ export function EventsController() {
 
   useEffect(() => {
     registerEvents({
+      wheel: (event) => {
+        event.preventSigmaDefault();
+        event.sigmaDefaultPrevented = true;
+      },
       enterNode: (event) => setHoveredNode(event.node),
       leaveNode: () => setHoveredNode(null),
       clickNode: (event) => {
@@ -29,19 +29,25 @@ export function EventsController() {
       },
     });
 
-    // const parentDiv = document.getElementById(props.parentDivId);
-    // parentDiv?.addEventListener('click', (ev) => {
-    //   if (ev.target !== ev.currentTarget) return;
+    const container = document
+      .getElementsByClassName('sigma-mouse')
+      .item(0) as HTMLElement;
+    // console.log(container);
+    container?.addEventListener('wheel', (ev) => {
+      window.scroll({
+        behavior: 'auto',
+        top: window.scrollY + ev.deltaY,
+      });
+    });
 
-    //   setClickedNode(null);
-    // });
+    // sigma.addListener('afterRender', () => setScrollEvent());
   }, [registerEvents]);
 
   useEffect(() => {
-    const relevantNode = hoveredNode
-      ? hoveredNode
-      : clickedNode
+    const relevantNode = clickedNode
       ? clickedNode
+      : hoveredNode
+      ? hoveredNode
       : null;
 
     setSettings({
