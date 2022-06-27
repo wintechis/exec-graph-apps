@@ -1,10 +1,19 @@
 import { render } from '@testing-library/react';
 
-import Dialog from './dialog';
+import ExploreDialog from './dialog';
 
-describe('Dialog', () => {
+describe('ExploreDialog', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Dialog />);
+    const { baseElement } = render(
+      <ExploreDialog
+        show={true}
+        title="Hello World"
+        width="max-w-xl"
+        close={() => null}
+      >
+        <span>Hello You</span>
+      </ExploreDialog>
+    );
     expect(baseElement).toBeTruthy();
   });
 });

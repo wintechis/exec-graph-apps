@@ -23,7 +23,7 @@ import { SetLayout } from './graph-view/utils/layoutController';
 import { QueryEditor } from '@exec-graph/query-editor';
 import LoadingBar, { LoadingStatus, Step } from './loading-bar/loading-bar';
 import { Dialog } from '@headlessui/react';
-import SearchDialog from './search-dialog/search-dialog';
+import SearchDialog, { Match } from './search-dialog/search-dialog';
 import ExploreDialog from './dialog/dialog';
 
 export interface ExplorerProps {
@@ -70,11 +70,11 @@ WHERE {
 /**
  * Function for local search of the current graph
  */
-function searchGraph(graph: Graph) {
+function searchGraph(graph: Graph): (query: string) => Match[] {
   return (query: string) =>
     Array.from(graph.nodeEntries())
       .filter(({ node, attributes }) =>
-        getObjectLabel(node, attributes).includes(query)
+        getObjectLabel(node, attributes).toLocaleLowerCase().includes(query)
       )
       .map(({ node, attributes }) => ({
         uri: node,
