@@ -11,7 +11,6 @@ export function EventsController() {
   const setSettings = useSetSettings();
 
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
-  const [clickedNode, setClickedNode] = useState<string | null>(null);
 
   useEffect(() => {
     registerEvents({
@@ -21,18 +20,11 @@ export function EventsController() {
       },
       enterNode: (event) => setHoveredNode(event.node),
       leaveNode: () => setHoveredNode(null),
-      clickNode: (event) => {
-        setClickedNode(event.node);
-      },
-      clickStage: () => {
-        setClickedNode(null);
-      },
     });
 
     const container = document
       .getElementsByClassName('sigma-mouse')
       .item(0) as HTMLElement;
-    // console.log(container);
     container?.addEventListener('wheel', (ev) => {
       window.scroll({
         behavior: 'auto',
@@ -40,16 +32,9 @@ export function EventsController() {
       });
     });
 
-    // sigma.addListener('afterRender', () => setScrollEvent());
   }, [registerEvents]);
 
   useEffect(() => {
-    const relevantNode = clickedNode
-      ? clickedNode
-      : hoveredNode
-      ? hoveredNode
-      : null;
-
     setSettings({
       nodeReducer: (node, attributes) => {
         type NewType = Attributes;
@@ -59,12 +44,12 @@ export function EventsController() {
           highlighted: attributes['highlighted'] || false,
         };
 
-        if (relevantNode) {
+        if (hoveredNode) {
           if (
-            node === relevantNode ||
-            graph.neighbors(relevantNode).includes(node)
+            node === hoveredNode ||
+            graph.neighbors(hoveredNode).includes(node)
           ) {
-            if (node === relevantNode) newAttr['highlighted'] = true;
+            if (node === hoveredNode) newAttr['highlighted'] = true;
           } else {
             newAttr['color'] = NODE_FADE_COLOR;
             newAttr['highlighted'] = false;
@@ -76,14 +61,14 @@ export function EventsController() {
       edgeReducer: (edge, attributes) => {
         const newAttr: Attributes = { ...attributes, hidden: false };
 
-        if (relevantNode && !graph.extremities(edge).includes(relevantNode)) {
+        if (hoveredNode && !graph.extremities(edge).includes(hoveredNode)) {
           newAttr['hidden'] = true;
         }
         return newAttr;
       },
       enableEdgeWheelEvents: false,
     });
-  }, [graph, clickedNode, hoveredNode, setSettings]);
+  }, [graph, hoveredNode, setSettings]);
 
   return null;
 }
