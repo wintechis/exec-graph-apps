@@ -1,4 +1,4 @@
-import { useRegisterEvents, useSetSettings, useSigma } from '@react-sigma/core';
+import { useCamera, useRegisterEvents, useSetSettings, useSigma } from '@react-sigma/core';
 import { Attributes } from 'graphology-types';
 import { useEffect, useState } from 'react';
 
@@ -9,10 +9,14 @@ export function EventsController() {
   const graph = sigma.getGraph();
   const registerEvents = useRegisterEvents();
   const setSettings = useSetSettings();
+  const animationDuration = 1500;
+  const { reset } = useCamera({ duration: animationDuration, factor: 1.5 });
 
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
   useEffect(() => {
+    sigma.addListener("afterRender", () => reset())
+    
     registerEvents({
       wheel: (event) => {
         event.preventSigmaDefault();
