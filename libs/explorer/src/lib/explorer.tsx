@@ -319,6 +319,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
                 <span className="sr-only">Filter</span>
                 <FilterIcon className="h-6 w-6" aria-hidden="true" />
               </button>
+              {/*
               <button
                 onClick={this.showDialog(Dialogs.STYLE_EDITOR)}
                 type="button"
@@ -327,6 +328,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
                 <span className="sr-only">Adjust graph design</span>
                 <AdjustmentsIcon className="h-6 w-6" aria-hidden="true" />
               </button>
+              */}
             </div>
           </div>
         </div>
