@@ -15,8 +15,6 @@ export function EventsController() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
   useEffect(() => {
-    sigma.addListener("afterRender", () => reset())
-    
     registerEvents({
       wheel: (event) => {
         event.preventSigmaDefault();
@@ -35,8 +33,11 @@ export function EventsController() {
         top: window.scrollY + ev.deltaY,
       });
     });
-
   }, [registerEvents]);
+
+  useEffect(() => {
+    reset();
+  }, [reset])
 
   useEffect(() => {
     setSettings({
