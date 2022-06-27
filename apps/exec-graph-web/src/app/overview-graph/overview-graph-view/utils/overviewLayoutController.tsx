@@ -20,7 +20,7 @@ export function OverviewAppearance() {
     settings: settings,
   });
 
-  function setLayout () {
+  function setLayout() {
     animateNodes(graph, positions(), { duration: animationDuration });
     reset();
   }

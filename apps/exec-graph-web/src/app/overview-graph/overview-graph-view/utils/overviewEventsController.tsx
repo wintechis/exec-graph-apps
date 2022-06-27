@@ -1,4 +1,9 @@
-import { useCamera, useRegisterEvents, useSetSettings, useSigma } from '@react-sigma/core';
+import {
+  useCamera,
+  useRegisterEvents,
+  useSetSettings,
+  useSigma,
+} from '@react-sigma/core';
 import { Attributes } from 'graphology-types';
 import { useEffect, useState } from 'react';
 
@@ -37,7 +42,7 @@ export function EventsController() {
 
   useEffect(() => {
     reset();
-  }, [reset])
+  }, [reset]);
 
   useEffect(() => {
     setSettings({
