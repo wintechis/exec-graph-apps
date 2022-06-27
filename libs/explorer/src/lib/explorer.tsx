@@ -82,6 +82,30 @@ function searchGraph(graph: Graph) {
       }));
 }
 
+interface ExplorerState {
+  /**
+   * stores the currently loaded data
+   */
+  data?: DataSet;
+  /**
+   * stores the error if an error during loading of the data occured
+   */
+  error?: {
+    message: string;
+  };
+  /**
+   * Loading status indicator
+   */
+  status: Status;
+  selectedObject?: string | null;
+  selectedObjectChangeFromOthers?: string | null;
+  /**
+   * Indicates which dialog should be shown to the user
+   */
+  dialog: Dialogs;
+  query: string;
+}
+
 /**
  * Top-level view component to display the Explore page on the website.
  *
@@ -89,18 +113,7 @@ function searchGraph(graph: Graph) {
  *
  * @category React Component
  */
-export class Explorer extends Component<
-  ExplorerProps,
-  {
-    data?: DataSet;
-    error?: { message: string };
-    status: Status;
-    selectedObject?: string | null;
-    selectedObjectChangeFromOthers?: string | null;
-    dialog: Dialogs;
-    query: string;
-  }
-> {
+export class Explorer extends Component<ExplorerProps, ExplorerState> {
   private dataSource: RemoteDataSource;
 
   constructor(props: ExplorerProps) {
@@ -158,6 +171,7 @@ export class Explorer extends Component<
     this.setState({
       ...this.state,
       status: Status.EXECUTING_QUERY,
+      dialog: Dialogs.NONE,
       query: sparql,
     });
     this.dataSource
@@ -209,7 +223,7 @@ export class Explorer extends Component<
       <>
         <ExploreDialog
           show={this.state.dialog === Dialogs.HELP}
-          close={() => this.showDialog(Dialogs.NONE)}
+          close={this.showDialog(Dialogs.NONE)}
           width="max-w-xl"
           title="Welcome to the explorer!"
         >
@@ -232,8 +246,8 @@ export class Explorer extends Component<
         ></SearchDialog>
         <ExploreDialog
           show={this.state.dialog === Dialogs.QUERY_EDITOR}
-          close={() => this.showDialog(Dialogs.NONE)}
-          width="max-w-7xl"
+          close={this.showDialog(Dialogs.NONE)}
+          width="max-w-5xl"
         >
           <QueryEditor
             dataSource={this.dataSource}
@@ -248,7 +262,7 @@ export class Explorer extends Component<
         </ExploreDialog>
         <ExploreDialog
           show={this.state.dialog === Dialogs.STYLE_EDITOR}
-          close={() => this.showDialog(Dialogs.NONE)}
+          close={this.showDialog(Dialogs.NONE)}
           width="max-w-xl"
           title="Adjust the styling"
         >
@@ -261,6 +275,9 @@ export class Explorer extends Component<
     );
   }
 
+  /**
+   * Displays the passed dialog, pass `Dialogs.NONE` to hide the current dialog.
+   */
   private showDialog(dialog: Dialogs): () => void {
     return () => this.setState({ ...this.state, dialog });
   }
