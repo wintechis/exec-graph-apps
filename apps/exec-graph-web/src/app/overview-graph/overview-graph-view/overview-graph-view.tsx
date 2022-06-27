@@ -6,7 +6,6 @@ import getNodeProgramImage from 'sigma/rendering/webgl/programs/node.image';
 import React, { memo } from 'react';
 import { OverviewAppearance } from './utils/overviewLayoutController';
 import { EventsController } from './utils/overviewEventsController';
-import { drawLabel } from './utils/overviewLayoutController';
 
 interface OverviewGraphViewProps {
   data: DataSet;
@@ -18,10 +17,7 @@ function OverviewGraphView(props: OverviewGraphViewProps) {
       graph={props.data.graph}
       initialSettings={{
         nodeProgramClasses: { image: getNodeProgramImage() },
-        labelRenderer: drawLabel,
-        labelDensity: 0.07,
-        labelGridCellSize: 60,
-        labelRenderedSizeThreshold: 20,
+        renderLabels: false,
         defaultNodeType: 'image',
         defaultNodeColor: 'white',
       }}

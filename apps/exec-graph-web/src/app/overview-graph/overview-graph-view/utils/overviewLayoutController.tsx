@@ -6,8 +6,6 @@ import { Attributes } from 'graphology-types';
 import forceAtlas2 from 'graphology-layout-forceatlas2';
 import random from 'graphology-layout/random';
 import { animateNodes } from 'sigma/utils/animate';
-import { NodeDisplayData, PartialButFor } from 'sigma/types';
-import { Settings } from 'sigma/settings';
 import { icons } from '../icons/icons';
 
 export function OverviewAppearance() {
@@ -93,25 +91,4 @@ export function SetLayout(
   });
 
   return graph;
-}
-
-export function drawLabel(
-  context: CanvasRenderingContext2D,
-  data: PartialButFor<NodeDisplayData, 'x' | 'y' | 'size' | 'label' | 'color'>,
-  settings: Settings
-): void {
-  if (!data.label || data.color === '#eee') return;
-
-  const size = settings.labelSize,
-    font = settings.labelFont,
-    weight = settings.labelWeight;
-
-  context.font = `${weight} ${size}px ${font}`;
-  const width = context.measureText(data.label).width + 8;
-
-  context.fillStyle = '#ffffffcc';
-  context.fillRect(data.x + data.size, data.y + size / 3 - 15, width, 20);
-
-  context.fillStyle = '#000';
-  context.fillText(data.label, data.x + data.size + 3, data.y + size / 3);
 }
