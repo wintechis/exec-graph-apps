@@ -46,25 +46,45 @@ export const TIMELINE = {
         'With the data now covering DAX 40 this website serves as an opportunity for the public to discover our findings.',
     },
     {
+      date: '2022',
+      title: 'WireGraph Learning Game',
+      description: (
+        <>
+          Presentation of the learning game WireGraph (
+          <a
+            href="https://www.cs.uni-potsdam.de/hochschule2031/download/Paper/WireGraph/WireGraph.pdf"
+            className="fau-link"
+          >
+            German Publication
+          </a>
+          ) to educate higher education students on the use of knowledge graphs
+          by analysing the Wirecard scandal.
+        </>
+      ),
+    },
+    {
+      date: '2021',
+      title: 'Knowledge Graph Conference',
+      description:
+        'The project was presented during the Knowledge Graph Conference 2021.',
+    },
+    {
       date: '2021',
       title: 'Knowledge Graph',
       description:
-        'For the first time, the data was transfered into an RDF based knowledge graph, visiNav etc...',
+        'For the first time, the data was transfered into an RDF based knowledge graph.',
     },
     {
-      date: '202X',
+      date: '2021',
       title: 'Analysis of Wirecard AG',
-      description: 'Some Description',
+      description:
+        'Prompted by the Wirecard scandal, a closer look at the interralations has shown a much lower level of connection of board members at Wirecard AG compared to other DAX companies.',
     },
     {
-      date: '20XX',
-      title: 'Publication XX',
-      description: 'xxx.',
-    },
-    {
-      date: '20XX',
-      title: 'Project Idea / Data Collection',
-      description: 'The project started',
+      date: '2020',
+      title: 'Project Idea',
+      description:
+        'The project started and the first information were collected.',
     },
   ],
 };
@@ -112,6 +132,16 @@ export const CONTACT = {
           imgPath: '../assets/people/HarthAndreas.jpg',
           name: 'Prof. Dr. Andreas Harth',
           position: null,
+        },
+        {
+          imgPath: '../assets/people/GruemmerJulian.png',
+          name: 'Tim Denzler, M.Sc.',
+          position: 'Student Research Assistant',
+        },
+        {
+          imgPath: '../assets/people/GruemmerJulian.png',
+          name: 'Pornchana Kveeyan, M.Sc.',
+          position: 'Student Research Assistant',
         },
         {
           imgPath: '../assets/people/GruemmerJulian.png',
