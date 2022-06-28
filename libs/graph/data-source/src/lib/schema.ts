@@ -50,6 +50,7 @@ export const DEFAULT_SCHEMA: Schema = {
     'http://www.wikidata.org/prop/direct/P1454', // WikiData legal type
     'http://www.wikidata.org/prop/direct/P2196', // WikiData students count
     'http://www.wikidata.org/prop/direct/P8687', // WikiData social media followers
+    'http://www.wikidata.org/prop/direct/P361', // part of, could also be an edge as its used inside ExecGraph too
   ],
   edgePredicates: [
     'http://execgraph.org/educationConnection',
