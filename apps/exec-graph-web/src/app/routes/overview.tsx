@@ -4,9 +4,15 @@ import {
   FetchHttpClient,
   HttpSparqlRepository,
 } from '@exec-graph/graph/data-source-remote';
+import {
+  ChevronRightIcon,
+  QuestionMarkCircleIcon,
+  ShareIcon,
+} from '@heroicons/react/outline';
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import GraphStatistics from '../graph-statistics/graph-statistics';
+import OverviewGraph from '../overview-graph/overview-graph';
 
 interface OverviewProps {
   /** URL pointing to a remote SPARQL dndpoint */
@@ -59,21 +65,42 @@ export class Overview extends Component<OverviewProps> {
           </div>
         </header>
         <main>
-          <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            {/* Replace with your content */}
-            <div className="px-4 py-6 sm:px-0">
-              <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 text-center text-gray-400 text-bold p-8">
-                A high level graph with minimal interaction
-              </div>
-            </div>
-            {/* /End replace */}
+          <div className="py-6 sm:px-6 lg:px-8">
+            <OverviewGraph dataSource={this.dataSource} />
           </div>
-          <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-white">
-            <div className="px-4 py-6 sm:px-0 bg-white">
+          <div className="py-6 sm:px-6 lg:px-8 bg-white shadow-sm">
+            <div className="px-4 py-6 sm:px-0 max-w-7xl mx-auto">
               <div className="text-center mb-4">
                 <h2 className="text-2xl font-bold">The Numbers</h2>
               </div>
               <GraphStatistics dataSource={this.dataSource}></GraphStatistics>
+            </div>
+          </div>
+          <div className="py-6 sm:px-6 lg:px-8">
+            <div className="px-4 py-6 sm:px-0 max-w-5xl mx-auto">
+              <div className="grid grid-cols-1 gap-8 xl:gap-12 sm:grid-cols-3">
+                <a
+                  className="block bg-white p-4 pt-8 font-bold rounded shadow-sm fau-link w-full"
+                  href="./about"
+                >
+                  <ChevronRightIcon className="w-6 h-6 mb-2"></ChevronRightIcon>
+                  Learn more about the project
+                </a>
+                <a
+                  className="bg-white p-4 pt-8 font-bold rounded shadow-sm fau-link"
+                  href="./about"
+                >
+                  <ShareIcon className="w-6 h-6 mb-2"></ShareIcon>
+                  Explore the graph
+                </a>
+                <a
+                  className="bg-white p-4 pt-8 font-bold rounded shadow-sm fau-link"
+                  href="./about"
+                >
+                  <QuestionMarkCircleIcon className="w-6 h-6 mb-2"></QuestionMarkCircleIcon>
+                  Check the FAQs
+                </a>
+              </div>
             </div>
           </div>
         </main>
