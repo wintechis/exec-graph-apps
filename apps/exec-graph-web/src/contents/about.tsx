@@ -6,6 +6,8 @@
 /* eslint-disable react/jsx-no-target-blank */
 // react/jsx-no-target-blank: is not a concern for the links to other FAU pages
 
+import { environment } from "../environments/environment";
+
 /**
  * Content of the first section on the about page to introduce the project.
  */
@@ -113,12 +115,12 @@ export const CONTACT = {
       chairEmail: 'mailto:wiso-pruefungswesen@fau.de',
       people: [
         {
-          imgPath: '../assets/people/HenselmannKlaus.jpg',
+          imgPath: environment.basepath + 'assets/people/HenselmannKlaus.jpg',
           name: 'Univ.-Prof. Dr. Klaus Henselmann',
           position: null,
         },
         {
-          imgPath: '../assets/people/GruemmerJulian.png',
+          imgPath: environment.basepath + 'assets/people/GruemmerJulian.png',
           name: 'Julian Grümmer, M.Sc',
           position: 'Research Assistant',
         },
@@ -129,27 +131,27 @@ export const CONTACT = {
       chairWebsite: 'https://www.ti.rw.fau.de/',
       people: [
         {
-          imgPath: '../assets/people/HarthAndreas.jpg',
+          imgPath: environment.basepath + 'assets/people/HarthAndreas.jpg',
           name: 'Prof. Dr. Andreas Harth',
           position: null,
         },
         {
-          imgPath: '../assets/people/GruemmerJulian.png',
+          imgPath: environment.basepath + 'assets/people/GruemmerJulian.png',
           name: 'Tim Denzler, M.Sc.',
           position: 'Student Research Assistant',
         },
         {
-          imgPath: '../assets/people/GruemmerJulian.png',
+          imgPath: environment.basepath + 'assets/people/GruemmerJulian.png',
           name: 'Pornchana Kveeyan, M.Sc.',
           position: 'Student Research Assistant',
         },
         {
-          imgPath: '../assets/people/GruemmerJulian.png',
+          imgPath: environment.basepath + 'assets/people/LokajAlbin.jpg',
           name: 'Albin Lokaj, B.Sc.',
           position: 'Developer',
         },
         {
-          imgPath: '../assets/people/GruemmerJulian.png',
+          imgPath: environment.basepath + 'assets/people/StoerrleJulius.jpg',
           name: 'Julius Störrle, B.Sc.',
           position: 'Developer',
         },
