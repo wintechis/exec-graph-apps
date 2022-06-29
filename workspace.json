@@ -12,5 +12,6 @@
     "ui-react-button-toggle": "libs/ui-react/button-toggle",
     "ui-react-help-button": "libs/ui-react/help-button",
     "utils": "libs/utils"
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

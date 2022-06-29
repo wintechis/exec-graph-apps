@@ -1,6 +1,6 @@
-module.exports = {
+export default {
   displayName: 'ui-react-help-button',
-  preset: '../../../jest.preset.ts',
+  preset: '../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': 'babel-jest',
   },
