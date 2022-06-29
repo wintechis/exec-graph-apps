@@ -53,8 +53,8 @@ function Controls(props: ControlsProps) {
       </ControlsContainer>
       <ControlsContainer position="top-left">
         <ZoomControl />
-        <FullScreenControl />
-        <LayoutForceAtlas2Control></LayoutForceAtlas2Control>
+        <FullScreenControl className="border-t border-gray-100/50" />
+        <LayoutForceAtlas2Control className="border-t border-gray-100/50"></LayoutForceAtlas2Control>
         <div className="react-sigma-control">
           <button onClick={props.resetLayout} title="Reset Layout">
             <RefreshIcon className="h-5 w-5 align-middle" />
