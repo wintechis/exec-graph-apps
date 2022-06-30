@@ -60,6 +60,8 @@ function Controls(props: ControlsProps) {
             <RefreshIcon className="h-5 w-5 align-middle" />
           </button>
         </div>
+        <div style={{ borderTop: 'solid white 1px' }}></div>
+        <LayoutForceAtlas2Control></LayoutForceAtlas2Control>
       </ControlsContainer>
     </div>
   );

@@ -7,7 +7,7 @@ import {
 import { Attributes } from 'graphology-types';
 import { useEffect, useState } from 'react';
 
-const NODE_FADE_COLOR = '#eee';
+const NODE_FADE_COLOR = '#bbb';
 // const EDGE_FADE_COLOR = "#eee";
 
 export interface EventControllerProps {
@@ -31,12 +31,19 @@ export function EventsController(props: EventControllerProps) {
   const [nodeDown, setNodeDown] = useState<string | null>(null);
 
   useEffect(() => {
-    if (props.selectedObjectChangeFromOthers) {
+    if (
+      props.selectedObjectChangeFromOthers &&
+      graph.hasNode(props.selectedObjectChangeFromOthers)
+    ) {
       props.setSelectedObject(props.selectedObjectChangeFromOthers);
       setClickedNode(props.selectedObjectChangeFromOthers);
-      reset();
+    } else {
+      props.setSelectedObject(null);
+      setClickedNode(null);
     }
-  }, [props, reset]);
+
+    reset();
+  }, [graph, props, reset]);
 
   useEffect(() => {
     registerEvents({
@@ -51,6 +58,9 @@ export function EventsController(props: EventControllerProps) {
         setClickedNode(event.node);
       },
       clickStage: () => {
+        graph.forEachNode((key, attributes) => {
+          attributes['highlighted'] = false;
+        });
         props.setSelectedObject(null);
         setClickedNode(null);
       },
@@ -79,11 +89,11 @@ export function EventsController(props: EventControllerProps) {
         top: window.scrollY + ev.deltaY,
       });
     });
-  }, [nodeDown, props, registerEvents]);
+  }, [graph, nodeDown, props, registerEvents]);
 
   useEffect(() => {
     sigma.addListener('afterRender', () => props.setStateLoaded());
-  });
+  }, [props, sigma]);
 
   useEffect(() => {
     if (nodeDown) {
@@ -98,11 +108,13 @@ export function EventsController(props: EventControllerProps) {
   }, [graph, nodeDown, sigma, xCoord, yCoord]);
 
   useEffect(() => {
-    const relevantNode = clickedNode
+    let relevantNode = clickedNode
       ? clickedNode
       : hoveredNode
       ? hoveredNode
       : null;
+
+    relevantNode = graph.hasNode(relevantNode) ? relevantNode : null;
 
     setSettings({
       nodeReducer: (node, attributes) => {
