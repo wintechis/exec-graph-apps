@@ -1,9 +1,9 @@
 import { SparqlValidator } from '@exec-graph/graph/data-source-remote';
 import { DataSource } from '@exec-graph/graph/types';
-import { Dialog } from '@headlessui/react';
 import { SearchIcon } from '@heroicons/react/outline';
 import { Component } from 'react';
 import AdvancedEditor from '../advanced-editor/advanced-editor';
+import QueryLibrary from '../query-library/query-library';
 import {
   RdfAutocompletionContext,
   RdfAutocompletionService,
@@ -12,8 +12,14 @@ import {
 import SparqlEditor from '../sparql-editor/sparql-editor';
 import TabBar from '../tab-bar/tab-bar';
 
-type EditorKey = 'form' | 'sparql';
+/**
+ * Defines string keys for the different sub editors
+ */
+type EditorKey = 'library' | 'advanced' | 'sparql';
 
+/**
+ * Type definition of mandatory and optional properties of the {@link QueryEditor} component
+ */
 export interface QueryEditorProps {
   dataSource: DataSource;
   sparql: string;
@@ -21,6 +27,9 @@ export interface QueryEditorProps {
   title?: string | JSX.Element;
 }
 
+/**
+ * Type definition of the internal state of the {@link QueryEditor} component
+ */
 interface QueryEditorState {
   editorKey: EditorKey;
   sparql: string;
@@ -42,7 +51,7 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
       props.dataSource
     );
     this.state = {
-      editorKey: 'form',
+      editorKey: 'library',
       sparql: props.sparql,
       valid: this.sparqlValidator.validate(props.sparql),
       rdfAutocompletion: this.rdfAutocompletionService.initState(
@@ -62,11 +71,19 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
     this.switchTo = this.switchTo.bind(this);
   }
 
-  override componentDidMount() {
+  /**
+   * Initiate loading of autocomplete lists after inital mounting of the component
+   */
+  override componentDidMount(): void {
     this.state.rdfAutocompletion.loadProperties();
   }
 
-  handleChange(sparql: string) {
+  /**
+   * Process changed sparql from a sub-editor
+   *
+   * @param sparql sparql query
+   */
+  private handleChange(sparql: string): void {
     this.setState({
       ...this.state,
       sparql: sparql,
@@ -86,7 +103,7 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
     this.props.onSubmit(this.state.sparql);
   }
 
-  public override render() {
+  public override render(): JSX.Element {
     const validationError = this.state.valid ? null : (
       <div className="text-fau-red">
         Invalid SPARQL: Please check your query.
@@ -94,7 +111,9 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
     );
 
     const currentEditor =
-      this.state.editorKey === 'form' ? (
+      this.state.editorKey === 'library' ? (
+        <QueryLibrary onSelect={this.handleChange}></QueryLibrary>
+      ) : this.state.editorKey === 'advanced' ? (
         <AdvancedEditor
           sparql={this.state.sparql}
           onChange={this.handleChange}
@@ -119,7 +138,8 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
             <TabBar
               selected={this.state.editorKey}
               options={[
-                { label: 'Advanced', value: 'form' },
+                { label: 'Libary', value: 'library' },
+                { label: 'Advanced', value: 'advanced' },
                 { label: 'SPARQL', value: 'sparql' },
               ]}
               onChange={this.switchTo}

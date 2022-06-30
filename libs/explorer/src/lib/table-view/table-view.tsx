@@ -9,6 +9,9 @@ import {
   TableInstance,
 } from 'react-table';
 
+/**
+ * Type definition of mandatory and optional properties of the {@link TableView} component
+ */
 export interface TableViewProps {
   data: DataSet;
 }

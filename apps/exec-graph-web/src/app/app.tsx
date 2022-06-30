@@ -4,6 +4,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import Footer from './footer';
 
 import fauLogoSvg from '../assets/FAU_Logo_Bildmarke.svg';
+import { Suspense } from 'react';
 
 /**
  * List of pages that should be featured in the navigation bar/menu
@@ -28,7 +29,7 @@ function classNames(...classes: string[]) {
  *
  * @category React Component
  */
-export function App() {
+export function App(): JSX.Element {
   return (
     <div className="h-full flex flex-col">
       <Disclosure as="nav" className="bg-fau-dark-blue">
@@ -106,7 +107,9 @@ export function App() {
       </Disclosure>
 
       <div className="grow">
-        <Outlet />
+        <Suspense>
+          <Outlet />
+        </Suspense>
       </div>
       <Footer />
     </div>

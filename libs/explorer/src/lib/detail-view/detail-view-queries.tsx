@@ -1,7 +1,10 @@
 /**
  * Returns a query to load details for one node from ExecGraph
+ *
+ * @param selected uri of the object to load details for
+ * @returns build query
  */
-export function detailQuery(selected: string) {
+export function detailQuery(selected: string): string {
   return `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
   
@@ -34,6 +37,10 @@ export function detailQuery(selected: string) {
 
 /**
  * Returns a query that enables adding wikidata details to execgraph entity
+ *
+ * @param selected uri of the object to load details for
+ * @param sameas uri of the object in the wikidata graph
+ * @returns build query
  */
 export function wikidataQuery(selected: string, sameas: string) {
   return `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>

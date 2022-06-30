@@ -3,6 +3,9 @@ import {
   SparqlParser as SparqlParserInterface,
 } from 'sparqljs';
 
+/**
+ * SPARQL Query Types
+ */
 export type QueryType = 'SELECT' | 'CONSTRUCT' | 'ASK' | 'DESCRIBE';
 
 /**

@@ -10,6 +10,9 @@ export interface Option {
   label?: string;
 }
 
+/**
+ * Information of a RDF Property needed within the autocompletion service
+ */
 interface Property {
   uri: string;
   label: string;
@@ -38,6 +41,11 @@ WHERE {
  OPTIONAL {?s <http://www.w3.org/2000/01/rdf-schema#label> ?l} 
 } GROUP BY ?s`;
 
+/**
+ * Prepared list of autocomplete list that acts as a default for initating a new {@link RdfAutocompletionState}.
+ *
+ * It should contain predefined options for the XMLSchema or similar types where appropriate
+ */
 const DEFAULT_AUTOCOMPLETE: { [range: string]: Option[] } = {
   'http://www.w3.org/2001/XMLSchema#boolean': [
     { value: '1', label: 'True' },
@@ -48,6 +56,11 @@ const DEFAULT_AUTOCOMPLETE: { [range: string]: Option[] } = {
   ],
 };
 
+/**
+ * Properties to be stored in a React context keeping track of the autocompletion loading status
+ *
+ * Use the {@link RdfAutocompletionService} to initiate one and the helper functions to access its contents in a component.
+ */
 export interface RdfAutocompletionState {
   properties?: Property[] | undefined;
   propertiesAsOptions?: Option[] | undefined;
@@ -64,6 +77,9 @@ export const RdfAutocompletionContext = createContext<RdfAutocompletionState>({
     console.warn('called loadForProperty without initalisation'),
 });
 
+/**
+ * Accessor for the {@link RdfAutocompletionState} to extract the range of a property
+ */
 export function rangeOf(
   predicate: string,
   state: RdfAutocompletionState
@@ -71,6 +87,9 @@ export function rangeOf(
   return state.properties?.find((p) => p.uri === predicate)?.range;
 }
 
+/**
+ * Accessor for the {@link RdfAutocompletionState} to get the options list for a property
+ */
 export function optionsFor(
   predicate: string,
   state: RdfAutocompletionState
@@ -95,6 +114,9 @@ export class RdfAutocompletionService {
 
   constructor(private readonly dataSource: DataSource) {}
 
+  /**
+   * Initiate a new State object to use in a React context
+   */
   public initState(
     patchState: (state: Partial<RdfAutocompletionState>) => void,
     latestState: () => RdfAutocompletionState
@@ -118,6 +140,9 @@ export class RdfAutocompletionService {
     };
   }
 
+  /**
+   * Load autocompletion list for properties
+   */
   private loadProperties(): Promise<Partial<RdfAutocompletionState>> {
     return this.dataSource
       .getForSparql(QUERY_SELECT_PROPERTIES)
@@ -141,6 +166,12 @@ export class RdfAutocompletionService {
       });
   }
 
+  /**
+   * Initiate request for the autocomplete options based on the type of range
+   *
+   * @param range the uri of the range/class to load autocompletion list for
+   * @returns list of options
+   */
   private loadAutocomplete(range: string): Promise<Option[]> {
     if (
       URI_REGEX.test(range) &&
@@ -156,9 +187,5 @@ export class RdfAutocompletionService {
     }
     console.warn(`Could not determine autoloading strategy for ${range}`);
     return Promise.resolve([]);
-  }
-
-  private rangeOf(predicate: string): string | undefined {
-    return this.properties?.find((p) => p.uri === predicate)?.range;
   }
 }

@@ -61,7 +61,17 @@ const STATUS_CODES: { [status: string]: string } = {
   '511': 'Network Authentication Required',
 };
 
+/**
+ * Error class to represent a HTTP Request related error
+ */
 export class HttpError extends Error {
+  /**
+   * Create an instance for a new error
+   *
+   * @param statusCode the HTTP Status Code
+   * @param message the error message from the request or browser
+   * @param extras further information provided
+   */
   constructor(
     public readonly statusCode: number,
     message: string,

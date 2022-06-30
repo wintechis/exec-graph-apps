@@ -7,6 +7,9 @@ import {
 } from '../rdf-autocompletion.service';
 import RDFTermInput, { Option } from '../rdfterm-input/rdfterm-input';
 
+/**
+ * Type definition of mandatory and optional properties of the {@link TripleInput} component
+ */
 export interface TripleInputProps {
   index: number;
   triple: Triple;
@@ -21,7 +24,7 @@ export interface TripleInputProps {
  *
  * @category React Component
  */
-export function TripleInput(props: TripleInputProps) {
+export function TripleInput(props: TripleInputProps): JSX.Element {
   const rdfAutocompletionContext = useContext(RdfAutocompletionContext);
   const onSubjectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.onChange({ ...props.triple, object: event.target.value || '' });

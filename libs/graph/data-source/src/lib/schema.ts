@@ -50,6 +50,7 @@ export const DEFAULT_SCHEMA: Schema = {
     'http://www.wikidata.org/prop/direct/P1454', // WikiData legal type
     'http://www.wikidata.org/prop/direct/P2196', // WikiData students count
     'http://www.wikidata.org/prop/direct/P8687', // WikiData social media followers
+    'http://www.wikidata.org/prop/direct/P361', // part of, could also be an edge as its used inside ExecGraph too
   ],
   edgePredicates: [
     'http://execgraph.org/educationConnection',
@@ -71,6 +72,7 @@ export const DEFAULT_SCHEMA: Schema = {
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#currentlyWorksAt',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#hasWorkConnection',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#workConnection',
+    'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#hasEducationConnection',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#educationConnection',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#birthPlaceConnection',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#hasAlumni',
@@ -86,5 +88,6 @@ export const DEFAULT_SCHEMA: Schema = {
     'http://schema.org/birthPlace',
     'http://schema.org/author',
     'http://schema.org/sourceOrganization',
+    'http://schema.org/alumniOf',
   ],
 };

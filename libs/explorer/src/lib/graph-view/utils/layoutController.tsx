@@ -104,9 +104,6 @@ export function SetLayout(
   graph.forEachEdge((key: string, attributes: Attributes) => {
     const fullPred = `${attributes['predicate']}`;
     const pred = fullPred.split('/').pop()?.split('#').pop();
-
-    const color = icons.edges[pred as keyof typeof icons.edges];
-    graph.setEdgeAttribute(key, 'color', color);
   });
 
   return graph;

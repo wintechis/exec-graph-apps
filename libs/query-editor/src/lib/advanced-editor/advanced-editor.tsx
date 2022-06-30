@@ -14,12 +14,18 @@ import {
 import { RdfAutocompletionService } from '../rdf-autocompletion.service';
 import TripleInput from '../triple-input/triple-input';
 
+/**
+ * Type definition of mandatory and optional properties of the {@link AdvancedEditor} component
+ */
 export interface AdvancedEditorProps {
   rdfAutocompletionService: RdfAutocompletionService;
   sparql: string;
   onChange: (sparql: string) => void;
 }
 
+/**
+ * Type definition of internal state of the {@link AdvancedEditor} component
+ */
 interface AdvancedEditorState {
   sparql: string;
   queryType: SparqlQueryType;
@@ -36,6 +42,9 @@ interface AdvancedEditorState {
   };
 }
 
+/**
+ * Default values for the internal state of the {@link AdvancedEditor}
+ */
 const DEFAULT_STATE: AdvancedEditorState = {
   sparql: '',
   queryType: 'SELECT',
@@ -72,10 +81,16 @@ export class AdvancedEditor extends Component<
     this.handleModifierChange = this.handleModifierChange.bind(this);
   }
 
+  /**
+   * Process the given sparql query upon opening the editor
+   */
   public override componentDidMount(): void {
     this.setStateFromSparql(this.props.sparql);
   }
 
+  /**
+   * Process the provided sparql if it changed
+   */
   public override componentDidUpdate(
     _prevProps: Readonly<AdvancedEditorProps>,
     prevState: Readonly<AdvancedEditorState>
@@ -85,7 +100,12 @@ export class AdvancedEditor extends Component<
     }
   }
 
-  private setStateFromSparql(sparql: string) {
+  /**
+   * Reads the given query into the internal state of the editor
+   *
+   * @param sparql sparql query
+   */
+  private setStateFromSparql(sparql: string): void {
     let parsed: SparqlQuery;
     try {
       parsed = new Parser({}).parse(sparql);
@@ -156,6 +176,9 @@ export class AdvancedEditor extends Component<
     });
   }
 
+  /**
+   * Converts the internal state to a SPARQL query
+   */
   private buildQuery(): void {
     const queryBuilder = new QueryBuilder(this.state.queryType);
     let variables: string[] = [];
@@ -228,6 +251,11 @@ export class AdvancedEditor extends Component<
     }
   }
 
+  /**
+   * Event handler to capture changes of the query type for the created query
+   *
+   * @param queryType the new query type
+   */
   private handleQueryTypeChange(queryType: SparqlQueryType) {
     this.setState(
       {
@@ -238,6 +266,11 @@ export class AdvancedEditor extends Component<
     );
   }
 
+  /**
+   * Event handler to capture changes of the objects included in a describe query
+   *
+   * @param targets list of uris
+   */
   private handleDescribeTargetsChange(targets: string[]) {
     this.setState(
       {
@@ -276,7 +309,12 @@ export class AdvancedEditor extends Component<
     };
   }
 
-  public override render() {
+  /**
+   * Combines all sections of the advanced editor
+   *
+   * @returns the advanced editor
+   */
+  public override render(): JSX.Element {
     return (
       <div className="px-4 py-5 space-y-6 sm:p-6">
         <p className="text-sm text-gray-600 max-w-prose">
@@ -291,6 +329,9 @@ export class AdvancedEditor extends Component<
     );
   }
 
+  /**
+   * @returns input element to select a query type
+   */
   private renderQueryTypeSelector(): JSX.Element {
     return (
       <div className="flex mb-4 relative z-20">
@@ -313,7 +354,7 @@ export class AdvancedEditor extends Component<
   }
 
   /**
-   * Adds a field to show the generated SPARQL query
+   * Adds a non-editable field to show the generated SPARQL query
    */
   private renderSparqlPreview(): JSX.Element {
     return (
@@ -340,6 +381,11 @@ export class AdvancedEditor extends Component<
     );
   }
 
+  /**
+   * Renders suitable form elements based on the selected query type
+   *
+   * @returns form elements
+   */
   private renderQueryTypeDependendFields(): JSX.Element {
     if (this.state.queryType === 'SELECT') {
       return (
@@ -373,7 +419,15 @@ export class AdvancedEditor extends Component<
     return <div></div>;
   }
 
-  private updateConstructTemplate(index: number) {
+  /**
+   * Event handler factory to update state when the user modifies the template for a construct query
+   *
+   * @param index index of the template row
+   * @returns the event handler
+   */
+  private updateConstructTemplate(
+    index: number
+  ): (templateRow: Triple) => void {
     return (templateRow: Triple) => {
       const constructTemplate = this.state.query.constructTemplate || [];
       constructTemplate[index] = templateRow;
@@ -390,7 +444,7 @@ export class AdvancedEditor extends Component<
     };
   }
 
-  private includeConstructGraphSelector() {
+  private includeConstructGraphSelector(): JSX.Element {
     return (
       <div>
         <h4 className="font-bold mb-2 relative z-10">
@@ -422,6 +476,9 @@ export class AdvancedEditor extends Component<
     );
   }
 
+  /**
+   * Event handler to store which variables should be included in a SELECT query as columns.
+   */
   private toggleColumnSelection(variable: string, selected: boolean): void {
     const selectColumns = this.state.query.selectColumns || [
       ...this.state.variables,
@@ -480,6 +537,9 @@ export class AdvancedEditor extends Component<
     );
   }
 
+  /**
+   * Adds a form section with query modifiers like Offset and Order By
+   */
   private includeQueryModifiers(): JSX.Element {
     return (
       <QueryModifiers

@@ -24,6 +24,9 @@ export abstract class AbstractGraphBuilder {
     protected readonly translator: RdfToGraphTranslator
   ) {}
 
+  /**
+   * Takes a quad and adds its subject as a node to the graph or adds its information to an existing node with the same identifier
+   */
   addAsNode(quad: Quad): void {
     const typeAttr = this.translator.quadToAttribute(quad);
     if (!this.graph.hasNode(quad.subject.id)) {
@@ -41,6 +44,9 @@ export abstract class AbstractGraphBuilder {
     }
   }
 
+  /**
+   * Takes a quad and adds a directed egde between its subject and object.
+   */
   addAsEdge(quad: Quad): void {
     if (!this.graph.hasNode(quad.subject.id)) {
       this.retryQuads.push(quad);
@@ -57,6 +63,9 @@ export abstract class AbstractGraphBuilder {
     });
   }
 
+  /**
+   * Takes a quad and adds its predicate and object as attribute to the subjects node
+   */
   addAsAttributeToNode(quad: Quad): void {
     if (!this.graph.hasNode(quad.subject.id)) {
       this.retryQuads.push(quad);
@@ -92,19 +101,27 @@ export abstract class AbstractGraphBuilder {
     });
   }
 
+  /**
+   * Finalises the graph and returns it
+   *
+   * @returns the completed graph
+   */
   public getGraph(): g.default {
     this.addQuads(this.retryQuads);
     return this.graph;
   }
 
+  /**
+   * Create a log statement rather than silently dropping statements relating to unknown nodes
+   */
   protected logUnkownNodeError(
     triedToAddQuadAs: string,
     term: string,
     id: string
   ): void {
-    console.log(
+    /*console.log(
       `Warning: Could not add quad as ${triedToAddQuadAs}, ${term} not a known node: ${id}`
-    );
+    );*/
   }
 }
 

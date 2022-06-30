@@ -1,6 +1,6 @@
-module.exports = {
+export default {
   displayName: 'explorer',
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': 'babel-jest',
   },

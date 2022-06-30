@@ -1,6 +1,9 @@
 import Graph from 'graphology';
 import { Schema } from './schema';
 
+/**
+ * Interface is based on how SPARQL endpoints return singular values in the JSON format
+ */
 export interface RdfValue {
   value: string;
   type: 'uri' | 'literal';

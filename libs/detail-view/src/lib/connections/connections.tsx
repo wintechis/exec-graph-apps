@@ -7,15 +7,24 @@ import DetailEntry from '../detail-entry/detail-entry';
 import { EdgeDirection, getNeighborsOf, getEdgesOf } from '../graph.utils';
 import { renderClickableObjectLabel } from '../rdf-rendering.utils';
 
+/**
+ * Description of the data structure when listing connections grouped by relationship
+ */
 interface RelationshipFirstStructure {
   [relation: string]: [
     { neighbor: string; attributes: { [name: string]: unknown } }
   ];
 }
 
+/**
+ * Type definition of mandatory and optional properties of the {@link Connections} component
+ */
 export interface ConnectionsProps {
+  /** The graph to pull neighbours from */
   graph: Graph;
+  /** URI of the central object */
   selectedObject: string;
+  /** event handler if user selected a neighbour */
   onSelect: (selectedObject: string) => void;
 }
 
@@ -27,6 +36,9 @@ enum Grouping {
   BY_OBJECT,
 }
 
+/**
+ * Type definition of the internal state of the {@link Connections} component
+ */
 interface ConnectionsState {
   grouping: Grouping;
   directionFilter: EdgeDirection;
@@ -51,20 +63,25 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
   constructor(props: ConnectionsProps) {
     super(props);
     this.state = STATE_DEFAULT;
-    this.handleSelectionChange = this.handleSelectionChange.bind(this);
     this.setDirectionFilter = this.setDirectionFilter.bind(this);
     this.setGrouping = this.setGrouping.bind(this);
   }
 
-  private handleSelectionChange(uri: string) {
-    this.props.onSelect(uri);
-  }
-
-  private setDirectionFilter(directionFilter: EdgeDirection) {
+  /**
+   * Configure the filter for edge directionality
+   *
+   * @param directionFilter the edge directionalities to include
+   */
+  private setDirectionFilter(directionFilter: EdgeDirection): void {
     this.setState({ ...this.state, directionFilter });
   }
 
-  private setGrouping(grouping: Grouping) {
+  /**
+   * Configure the grouping mechanism
+   *
+   * @param grouping the grouping method to use
+   */
+  private setGrouping(grouping: Grouping): void {
     this.setState({ ...this.state, grouping });
   }
 
@@ -74,7 +91,7 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
   private renderNeighborsGroupedByObject(
     neighbors: IterableIterator<NeighborEntry>,
     edgeGetter: (target: string) => string[]
-  ) {
+  ): JSX.Element[] {
     const getObjectLabelFromGraph = (uri: string) =>
       getObjectLabel(
         uri,
@@ -90,7 +107,7 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
             {renderClickableObjectLabel(
               entry.neighbor,
               entry.attributes,
-              this.handleSelectionChange
+              this.props.onSelect
             )}
           </span>
           {edgeGetter(entry.neighbor).map((relationPredicate) => (
@@ -112,7 +129,7 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
   private renderNeighborsGroupedByRelationship(
     neighbors: IterableIterator<NeighborEntry>,
     edgeGetter: (target: string) => string[]
-  ) {
+  ): JSX.Element[] {
     const getObjectLabelFromGraph = (uri: string) =>
       getObjectLabel(
         uri,
@@ -135,7 +152,7 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
                 {renderClickableObjectLabel(
                   neighbor,
                   attributes,
-                  this.handleSelectionChange
+                  this.props.onSelect
                 )}
               </div>
             ))}
@@ -148,6 +165,8 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
 
   /**
    * Regroups the neighbours by relationships
+   *
+   * @param neighbors
    */
   private mapToRelationshipFirstStructure(
     neighbors: IterableIterator<NeighborEntry>,
@@ -166,7 +185,12 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
     return structure;
   }
 
-  public override render() {
+  /**
+   * Renders all connections based on the selection and control elements to modify the display
+   *
+   * @returns section to include on the detail page
+   */
+  public override render(): JSX.Element {
     const neighbors = getNeighborsOf(
       this.props.selectedObject,
       this.props.graph,

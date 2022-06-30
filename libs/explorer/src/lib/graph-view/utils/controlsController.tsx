@@ -52,10 +52,9 @@ function Controls(props: ControlsProps) {
         <SearchControl />
       </ControlsContainer>
       <ControlsContainer position="top-left">
-        <FullScreenControl />
-        <div style={{ borderTop: 'solid white 1px' }}></div>
         <ZoomControl />
-        <div style={{ borderTop: 'solid white 1px' }}></div>
+        <FullScreenControl className="border-t border-gray-100/50" />
+        <LayoutForceAtlas2Control className="border-t border-gray-100/50"></LayoutForceAtlas2Control>
         <div className="react-sigma-control">
           <button onClick={props.resetLayout} title="Reset Layout">
             <RefreshIcon className="h-5 w-5 align-middle" />
