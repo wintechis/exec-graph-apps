@@ -156,7 +156,10 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
    * Special click handler for the graph to avoid redrawing
    */
   private handleGraphSelectionChanged(clickedNode: string | null) {
-    this.setState({ selectedObject: clickedNode });
+    this.setState({
+      selectedObject: clickedNode,
+      selectedObjectChangeFromOthers: clickedNode,
+    });
   }
 
   private setStateLoaded() {
@@ -168,11 +171,14 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
    */
   private loadSparql(sparql: string): void {
     // TODO Create a loading status separation between request & response processing
+    const currentSelectedNode = this.state.selectedObject;
     this.setState({
       ...this.state,
       status: Status.EXECUTING_QUERY,
       dialog: Dialogs.NONE,
       query: sparql,
+      selectedObject: null,
+      selectedObjectChangeFromOthers: null,
     });
     this.dataSource
       .getForSparql(sparql)
@@ -180,16 +186,13 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
         if (ds.graph) ds.graph = SetLayout(ds.graph);
         return ds;
       })
-      .then((ds) =>
+      .then((ds) => {
         this.setState({
+          selectedObject: currentSelectedNode,
+          selectedObjectChangeFromOthers: currentSelectedNode,
           data: ds,
-          selectedObject:
-            this.state.selectedObject &&
-            ds.graph?.hasNode(this.state.selectedObject)
-              ? this.state.selectedObject
-              : null,
-        })
-      )
+        });
+      })
       .catch((e) => {
         if (e instanceof HttpError) {
           this.setState({
@@ -279,7 +282,12 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
    * Displays the passed dialog, pass `Dialogs.NONE` to hide the current dialog.
    */
   private showDialog(dialog: Dialogs): () => void {
-    return () => this.setState({ ...this.state, dialog });
+    return () =>
+      this.setState({
+        ...this.state,
+        dialog,
+        // selectedObjectChangeFromOthers: null,
+      });
   }
 
   /**
