@@ -47,10 +47,6 @@ export function EventsController(props: EventControllerProps) {
 
   useEffect(() => {
     registerEvents({
-      wheel: (event) => {
-        event.preventSigmaDefault();
-        event.sigmaDefaultPrevented = true;
-      },
       enterNode: (event) => setHoveredNode(event.node),
       leaveNode: () => setHoveredNode(null),
       clickNode: (event) => {
@@ -78,16 +74,6 @@ export function EventsController(props: EventControllerProps) {
           event.sigmaDefaultPrevented = false;
         }
       },
-    });
-
-    const container = document
-      .getElementsByClassName('sigma-mouse')
-      .item(0) as HTMLElement;
-    container?.addEventListener('wheel', (ev) => {
-      window.scroll({
-        behavior: 'auto',
-        top: window.scrollY + ev.deltaY,
-      });
     });
   }, [graph, nodeDown, props, registerEvents]);
 
