@@ -12,7 +12,7 @@ import {
   DocumentationEntryPoint,
 } from 'typedoc';
 
-var app_root_1 = require('nx/src/utils/app-root');
+var workspace_root = require('nx/src/utils/workspace-root');
 var devkit = require('@nrwl/devkit');
 var tree = require('nx/src/generators/tree');
 const glob = require('glob');
@@ -44,13 +44,13 @@ function fetchDocumentationEntryProints() {
   const results: DocumentationEntryPoint[] = [];
 
   // Extract projects from NX.dev configuration
-  var host = new tree.FsTree(app_root_1.workspaceRoot);
+  var host = new tree.FsTree(workspace_root.workspaceRoot);
   var nxProjects = devkit.getProjects(host);
 
   nxProjects.forEach(function (project) {
     // for each project find its entry point(s) -> usually index.ts
     const entryPointsOfProject = getProjectEntryPoints(
-      app_root_1.workspaceRoot,
+      workspace_root.workspaceRoot,
       project
     );
     entryPointsOfProject.forEach((packageEntryPoint) => {

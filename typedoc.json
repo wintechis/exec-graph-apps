@@ -28,5 +28,7 @@
         ]
       }
     ]
-  }
+  },
+  "requiredToBeDocumented": ["Class", "Enum", "Interface"],
+  "validation":{"notDocumented": true}
 }
