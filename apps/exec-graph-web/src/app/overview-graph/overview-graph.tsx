@@ -9,12 +9,16 @@ import backgroundImg from '../../assets/ExampleGraph.png';
 
 const OVERVIEW_QUERY = `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 PREFIX schema: <http://schema.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 CONSTRUCT {?s ?p ?o}
+CONSTRUCT {?s ?p1 ?l. ?s ?p2 ?o.}
 WHERE {
-    ?s ?p ?o.
-    ?s rdf:type ?c.
-    FILTER (?c IN ( schema:City, schema:Person, schema:Organization, schema:CollegeOrUniversity ) )
+    ?s ?p1 ?l.
+    ?s ?p2 ?o.
+    ?s rdf:type ?cS.
+    ?o rdf:type ?cO.
+    FILTER (?cS IN ( schema:City, schema:Person, schema:Organization, schema:CollegeOrUniversity ) )
 }`;
 
 /**
