@@ -1,6 +1,9 @@
 import { Dialog } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 
+/**
+ * Type definition of mandatory and optional properties of the {@link ExploreDialog} component
+ */
 export interface ExploreDialogProps {
   /**
    * The content of the dialog
@@ -39,7 +42,7 @@ export interface ExploreDialogProps {
  *
  * @category React Component
  */
-export function ExploreDialog(props: ExploreDialogProps) {
+export function ExploreDialog(props: ExploreDialogProps): JSX.Element {
   return (
     <Dialog
       open={props.show || false}

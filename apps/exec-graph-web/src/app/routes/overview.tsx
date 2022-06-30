@@ -14,6 +14,9 @@ import { Link } from 'react-router-dom';
 import GraphStatistics from '../graph-statistics/graph-statistics';
 import OverviewGraph from '../overview-graph/overview-graph';
 
+/**
+ * Type definition of mandatory and optional properties of the {@link Overview} component
+ */
 interface OverviewProps {
   /** URL pointing to a remote SPARQL dndpoint */
   sparqlEndpoint: string;
@@ -37,7 +40,10 @@ export class Overview extends Component<OverviewProps> {
     this.dataSource = new RemoteDataSource(sparqlRepository);
   }
 
-  public override render() {
+  /**
+   * Renders the overview page
+   */
+  public override render(): JSX.Element {
     return (
       <>
         <header className="bg-white shadow">

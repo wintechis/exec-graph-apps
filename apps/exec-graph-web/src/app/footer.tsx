@@ -5,7 +5,7 @@ import fauLogoSvg from '../assets/FAU_Logo_Bildmarke.svg';
  *
  * @category React Component
  */
-export function Footer() {
+export function Footer(): JSX.Element {
   return (
     <footer className="bg-fau-red text-white py-8 md:text-sm">
       <div className="footer-row flex flex-wrap px-8 max-w-7xl m-auto">

@@ -1,3 +1,6 @@
+/**
+ * Type definition of mandatory and optional properties of the {@link DescribeTargets} component
+ */
 export interface DescribeTargetsProps {
   /**
    * RDF URIs of object to describe
@@ -10,19 +13,31 @@ export interface DescribeTargetsProps {
  * UI form element to for list of RDF Uris to include in a DESCRIBE query
  * @category React component
  */
-export function DescribeTargets(props: DescribeTargetsProps) {
+export function DescribeTargets(props: DescribeTargetsProps): JSX.Element {
+  /**
+   * Event handler factory to update target uri
+   * @param index the index in the list of targets to update
+   */
   const updateDescribeTarget = (index: number) => {
-    return (event: React.ChangeEvent<HTMLInputElement>) => {
+    return (event: React.ChangeEvent<HTMLInputElement>): void => {
       const targets = props.targets;
       targets[index] = event.target.value;
       props.onChange(targets);
     };
   };
+  /**
+   * Adds a new empty input field
+   */
   const add = () => {
     const targets = props.targets;
     targets.push('');
     props.onChange(targets);
   };
+  /**
+   * removes input field
+   *
+   * @param index index of the field in the list of targets
+   */
   const remove = (index: number) => {
     const targets = props.targets;
     targets.splice(index, 1);

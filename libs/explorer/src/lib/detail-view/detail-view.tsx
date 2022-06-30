@@ -25,6 +25,9 @@ const WIKIDATA_SPARQL_ENDPOINT = 'https://query.wikidata.org/sparql';
  */
 const WIKIDATA_JOIN_ATTRIBUTE = 'http://schema.org/sameAs';
 
+/**
+ * Type definition of mandatory and optional properties of the {@link DetailView} component
+ */
 export interface DetailViewProps {
   selectedObject: string;
   data?: DataSet;
@@ -32,6 +35,9 @@ export interface DetailViewProps {
   onSelect: (selectedObject: string) => void;
 }
 
+/**
+ * Type definition of internal state of the {@link TableView} component
+ */
 interface DetailViewState {
   detailsStatus: LoadingStatus;
   wikidataStatus: LoadingStatus;
@@ -48,7 +54,7 @@ interface DetailViewState {
  * @category React Component
  */
 export class DetailView extends Component<DetailViewProps, DetailViewState> {
-  private wikidataDataSource: RemoteDataSource;
+  private wikidataDataSource: DataSource;
 
   constructor(props: DetailViewProps) {
     super(props);
@@ -61,7 +67,7 @@ export class DetailView extends Component<DetailViewProps, DetailViewState> {
     this.loadDetails();
   }
 
-  override componentDidUpdate(prevProps: Readonly<DetailViewProps>) {
+  override componentDidUpdate(prevProps: Readonly<DetailViewProps>): void {
     if (this.props.selectedObject !== prevProps.selectedObject) {
       this.setState(
         {
@@ -74,9 +80,15 @@ export class DetailView extends Component<DetailViewProps, DetailViewState> {
     }
   }
 
-  private initRemoteSource(source: string) {
+  /**
+   * Provides a {@link DataSource} instance for the passed endpoint
+   *
+   * @param endpoint url of the sparql endpoint
+   * @returns the {@link DataSource} instance
+   */
+  private initRemoteSource(endpoint: string): DataSource {
     const httpClient: HttpClient = new FetchHttpClient();
-    return new RemoteDataSource(new HttpSparqlRepository(source, httpClient));
+    return new RemoteDataSource(new HttpSparqlRepository(endpoint, httpClient));
   }
 
   /**
@@ -108,16 +120,22 @@ export class DetailView extends Component<DetailViewProps, DetailViewState> {
       );
   }
 
+  /**
+   * Checks if the selected object is linked to a WikiData object and makes a request to the WikiData endpoint if so. The returned data is added to the loaded graph.
+   *
+   * @param selected the uri of the object to load details for
+   * @param graph a graph which contains details for the selected object
+   */
   private resolveWikiDataFor(selected: string, { graph }: DataSet): void {
     if (
       !graph?.hasNode(selected) ||
       !graph?.getNodeAttribute(selected, WIKIDATA_JOIN_ATTRIBUTE)
     ) {
       // no join information is available to base a wikidata query on
-      this.setWikiDataStatus(LoadingStatus.SKIPPED);
+      this.setStatusOfWikiDataRequest(LoadingStatus.SKIPPED);
       return;
     }
-    this.setWikiDataStatus(LoadingStatus.PENDING);
+    this.setStatusOfWikiDataRequest(LoadingStatus.PENDING);
     const sameAs = graph?.getNodeAttribute(selected, WIKIDATA_JOIN_ATTRIBUTE);
     this.wikidataDataSource
       .addInformation(graph, wikidataQuery(selected, sameAs))
@@ -128,17 +146,22 @@ export class DetailView extends Component<DetailViewProps, DetailViewState> {
           data: ds,
         })
       )
-      .catch(() => this.setWikiDataStatus(LoadingStatus.ERROR));
+      .catch(() => this.setStatusOfWikiDataRequest(LoadingStatus.ERROR));
   }
 
-  private setWikiDataStatus(wikidataStatus: LoadingStatus) {
+  /**
+   * Updates the progress of the wikidata request
+   *
+   * @param wikidataStatus the new status
+   */
+  private setStatusOfWikiDataRequest(wikidataStatus: LoadingStatus): void {
     this.setState({
       ...this.state,
       wikidataStatus,
     });
   }
 
-  public override render() {
+  public override render(): JSX.Element {
     return (
       <div className="bg-white pt-4">
         <LoadingBar steps={this.currentProgress()}></LoadingBar>
@@ -161,6 +184,11 @@ export class DetailView extends Component<DetailViewProps, DetailViewState> {
     );
   }
 
+  /**
+   * Converts the loading progress from the state to a list supported by the progress bar component.
+   *
+   * @returns list of steps to be passed to the progress bar component
+   */
   private currentProgress(): Step[] {
     return [
       {

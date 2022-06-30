@@ -27,6 +27,9 @@ import { Dialog } from '@headlessui/react';
 import SearchDialog, { Match } from './search-dialog/search-dialog';
 import ExploreDialog from './dialog/dialog';
 
+/**
+ * Type definition of mandatory and optional properties of the {@link Explorer} component
+ */
 export interface ExplorerProps {
   /** URL pointing to a remote SPARQL dndpoint */
   sparqlEndpoint: string;
@@ -135,11 +138,14 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
     this.handleGraphSelectionChanged =
       this.handleGraphSelectionChanged.bind(this);
-    this.setStateLoaded = this.setStateLoaded.bind(this);
+    this.loadingCompleted = this.loadingCompleted.bind(this);
     this.detailViewRef = createRef();
   }
 
-  override componentDidMount() {
+  /**
+   * React-Lifecycle-Hook used to initiate loading of default query once the component after the page was opened.
+   */
+  override componentDidMount(): void {
     this.loadSparql(DEFAULT_QUERY);
   }
 
@@ -147,8 +153,10 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
    * Selects the given uri across the whole page
    *
    * Closes any open dialog to return focus to the base page with the new selection
+   *
+   * @param uri the URI of the selected object in the graph or null to remove selection
    */
-  private handleSelectionChange(uri: string | null) {
+  private handleSelectionChange(uri: string | null): void {
     this.setState({
       selectedObjectChangeFromOthers: uri,
       dialog: Dialogs.NONE,
@@ -157,17 +165,24 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
 
   /**
    * Special click handler for the graph to avoid redrawing
+   *
+   * @param clickedNode the URI of the selected object in the graph  or null to remove selection
    */
-  private handleGraphSelectionChanged(clickedNode: string | null) {
+  private handleGraphSelectionChanged(clickedNode: string | null): void {
     this.setState({ selectedObject: clickedNode });
   }
 
-  private setStateLoaded() {
+  /**
+   * Marks the component as loaded once the data has been processed and is shown to the user.
+   */
+  private loadingCompleted(): void {
     this.setState({ status: Status.LOADED });
   }
 
   /**
    * Takes changed queries from the SPARQL editor and executes them through the set data source
+   *
+   * @param sparql valid sparql query
    */
   private loadSparql(sparql: string): void {
     // TODO Create a loading status separation between request & response processing
@@ -205,7 +220,11 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
       });
   }
 
-  public override render() {
+  /**
+   * Combines the different sections to create the Explorer page
+   * @returns Explorer page
+   */
+  public override render(): JSX.Element {
     return (
       <>
         {this.renderHeader()}
@@ -220,6 +239,8 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
 
   /**
    * Adds all dialogs to the component tree
+   *
+   * @returns Fragement with all dialog components
    */
   private renderDialogs(): JSX.Element {
     return (
@@ -280,6 +301,8 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
 
   /**
    * Displays the passed dialog, pass `Dialogs.NONE` to hide the current dialog.
+   *
+   * @param dialog reference to the dialog to show
    */
   private showDialog(dialog: Dialogs): () => void {
     return () => this.setState({ ...this.state, dialog });
@@ -287,6 +310,8 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
 
   /**
    * Creates the header bar at the top of the page
+   *
+   * @retuns page header
    */
   private renderHeader(): JSX.Element {
     return (
@@ -340,6 +365,11 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     );
   }
 
+  /**
+   * Converts the Status stored in the state to a step list that can be passed to the progress bar component
+   *
+   * @returns list of steps for each part of the loading process
+   */
   private loadingStatus(): Step[] {
     return [
       {
@@ -376,6 +406,8 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
 
   /**
    * Creates the section displaying the result (dataset or status)
+   *
+   * @returns the upper section with the results
    */
   private resultsView(): JSX.Element {
     if (this.state.data?.graph) {
@@ -387,11 +419,12 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
             this.state.selectedObjectChangeFromOthers
           }
           handleSelectionChangeFromOthers={this.handleSelectionChange}
-          setStateLoaded={this.setStateLoaded}
+          setStateLoaded={this.loadingCompleted}
         ></MemoizedGraphView>
       );
     }
     if (this.state.data?.tabular) {
+      this.loadingCompleted();
       return (
         <div className="max-w-7xl mx-auto mb-4 mt-4">
           <TableView data={this.state?.data}></TableView>
@@ -411,6 +444,11 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     return this.resultSectionNoRequest();
   }
 
+  /**
+   * Creates an inline notification to indicate that no data was loaded
+   *
+   * @returns inline notification fragement
+   */
   private resultSectionNoRequest(): JSX.Element {
     return this.inlineNotification(
       <>
@@ -428,6 +466,11 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     );
   }
 
+  /**
+   * Creates an inline notification to indicate that data is being loaded
+   *
+   * @returns inline notification fragement
+   */
   private resultSectionLoading(): JSX.Element {
     return this.inlineNotification(
       <>
@@ -438,6 +481,11 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     );
   }
 
+  /**
+   * Creates an inline notification to indicate that data failed to load
+   *
+   * @returns inline notification fragement
+   */
   private resultSectionError(): JSX.Element {
     return this.inlineNotification(
       <>
@@ -451,6 +499,11 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     );
   }
 
+  /**
+   * Creates an inline notification template
+   *
+   * @returns inline notification container
+   */
   private inlineNotification(content: JSX.Element): JSX.Element {
     return (
       <div className="px-4 py-6 max-w-5xl mx-auto">
@@ -459,6 +512,11 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     );
   }
 
+  /**
+   * Adds the section to show details of the selected object
+   *
+   * @returns detail view or help when detail view is supported by current data or null if not
+   */
   private detailView(): JSX.Element | null {
     if (!this.state.data?.graph) {
       return null; // only enable details when in graph view

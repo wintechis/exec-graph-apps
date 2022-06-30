@@ -9,6 +9,9 @@ export interface Option {
   label?: string;
 }
 
+/**
+ * Type definition of mandatory and optional properties of the {@link RDFTermInput} component
+ */
 export interface RDFTermInputProps {
   inputName?: string;
   value: string;
@@ -24,7 +27,7 @@ export interface RDFTermInputProps {
  *
  * @category React Component
  */
-export function RDFTermInput(props: RDFTermInputProps) {
+export function RDFTermInput(props: RDFTermInputProps): JSX.Element {
   const [query, setQuery] = useState('');
   const currentValue = React.useMemo(
     () =>

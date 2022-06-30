@@ -1,3 +1,6 @@
+/**
+ * Type definition of mandatory and optional properties of the {@link DetailEntry} component
+ */
 export interface DetailEntryProps {
   label: string | number | JSX.Element;
   value: string | number | JSX.Element;

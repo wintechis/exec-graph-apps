@@ -1,10 +1,16 @@
+/**
+ * Type definition of mandatory and optional properties of the {@link TabBar} component
+ */
 export interface TabBarProps<T> {
   selected?: T;
   options: { value: T; label: string }[];
   onChange: (selected: T) => void;
 }
 
-export function TabBar<T>(props: TabBarProps<T>) {
+/**
+ * Creates a tab-style selector element
+ */
+export function TabBar<T>(props: TabBarProps<T>): JSX.Element {
   return (
     <div className="flex px-4">
       {props.options.map((option, index) => (

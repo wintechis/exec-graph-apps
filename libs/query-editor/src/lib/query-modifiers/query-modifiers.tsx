@@ -1,5 +1,8 @@
 import { Modifiers } from './query.types';
 
+/**
+ * Type definition of mandatory and optional properties of the {@link QueryModifiers} component
+ */
 export interface QueryModifiersProps {
   modifiers: Modifiers;
   onChange: (modifiers: Modifiers) => void;
@@ -12,7 +15,7 @@ export interface QueryModifiersProps {
  *
  * @category React component
  */
-export function QueryModifiers(props: QueryModifiersProps) {
+export function QueryModifiers(props: QueryModifiersProps): JSX.Element {
   const onChange = (mod: keyof Modifiers) => {
     return (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
       const modifiers = props.modifiers;

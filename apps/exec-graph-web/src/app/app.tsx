@@ -28,7 +28,7 @@ function classNames(...classes: string[]) {
  *
  * @category React Component
  */
-export function App() {
+export function App(): JSX.Element {
   return (
     <div className="h-full flex flex-col">
       <Disclosure as="nav" className="bg-fau-dark-blue">

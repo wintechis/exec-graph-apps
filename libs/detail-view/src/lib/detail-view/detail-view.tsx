@@ -14,6 +14,9 @@ function formatLabel(label: string): string {
   return URI_REGEX.test(label) ? label : toTitleCase(label);
 }
 
+/**
+ * Type definition of mandatory and optional properties of the {@link DetailView} component
+ */
 export interface DetailViewProps {
   data: DataSet;
   selectedObject: string;
@@ -23,6 +26,7 @@ export interface DetailViewProps {
 
 const PROPERTY_WIKIDATA_LOGO = 'http://www.wikidata.org/prop/direct/P154';
 const PROPERTY_WIKIDATA_IMAGE = 'http://www.wikidata.org/prop/direct/P18';
+
 /**
  * Displays the details of a selected node in the graph
  *
@@ -36,6 +40,12 @@ export function DetailView(props: DetailViewProps) {
     return <h3>Failed to load information for selected object</h3>;
   }
 
+  /**
+   * Extracts a label for an graph object without erroring if not defined
+   *
+   * @param uri object to get a label for
+   * @returns the label or uri
+   */
   const getObjectLabelFromGraph = (uri: string) =>
     getObjectLabel(uri, graph.hasNode(uri) ? graph.getNodeAttributes(uri) : {});
 

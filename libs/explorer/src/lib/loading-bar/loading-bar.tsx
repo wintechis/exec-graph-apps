@@ -11,6 +11,12 @@ export enum LoadingStatus {
   SKIPPED = 'bg-gray-300',
 }
 
+/**
+ * Maps a {@link LoadingStatus} value to a human friendly label
+ *
+ * @param status the value to be mapped
+ * @returns human name of loading status
+ */
 function loadingStatusLabel(status: LoadingStatus): string {
   switch (status) {
     case LoadingStatus.NOT_STARTED:
@@ -37,6 +43,9 @@ export interface Step {
   width: 'w-1/6' | 'w-2/6' | 'w-3/6' | 'w-4/6' | 'w-5/6';
 }
 
+/**
+ * Type definition of mandatory and optional properties of the {@link LoadingBar} component
+ */
 export interface LoadingBarProps {
   steps: Step[];
 }
@@ -46,7 +55,7 @@ export interface LoadingBarProps {
  *
  * @category React Component
  */
-export function LoadingBar(props: LoadingBarProps) {
+export function LoadingBar(props: LoadingBarProps): JSX.Element {
   return (
     <div className="group mt-2">
       <div className="h-1 group-hover:h-auto flex text-[0px] group-hover:text-xs motion-safe:transition-all">

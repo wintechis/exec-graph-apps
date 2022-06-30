@@ -52,6 +52,9 @@ export interface Match {
   label: string;
 }
 
+/**
+ * Type definition of mandatory and optional properties of the {@link SearchDialog} component
+ */
 export interface SearchDialogProps {
   dataSource: DataSource;
   queryLocal?: (query: string) => Match[];
