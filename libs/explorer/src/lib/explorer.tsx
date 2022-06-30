@@ -173,7 +173,6 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
       selectedObject: clickedNode,
       selectedObjectChangeFromOthers: clickedNode,
     });
-
   }
 
   /**
