@@ -21,7 +21,7 @@ function OverviewGraphView(props: OverviewGraphViewProps) {
         defaultNodeType: 'image',
         defaultNodeColor: 'white',
       }}
-      style={{ height: '50vh', backgroundColor: '#F3F4F6' }}
+      style={{ height: '70vh', backgroundColor: '#F3F4F6' }}
     >
       <OverviewAppearance />
       <EventsController />

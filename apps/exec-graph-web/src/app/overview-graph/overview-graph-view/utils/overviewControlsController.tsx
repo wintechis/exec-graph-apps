@@ -7,7 +7,7 @@ export interface ControlsProps {
 function Controls(props: ControlsProps) {
   return (
     <div>
-      <ControlsContainer position="top-left">
+      <ControlsContainer position="top-left" className="ml-2 mt-4">
         <ZoomControl />
       </ControlsContainer>
     </div>

@@ -24,7 +24,7 @@ const HIGHLIGHT_CLASSES = [
   },
   {
     uri: 'http://schema.org/EmployeeRole',
-    label: 'Positions (Person employed at a Company)',
+    label: 'Positions (Relationships between a person and organisation)',
     icon: '💼',
   },
   {
@@ -34,7 +34,7 @@ const HIGHLIGHT_CLASSES = [
   },
   {
     uri: 'http://schema.org/EducationalOccupationalProgram',
-    label: 'Alumni Associations (Person studied at a University)',
+    label: 'Alumni Associations (Educational credentials awarded)',
     icon: '🎓',
   },
   { uri: 'http://schema.org/City', label: 'Cities', icon: '🏙️' },

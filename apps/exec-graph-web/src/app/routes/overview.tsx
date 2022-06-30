@@ -71,9 +71,7 @@ export class Overview extends Component<OverviewProps> {
           </div>
         </header>
         <main>
-          <div className="py-6 sm:px-6 lg:px-8">
-            <OverviewGraph dataSource={this.dataSource} />
-          </div>
+          <OverviewGraph dataSource={this.dataSource} />
           <div className="py-6 sm:px-6 lg:px-8 bg-white shadow-sm">
             <div className="px-4 py-6 sm:px-0 max-w-7xl mx-auto">
               <div className="text-center mb-4">
@@ -85,27 +83,27 @@ export class Overview extends Component<OverviewProps> {
           <div className="py-6 sm:px-6 lg:px-8">
             <div className="px-4 py-6 sm:px-0 max-w-5xl mx-auto">
               <div className="grid grid-cols-1 gap-8 xl:gap-12 sm:grid-cols-3">
-                <a
-                  className="block bg-white p-4 pt-8 font-bold rounded shadow-sm fau-link w-full"
-                  href="./about"
+                <Link
+                  to="/about"
+                  className="bg-white p-4 pt-8 font-bold rounded shadow-sm fau-link"
                 >
                   <ChevronRightIcon className="w-6 h-6 mb-2"></ChevronRightIcon>
                   Learn more about the project
-                </a>
-                <a
+                </Link>
+                <Link
+                  to="/explore"
                   className="bg-white p-4 pt-8 font-bold rounded shadow-sm fau-link"
-                  href="./about"
                 >
                   <ShareIcon className="w-6 h-6 mb-2"></ShareIcon>
                   Explore the graph
-                </a>
-                <a
+                </Link>
+                <Link
+                  to="/faq"
                   className="bg-white p-4 pt-8 font-bold rounded shadow-sm fau-link"
-                  href="./about"
                 >
                   <QuestionMarkCircleIcon className="w-6 h-6 mb-2"></QuestionMarkCircleIcon>
                   Check the FAQs
-                </a>
+                </Link>
               </div>
             </div>
           </div>
