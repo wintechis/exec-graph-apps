@@ -51,7 +51,7 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
       props.dataSource
     );
     this.state = {
-      editorKey: 'form',
+      editorKey: 'library',
       sparql: props.sparql,
       valid: this.sparqlValidator.validate(props.sparql),
       rdfAutocompletion: this.rdfAutocompletionService.initState(
@@ -111,7 +111,9 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
     );
 
     const currentEditor =
-      this.state.editorKey === 'form' ? (
+      this.state.editorKey === 'library' ? (
+        <QueryLibrary onSelect={this.handleChange}></QueryLibrary>
+      ) : this.state.editorKey === 'advanced' ? (
         <AdvancedEditor
           sparql={this.state.sparql}
           onChange={this.handleChange}
@@ -136,7 +138,8 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
             <TabBar
               selected={this.state.editorKey}
               options={[
-                { label: 'Advanced', value: 'form' },
+                { label: 'Libary', value: 'library' },
+                { label: 'Advanced', value: 'advanced' },
                 { label: 'SPARQL', value: 'sparql' },
               ]}
               onChange={this.switchTo}

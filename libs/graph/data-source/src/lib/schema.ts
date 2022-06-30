@@ -72,6 +72,7 @@ export const DEFAULT_SCHEMA: Schema = {
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#currentlyWorksAt',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#hasWorkConnection',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#workConnection',
+    'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#hasEducationConnection',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#educationConnection',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#birthPlaceConnection',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#hasAlumni',
@@ -87,5 +88,6 @@ export const DEFAULT_SCHEMA: Schema = {
     'http://schema.org/birthPlace',
     'http://schema.org/author',
     'http://schema.org/sourceOrganization',
+    'http://schema.org/alumniOf',
   ],
 };
