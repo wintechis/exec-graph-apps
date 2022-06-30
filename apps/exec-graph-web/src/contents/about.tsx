@@ -6,7 +6,7 @@
 /* eslint-disable react/jsx-no-target-blank */
 // react/jsx-no-target-blank: is not a concern for the links to other FAU pages
 
-import { environment } from "../environments/environment";
+import { environment } from '../environments/environment';
 
 /**
  * Content of the first section on the about page to introduce the project.
@@ -124,6 +124,21 @@ export const CONTACT = {
           name: 'Julian Grümmer, M.Sc',
           position: 'Research Assistant',
         },
+        {
+          imgPath: 'https://via.placeholder.com/150x200?text=Placeholder',
+          name: 'Anna-Sophia Kurzidem, B.A.',
+          position: 'Student Research Assistant',
+        },
+        {
+          imgPath: 'https://via.placeholder.com/150x200?text=Placeholder',
+          name: 'Dominik von Tucher, B.A.',
+          position: 'Student Research Assistant',
+        },
+        {
+          imgPath: 'https://via.placeholder.com/150x200?text=Placeholder',
+          name: 'Lena Judenmann, B.A.',
+          position: 'Student Research Assistant',
+        },
       ],
     },
     {
@@ -136,13 +151,18 @@ export const CONTACT = {
           position: null,
         },
         {
-          imgPath: environment.basepath + 'assets/people/GruemmerJulian.png',
+          imgPath: 'https://via.placeholder.com/150x200?text=Placeholder',
           name: 'Tim Denzler, M.Sc.',
           position: 'Student Research Assistant',
         },
         {
-          imgPath: environment.basepath + 'assets/people/GruemmerJulian.png',
+          imgPath: 'https://via.placeholder.com/150x200?text=Placeholder',
           name: 'Pornchana Kveeyan, M.Sc.',
+          position: 'Student Research Assistant',
+        },
+        {
+          imgPath: 'https://via.placeholder.com/150x200?text=Placeholder',
+          name: 'Sarah Hackl, B.A.',
           position: 'Student Research Assistant',
         },
         {
