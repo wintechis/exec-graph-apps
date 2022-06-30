@@ -30,5 +30,5 @@
     ]
   },
   "requiredToBeDocumented": ["Class", "Enum", "Interface"],
-  "validation":{"notDocumented": true}
+  "validation": { "notDocumented": true }
 }

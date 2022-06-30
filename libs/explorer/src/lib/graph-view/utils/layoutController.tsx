@@ -100,7 +100,7 @@ export function SetLayout(
   const minDegree = Math.min(...scores);
   const maxDegree = Math.max(...scores);
   const MIN_NODE_SIZE = 3;
-  const MAX_NODE_SIZE = 30;
+  const MAX_NODE_SIZE = 15;
   graph.forEachNode((node) =>
     graph.setNodeAttribute(
       node,
@@ -118,7 +118,7 @@ export function SetLayout(
   //   counter = counter + 1;
   // });
 
-  graph.forEachEdge((key: string, attributes: Attributes) => {
+  /*graph.forEachEdge((key: string, attributes: Attributes) => {
     // const fullPred = `${attributes["predicate"]}`
     // const pred = fullPred.split("/").pop()?.split("#").pop()
 
@@ -128,7 +128,7 @@ export function SetLayout(
     const source = graph.source(key);
     const color = graph.getNodeAttribute(source, 'color');
     graph.setEdgeAttribute(key, 'color', color);
-  });
+  });*/
 
   graph.forEachNode((node) => {
     if (graph.getNodeAttribute(node, 'score') === 0) graph.dropNode(node);
