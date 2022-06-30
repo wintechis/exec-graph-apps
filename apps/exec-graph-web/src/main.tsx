@@ -1,13 +1,17 @@
-import { StrictMode } from 'react';
+import { lazy, StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Explorer } from '@exec-graph/explorer';
 
 import App from './app/app';
-import About from './app/routes/about';
-import FAQ from './app/routes/faq';
 import Overview from './app/routes/overview';
 import { environment } from './environments/environment';
+
+const Explorer = lazy(() =>
+  // react only supports default imports, so correct the import:
+  import('@exec-graph/explorer').then((lib) => ({ default: lib.Explorer }))
+);
+const About = lazy(() => import('./app/routes/about'));
+const FAQ = lazy(() => import('./app/routes/faq'));
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

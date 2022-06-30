@@ -29,4 +29,6 @@ function OverviewGraphView(props: OverviewGraphViewProps) {
   );
 }
 
-export const MemoizedOverviewGraph = memo(OverviewGraphView);
+const MemoizedOverviewGraph = memo(OverviewGraphView);
+
+export default MemoizedOverviewGraph;

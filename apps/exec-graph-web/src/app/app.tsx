@@ -4,6 +4,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import Footer from './footer';
 
 import fauLogoSvg from '../assets/FAU_Logo_Bildmarke.svg';
+import { Suspense } from 'react';
 
 /**
  * List of pages that should be featured in the navigation bar/menu
@@ -106,7 +107,9 @@ export function App(): JSX.Element {
       </Disclosure>
 
       <div className="grow">
-        <Outlet />
+        <Suspense>
+          <Outlet />
+        </Suspense>
       </div>
       <Footer />
     </div>

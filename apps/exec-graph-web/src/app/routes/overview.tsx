@@ -9,10 +9,14 @@ import {
   QuestionMarkCircleIcon,
   ShareIcon,
 } from '@heroicons/react/outline';
-import { Component } from 'react';
+import { Component, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import GraphStatistics from '../graph-statistics/graph-statistics';
-import OverviewGraph from '../overview-graph/overview-graph';
+
+/**
+ * Increase time to interactive of the overall page by deferring the graph
+ */
+const OverviewGraph = lazy(() => import('../overview-graph/overview-graph'));
 
 /**
  * Type definition of mandatory and optional properties of the {@link Overview} component
@@ -71,7 +75,13 @@ export class Overview extends Component<OverviewProps> {
           </div>
         </header>
         <main>
-          <OverviewGraph dataSource={this.dataSource} />
+          <Suspense
+            fallback={
+              <div className="h-48 flex items-center justify-center"></div>
+            }
+          >
+            <OverviewGraph dataSource={this.dataSource} />
+          </Suspense>
           <div className="py-6 sm:px-6 lg:px-8 bg-white shadow-sm">
             <div className="px-4 py-6 sm:px-0 max-w-7xl mx-auto">
               <div className="text-center mb-4">

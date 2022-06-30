@@ -1,17 +1,19 @@
 import { RemoteDataSource } from '@exec-graph/graph/data-source-remote';
 import { DataSet } from '@exec-graph/graph/types';
 import { RefreshIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
-import { useState, useEffect } from 'react';
-import { MemoizedOverviewGraph } from './overview-graph-view/overview-graph-view';
+import { useState, useEffect, lazy } from 'react';
 import { SetLayout } from './overview-graph-view/utils/overviewLayoutController';
 
 import backgroundImg from '../../assets/ExampleGraph.png';
+
+const OverviewGraphView = lazy(
+  () => import('./overview-graph-view/overview-graph-view')
+);
 
 const OVERVIEW_QUERY = `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 PREFIX schema: <http://schema.org/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-CONSTRUCT {?s ?p ?o}
 CONSTRUCT {?s ?p1 ?l. ?s ?p2 ?o.}
 WHERE {
     ?s ?p1 ?l.
@@ -19,6 +21,8 @@ WHERE {
     ?s rdf:type ?cS.
     ?o rdf:type ?cO.
     FILTER (?cS IN ( schema:City, schema:Person, schema:Organization, schema:CollegeOrUniversity ) )
+    FILTER (?oO IN ( schema:City, schema:Person, schema:Organization, schema:CollegeOrUniversity ) )
+    FILTER (?p1 IN ( rdf:type, rdfs:label ))
 }`;
 
 /**
@@ -77,7 +81,7 @@ export function OverviewGraph(props: OverviewGraphProps) {
   if (data) {
     return (
       <div>
-        <MemoizedOverviewGraph data={data}></MemoizedOverviewGraph>
+        <OverviewGraphView data={data}></OverviewGraphView>
       </div>
     );
   } else if (error) {

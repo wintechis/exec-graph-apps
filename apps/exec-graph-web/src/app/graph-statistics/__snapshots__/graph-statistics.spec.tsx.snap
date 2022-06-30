@@ -59,7 +59,7 @@ exports[`GraphStatistics should render successfully 1`] = `
         <div
           class="mt-2 text-center"
         >
-          Positions (Person employed at a Company)
+          Positions (Relationships between a person and organisation)
         </div>
       </div>
       <div
@@ -87,7 +87,7 @@ exports[`GraphStatistics should render successfully 1`] = `
         <div
           class="mt-2 text-center"
         >
-          Alumni Associations (Person studied at a University)
+          Alumni Associations (Educational credentials awarded)
         </div>
       </div>
       <div
