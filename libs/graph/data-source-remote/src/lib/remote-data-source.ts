@@ -70,10 +70,7 @@ export class RemoteDataSource implements DataSource {
   }
 
   /**
-   * Processes sparql queries that produce a graph
-   *
-   * @param sparql a SPARQL CONSTRUCT or DESCRIBE query
-   * @returns DataSet with graph data
+   * @inheritdoc
    */
   public addInformation(oldGraph: g.default, sparql: string): Promise<DataSet> {
     return this.sparqlRepository.construct(sparql).then((res) => {

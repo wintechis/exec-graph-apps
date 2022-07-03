@@ -9,6 +9,8 @@ export const URI_REGEX =
 
 /**
  * Capitalizes the first letter of each word, similar to title caseing.
+ *
+ * @param str the string to convert
  */
 export function toTitleCase(str: string): string {
   return str

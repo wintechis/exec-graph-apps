@@ -1,0 +1,23 @@
+{
+  "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
+  "sourceRoot": "libs/explorer/detail-view/src",
+  "projectType": "library",
+  "tags": ["lib:view", "area:explorer"],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/explorer/detail-view/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/explorer/detail-view"],
+      "options": {
+        "jestConfig": "libs/explorer/detail-view/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

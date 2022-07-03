@@ -1,12 +1,16 @@
-import * as g from 'graphology';
+import { Graph } from '@exec-graph/graph/types';
+import { MultiDirectedGraph } from 'graphology';
 import { Quad } from 'n3';
 import { RdfToGraphTranslator } from './rdf-to-graph-translator';
 
-type GraphOptions = {
+/**
+ * Options to configure a new graph instances
+ */
+interface GraphOptions {
   allowSelfLoops?: boolean;
   multi?: boolean;
   type?: 'mixed' | 'directed' | 'undirected';
-};
+}
 
 /**
  * Maps from RDF Quads to a Graphology graph using the provided translator.
@@ -20,12 +24,14 @@ export abstract class AbstractGraphBuilder {
   private retryQuads: Quad[] = [];
 
   constructor(
-    protected readonly graph: g.default,
+    protected readonly graph: Graph,
     protected readonly translator: RdfToGraphTranslator
   ) {}
 
   /**
    * Takes a quad and adds its subject as a node to the graph or adds its information to an existing node with the same identifier
+   *
+   * @param quad quad to extract node id and type from
    */
   addAsNode(quad: Quad): void {
     const typeAttr = this.translator.quadToAttribute(quad);
@@ -46,6 +52,7 @@ export abstract class AbstractGraphBuilder {
 
   /**
    * Takes a quad and adds a directed egde between its subject and object.
+   * @param quad quad to extract edge target, source and type from
    */
   addAsEdge(quad: Quad): void {
     if (!this.graph.hasNode(quad.subject.id)) {
@@ -65,6 +72,7 @@ export abstract class AbstractGraphBuilder {
 
   /**
    * Takes a quad and adds its predicate and object as attribute to the subjects node
+   * @param quad quad to extract attribute key, subject and value from
    */
   addAsAttributeToNode(quad: Quad): void {
     if (!this.graph.hasNode(quad.subject.id)) {
@@ -80,7 +88,7 @@ export abstract class AbstractGraphBuilder {
 
   /**
    * Takes a list of quads and adds each to the graph using
-   * the @see RdfToGraphTranslator.
+   * the {@link RdfToGraphTranslator}.
    *
    * @param quads list of quads from an RDF document
    */
@@ -106,7 +114,7 @@ export abstract class AbstractGraphBuilder {
    *
    * @returns the completed graph
    */
-  public getGraph(): g.default {
+  public getGraph(): Graph {
     this.addQuads(this.retryQuads);
     return this.graph;
   }
@@ -135,10 +143,7 @@ export abstract class AbstractGraphBuilder {
  */
 export class GraphBuilder extends AbstractGraphBuilder {
   constructor(graphOptions: GraphOptions, translator: RdfToGraphTranslator) {
-    super(
-      new g.MultiDirectedGraph({ ...graphOptions, multi: true }),
-      translator
-    );
+    super(new MultiDirectedGraph({ ...graphOptions, multi: true }), translator);
   }
 }
 
@@ -151,7 +156,7 @@ export class GraphBuilder extends AbstractGraphBuilder {
  * @author juliusstoerrle
  */
 export class AddToGraphBuilder extends AbstractGraphBuilder {
-  constructor(graph: g.default, translator: RdfToGraphTranslator) {
+  constructor(graph: Graph, translator: RdfToGraphTranslator) {
     super(graph, translator);
   }
 }
