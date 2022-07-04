@@ -8,12 +8,12 @@ import { Attributes } from 'graphology-types';
 import { useEffect, useState } from 'react';
 
 const NODE_FADE_COLOR = '#bbb';
-// const EDGE_FADE_COLOR = "#eee";
 
 export interface EventControllerProps {
-  setSelectedObject: (clickedNode: string | null) => void;
+  explorer: boolean;
+  setSelectedObject?: (clickedNode: string | null) => void;
   selectedObjectChangeFromOthers?: string | null;
-  setStateLoaded: () => void;
+  setStateLoaded?: () => void;
 }
 
 export function EventsController(props: EventControllerProps) {
@@ -31,6 +31,9 @@ export function EventsController(props: EventControllerProps) {
   const [nodeDown, setNodeDown] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!props.explorer) return;
+    if (!props.setSelectedObject) return;
+
     if (
       props.selectedObjectChangeFromOthers &&
       graph.hasNode(props.selectedObjectChangeFromOthers)
@@ -46,43 +49,71 @@ export function EventsController(props: EventControllerProps) {
   }, [graph, props, reset]);
 
   useEffect(() => {
-    registerEvents({
-      enterNode: (event) => setHoveredNode(event.node),
-      leaveNode: () => setHoveredNode(null),
-      clickNode: (event) => {
-        props.setSelectedObject(event.node);
-        setClickedNode(event.node);
-      },
-      clickStage: () => {
-        graph.forEachNode((key, attributes) => {
-          attributes['highlighted'] = false;
-        });
-        props.setSelectedObject(null);
-        setClickedNode(null);
-      },
-      downNode: (event) => setNodeDown(event.node),
-      mouseup: () => setNodeDown(null),
-      mousemove: (event) => {
-        setXCoord(event.x);
-        setYCoord(event.y);
+    if (props.explorer) {
+      registerEvents({
+        enterNode: (event) => setHoveredNode(event.node),
+        leaveNode: () => setHoveredNode(null),
+        clickNode: (event) => {
+          if (props.setSelectedObject) {
+            props.setSelectedObject(event.node);
+            setClickedNode(event.node);
+          }
+        },
+        clickStage: () => {
+          if (props.setSelectedObject) {
+            graph.forEachNode((key, attributes) => {
+              attributes['highlighted'] = false;
+            });
+            props.setSelectedObject(null);
+            setClickedNode(null);
+          }
+        },
+        downNode: (event) => setNodeDown(event.node),
+        mouseup: () => setNodeDown(null),
+        mousemove: (event) => {
+          setXCoord(event.x);
+          setYCoord(event.y);
 
-        if (nodeDown) {
+          if (nodeDown) {
+            event.preventSigmaDefault();
+            event.original.preventDefault();
+            event.original.stopPropagation();
+          } else {
+            event.sigmaDefaultPrevented = false;
+          }
+        },
+      });
+    } else {
+      registerEvents({
+        wheel: (event) => {
           event.preventSigmaDefault();
-          event.original.preventDefault();
-          event.original.stopPropagation();
-        } else {
-          event.sigmaDefaultPrevented = false;
-        }
-      },
-    });
+          event.sigmaDefaultPrevented = true;
+        },
+        enterNode: (event) => setHoveredNode(event.node),
+        leaveNode: () => setHoveredNode(null),
+      });
+
+      const container = document
+        .getElementsByClassName('sigma-mouse')
+        .item(0) as HTMLElement;
+      container?.addEventListener('wheel', (ev) => {
+        window.scroll({
+          behavior: 'auto',
+          top: window.scrollY + ev.deltaY,
+        });
+      });
+    }
   }, [graph, nodeDown, props, registerEvents]);
 
   useEffect(() => {
-    sigma.addListener('afterRender', () => props.setStateLoaded());
+    if (props.explorer)
+      sigma.addListener('afterRender', () => {
+        if (props.setStateLoaded) props.setStateLoaded();
+      });
   }, [props, sigma]);
 
   useEffect(() => {
-    if (nodeDown) {
+    if (props.explorer && nodeDown) {
       const coords = {
         x: xCoord,
         y: yCoord,
@@ -91,7 +122,11 @@ export function EventsController(props: EventControllerProps) {
       graph.setNodeAttribute(nodeDown, 'x', viewportCoords.x);
       graph.setNodeAttribute(nodeDown, 'y', viewportCoords.y);
     }
-  }, [graph, nodeDown, sigma, xCoord, yCoord]);
+  }, [graph, nodeDown, props.explorer, sigma, xCoord, yCoord]);
+
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
   useEffect(() => {
     let relevantNode = clickedNode

@@ -426,6 +426,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     if (this.state.data?.graph) {
       return (
         <GraphView
+          explorer={true}
           data={this.state.data}
           setSelectedObject={this.handleGraphSelectionChanged}
           selectedObjectChangeFromOthers={

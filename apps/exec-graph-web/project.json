@@ -17,8 +17,7 @@
         "tsConfig": "apps/exec-graph-web/tsconfig.app.json",
         "assets": [
           "apps/exec-graph-web/src/favicon.ico",
-          "apps/exec-graph-web/src/assets",
-          "apps/exec-graph-web/src/.htaccess"
+          "apps/exec-graph-web/src/assets"
         ],
         "styles": ["apps/exec-graph-web/src/styles.scss"],
         "scripts": [],

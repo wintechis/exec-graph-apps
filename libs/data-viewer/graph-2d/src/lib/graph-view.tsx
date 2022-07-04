@@ -10,14 +10,17 @@ import { MemorizedAppearance } from './utils/layoutController';
 import './graph-view.css';
 
 export interface GraphViewProps {
+  explorer: boolean;
   data: DataSet;
-  setSelectedObject: (clickedNode: string | null) => void;
+  setSelectedObject?: (clickedNode: string | null) => void;
   selectedObjectChangeFromOthers?: string | null;
-  handleSelectionChangeFromOthers: (uri: string | null) => void;
-  setStateLoaded: () => void;
+  handleSelectionChangeFromOthers?: (uri: string | null) => void;
+  setStateLoaded?: () => void;
 }
 
 function GraphView(props: GraphViewProps) {
+  const styleHeight = props.explorer ? '80vh' : '50vh';
+
   return (
     <SigmaContainer
       graph={props.data.graph}
@@ -27,13 +30,15 @@ function GraphView(props: GraphViewProps) {
         defaultNodeType: 'image',
         defaultNodeColor: 'white',
       }}
-      style={{ height: '80vh' }}
+      style={{ height: styleHeight }}
       className="graph"
     >
       <MemorizedAppearance
+        explorer={props.explorer}
         handleSelectionChangeFromOthers={props.handleSelectionChangeFromOthers}
       />
       <EventsController
+        explorer={props.explorer}
         setSelectedObject={props.setSelectedObject}
         selectedObjectChangeFromOthers={props.selectedObjectChangeFromOthers}
         setStateLoaded={props.setStateLoaded}

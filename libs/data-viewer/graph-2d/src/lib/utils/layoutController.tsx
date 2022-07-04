@@ -12,7 +12,8 @@ import { MemorizedControls } from './controlsController';
 import { icons } from '../icons/icons';
 
 export interface AppearanceProps {
-  handleSelectionChangeFromOthers: (uri: string | null) => void;
+  explorer: boolean;
+  handleSelectionChangeFromOthers?: (uri: string | null) => void;
 }
 
 function Appearance(props: AppearanceProps) {
@@ -22,7 +23,7 @@ function Appearance(props: AppearanceProps) {
   const { reset } = useCamera({ duration: animationDuration, factor: 1.5 });
   const settings = forceAtlas2.inferSettings(graph);
   const { positions } = useLayoutForceAtlas2({
-    iterations: 30,
+    iterations: 80,
     settings: settings,
   });
 
@@ -37,6 +38,7 @@ function Appearance(props: AppearanceProps) {
 
   return (
     <MemorizedControls
+      explorer={props.explorer}
       resetLayout={setLayout}
       handleSelectionChangeFromOthers={props.handleSelectionChangeFromOthers}
     />
