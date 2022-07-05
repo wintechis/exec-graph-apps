@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 
-import LoadingBar, { LoadingStatus } from './loading-bar';
+import LoadingBar from './loading-bar';
+import { LoadingStatus } from '../types';
 
 describe('LoadingBar', () => {
   it('should render successfully', () => {
