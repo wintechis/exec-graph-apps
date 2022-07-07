@@ -6,10 +6,75 @@
   --sigma-controls-size: 2rem;
   --sigma-controls-zindex: 30;
   --sigma-background-color: #f3f4f6;
+
+  --hover-opacity: 0.7;
+  --stage-padding: 0.5rem;
+  --panels-opened-width: 15vw;
+  --border-radius: 4px;
 }
 
 .react-sigma-control > button {
   justify-content: center;
   display: flex;
   align-items: center;
+}
+
+.panels {
+  width: auto;
+  max-height: 65vh;
+  overflow-y: auto;
+  padding: var(--stage-padding);
+}
+.react-sigma-controls ::-webkit-scrollbar {
+  width: 5px;
+}
+.react-sigma-controls ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.react-sigma-controls ::-webkit-scrollbar-thumb {
+  background-color: white;
+  border: transparent;
+  border-radius: var(--border-radius);
+}
+.panel > * {
+  color: white !important;
+}
+.panel > button {
+  cursor: pointer;
+}
+.panel > button > * {
+  vertical-align: middle;
+  display: inline-block;
+}
+.panel > button p {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.panel > button :last-child {
+  font-size: 1.5em;
+}
+.panel.opened {
+  padding: 0.5em;
+  width: var(--panels-opened-width);
+}
+.panel.opened > button {
+  width: calc(var(--panels-opened-width) - 2 * 0.5em);
+  text-align: left;
+  margin-bottom: 0.5em;
+}
+.panel.opened > :not(button) {
+  font-size: 0.9em;
+}
+.panel.opened > button :last-child {
+  position: absolute;
+  right: 0px;
+  margin-right: 1em;
+}
+.panel.closed > :not(button) {
+  display: none;
+}
+
+.panel button:hover,
+.panel a:hover {
+  opacity: var(--hover-opacity);
 }

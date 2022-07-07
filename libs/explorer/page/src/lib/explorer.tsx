@@ -11,7 +11,6 @@ import { TableView } from '@exec-graph/data-viewer/table';
 import { Component, createRef, RefObject } from 'react';
 import {
   AdjustmentsIcon,
-  ArrowDownIcon,
   ExclamationCircleIcon,
   FilterIcon,
   QuestionMarkCircleIcon,
@@ -144,6 +143,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     this.handleGraphSelectionChanged =
       this.handleGraphSelectionChanged.bind(this);
     this.loadingCompleted = this.loadingCompleted.bind(this);
+    this.handleScrollButtonClick = this.handleScrollButtonClick.bind(this);
     this.detailViewRef = createRef();
   }
 
@@ -178,6 +178,16 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
       selectedObject: clickedNode,
       selectedObjectChangeFromOthers: clickedNode,
     });
+  }
+
+  /**
+   * Click handler on scroll button for scrolling to the detail view
+   */
+  private handleScrollButtonClick() {
+    this.detailViewRef?.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
   }
 
   /**
@@ -434,6 +444,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
           }
           handleSelectionChangeFromOthers={this.handleSelectionChange}
           setStateLoaded={this.loadingCompleted}
+          handleScrollButtonClick={this.handleScrollButtonClick}
         ></GraphView>
       );
     }
@@ -535,25 +546,8 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     if (!this.state.data?.graph) {
       return null; // only enable details when in graph view
     }
-    const scrollButton = (
-      <div className="sticky bottom-0 h-0">
-        <button
-          onClick={() =>
-            this.detailViewRef?.current?.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start',
-            })
-          }
-          className="flex bg-fau-blue text-white rounded p-2 items-center -translate-y-12 ml-4"
-        >
-          <ArrowDownIcon className="w-5 h-5 mr-2"></ArrowDownIcon> Show Details
-        </button>
-      </div>
-    );
     if (!this.state.selectedObject) {
       return (
-        <>
-          {scrollButton}
           <div className="bg-white" ref={this.detailViewRef}>
             <div className="max-w-7xl mx-auto px-4 py-6 h-64">
               <QuestionMarkCircleIcon className="h-6 w-6"></QuestionMarkCircleIcon>
@@ -563,12 +557,9 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
               </div>
             </div>
           </div>
-        </>
       );
     }
     return (
-      <>
-        {scrollButton}
         <div ref={this.detailViewRef}>
           <DetailView
             mainDataSource={this.dataSource}
@@ -577,7 +568,6 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
             onSelect={this.handleSelectionChange}
           ></DetailView>
         </div>
-      </>
     );
   }
 }

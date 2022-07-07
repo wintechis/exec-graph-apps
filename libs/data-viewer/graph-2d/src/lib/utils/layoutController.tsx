@@ -14,6 +14,7 @@ import { icons } from '../icons/icons';
 export interface AppearanceProps {
   explorer: boolean;
   handleSelectionChangeFromOthers?: (uri: string | null) => void;
+  handleScrollButtonClick?: () => void;
 }
 
 function Appearance(props: AppearanceProps) {
@@ -41,6 +42,7 @@ function Appearance(props: AppearanceProps) {
       explorer={props.explorer}
       resetLayout={setLayout}
       handleSelectionChangeFromOthers={props.handleSelectionChangeFromOthers}
+      handleScrollButtonClick={props.handleScrollButtonClick}
     />
   );
 }
@@ -75,7 +77,7 @@ export function SetLayout(
       if (!type || !(type in icons.nodes)) type = undefined;
     }
 
-    if (!type) type = 'QuestionMark';
+    if (!type) type = 'Others';
 
     const iconNodeAttributes = icons.nodes[type as keyof typeof icons.nodes];
 
@@ -83,6 +85,15 @@ export function SetLayout(
     graph.setNodeAttribute(key, 'color', iconNodeAttributes.color);
     graph.setNodeAttribute(key, 'nodeType', type);
     graph.setNodeAttribute(key, 'score', graph.neighbors(key).length);
+
+    if (graph.hasAttribute('nodeTypes')) {
+      graph.updateAttribute('nodeTypes', (types) => {
+        const typesArr = types as Array<string>;
+        if (type && !typesArr.includes(type)) typesArr.push(type);
+
+        return typesArr;
+      });
+    } else graph.setAttribute('nodeTypes', [type]);
   });
 
   const scores = graph
@@ -107,30 +118,19 @@ export function SetLayout(
     const fullPred = `${attributes['predicate']}`;
     const pred = fullPred.split('/').pop()?.split('#').pop();
 
-    const color = icons.edges[pred as keyof typeof icons.edges];
-    graph.setEdgeAttribute(key, 'color', color);
+    const edgeType = icons.edges[pred as keyof typeof icons.edges];
+    graph.setEdgeAttribute(key, 'color', edgeType.color);
+    
+    const type = edgeType.type
+    if (graph.hasAttribute('edgeTypes')) {
+      graph.updateAttribute('edgeTypes', (types) => {
+        const typesArr = types as Array<string>;
+        if (type && !typesArr.includes(type)) typesArr.push(type);
+
+        return typesArr;
+      });
+    } else graph.setAttribute('edgeTypes', [type]);
   });
 
   return graph;
 }
-
-// export function drawLabel(
-//   context: CanvasRenderingContext2D,
-//   data: PartialButFor<NodeDisplayData, 'x' | 'y' | 'size' | 'label' | 'color'>,
-//   settings: Settings
-// ): void {
-//   if (!data.label || data.color === '#eee') return;
-
-//   const size = settings.labelSize,
-//     font = settings.labelFont,
-//     weight = settings.labelWeight;
-
-//   context.font = `${weight} ${size}px ${font}`;
-//   const width = context.measureText(data.label).width + 8;
-
-//   context.fillStyle = '#ffffffcc';
-//   context.fillRect(data.x + data.size, data.y + size / 3 - 15, width, 20);
-
-//   context.fillStyle = '#000';
-//   context.fillText(data.label, data.x + data.size + 3, data.y + size / 3);
-// }

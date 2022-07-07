@@ -16,6 +16,7 @@ export interface GraphViewProps {
   selectedObjectChangeFromOthers?: string | null;
   handleSelectionChangeFromOthers?: (uri: string | null) => void;
   setStateLoaded?: () => void;
+  handleScrollButtonClick?: () => void;
 }
 
 function GraphView(props: GraphViewProps) {
@@ -36,6 +37,7 @@ function GraphView(props: GraphViewProps) {
       <MemorizedAppearance
         explorer={props.explorer}
         handleSelectionChangeFromOthers={props.handleSelectionChangeFromOthers}
+        handleScrollButtonClick={props.handleScrollButtonClick}
       />
       <EventsController
         explorer={props.explorer}
