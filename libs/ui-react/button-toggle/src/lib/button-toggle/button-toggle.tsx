@@ -1,12 +1,35 @@
+/**
+ * Type definition of mandatory and optional properties of the {@link ButtonToggle} component
+ */
 export interface ButtonToggleProps<T> {
+  /**
+   * Optional label to show before the first button
+   */
   label?: string;
+  /**
+   * The current value to be highlight
+   */
   selected?: T;
+  /**
+   * list of all options to show
+   */
   options: { value: T; label: string }[];
+  /**
+   * Invoked when the user toggled to a different value
+   */
   onChange: (selected: T) => void;
+  /**
+   * CSS classes to attach to the element
+   */
   className?: string;
 }
 
-export function ButtonToggle<T>(props: ButtonToggleProps<T>) {
+/**
+ * Creates a button styled radio-button like toggle group.
+ *
+ * @category React Component
+ */
+export function ButtonToggle<T>(props: ButtonToggleProps<T>): JSX.Element {
   const label = props.label ? (
     <div className="p-2 bg-gray-100 rounded-l-md">{props.label}</div>
   ) : null;

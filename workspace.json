@@ -1,16 +1,20 @@
 {
   "version": 2,
   "projects": {
-    "detail-view": "libs/detail-view",
+    "data-viewer-graph-2d": "libs/data-viewer/graph-2d",
+    "data-viewer-table": "libs/data-viewer/table",
     "exec-graph-web": "apps/exec-graph-web",
     "exec-graph-web-e2e": "apps/exec-graph-web-e2e",
-    "explorer": "libs/explorer",
+    "explorer-detail-view": "libs/explorer/detail-view",
+    "explorer-page": "libs/explorer/page",
+    "explorer-query-editor": "libs/explorer/query-editor",
     "graph-data-source": "libs/graph/data-source",
     "graph-data-source-remote": "libs/graph/data-source-remote",
     "graph-types": "libs/graph/types",
-    "query-editor": "libs/query-editor",
     "ui-react-button-toggle": "libs/ui-react/button-toggle",
+    "ui-react-dialog": "libs/ui-react/dialog",
     "ui-react-help-button": "libs/ui-react/help-button",
+    "ui-react-loading-bar": "libs/ui-react/loading-bar",
     "utils": "libs/utils"
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"

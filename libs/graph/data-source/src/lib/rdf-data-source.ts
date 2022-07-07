@@ -41,10 +41,16 @@ export class RdfDataSource implements DataSource {
     return Promise.resolve({ graph, schema: this.schema });
   }
 
+  /**
+   * @inheritdoc
+   */
   getForSparql(sparql: string): Promise<DataSet> {
     throw new Error('Method not implemented.');
   }
 
+  /**
+   * @inheritdoc
+   */
   addInformation(
     oldGraph: graphology<Attributes, Attributes, Attributes>,
     sparql: string

@@ -3,11 +3,23 @@ import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { memo, useState } from 'react';
 import { usePopper } from 'react-popper';
 
+/**
+ * Type definition of mandatory and optional properties of the {@link HelpButton} component
+ */
 export interface HelpButtonProps {
+  /**
+   * The content of the popover
+   */
   advise: JSX.Element | string;
 }
 
-export const HelpButton = memo(function HelpButton(props: HelpButtonProps) {
+/**
+ * Creates a help-icon which displays a help text on hover as popover
+ * @category React Component
+ */
+export const HelpButton = memo(function HelpButton(
+  props: HelpButtonProps
+): JSX.Element {
   const [isShowing, setIsShowing] = useState(false);
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>(null);

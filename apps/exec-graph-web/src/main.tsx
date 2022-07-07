@@ -6,10 +6,7 @@ import App from './app/app';
 import Overview from './app/routes/overview';
 import { environment } from './environments/environment';
 
-const Explorer = lazy(() =>
-  // react only supports default imports, so correct the import:
-  import('@exec-graph/explorer').then((lib) => ({ default: lib.Explorer }))
-);
+const Explorer = lazy(() => import('@exec-graph/explorer/page'));
 const About = lazy(() => import('./app/routes/about'));
 const FAQ = lazy(() => import('./app/routes/faq'));
 

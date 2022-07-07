@@ -2,12 +2,12 @@ import { RemoteDataSource } from '@exec-graph/graph/data-source-remote';
 import { DataSet } from '@exec-graph/graph/types';
 import { RefreshIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
 import { useState, useEffect, lazy } from 'react';
-import { SetLayout } from './overview-graph-view/utils/overviewLayoutController';
+import { SetLayout } from '@exec-graph/data-viewer/graph-2d';
 
 import backgroundImg from '../../assets/ExampleGraph.png';
 
 const OverviewGraphView = lazy(
-  () => import('./overview-graph-view/overview-graph-view')
+  () => import('@exec-graph/data-viewer/graph-2d')
 );
 
 const OVERVIEW_QUERY = `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
@@ -37,7 +37,7 @@ export interface OverviewGraphProps {
  *
  * @category React Component
  */
-export function OverviewGraph(props: OverviewGraphProps) {
+function OverviewGraph(props: OverviewGraphProps) {
   const [error, setError] = useState<Error | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [data, setData] = useState<DataSet | null>(null);
@@ -81,7 +81,7 @@ export function OverviewGraph(props: OverviewGraphProps) {
   if (data) {
     return (
       <div>
-        <OverviewGraphView data={data}></OverviewGraphView>
+        <OverviewGraphView explorer={false} data={data}></OverviewGraphView>
       </div>
     );
   } else if (error) {
