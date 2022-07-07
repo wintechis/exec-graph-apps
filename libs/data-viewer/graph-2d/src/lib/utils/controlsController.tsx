@@ -4,17 +4,19 @@ import {
   SearchControl,
   ZoomControl,
 } from '@react-sigma/core';
-import { RefreshIcon } from '@heroicons/react/outline';
+import { ArrowDownIcon, RefreshIcon } from '@heroicons/react/outline';
 import { memo } from 'react';
 import React, { useEffect } from 'react';
 import { Attributes } from 'graphology-types';
 import { useSigma } from '@react-sigma/core';
 import { LayoutForceAtlas2Control } from '@react-sigma/layout-forceatlas2';
+import LegendPanel from './legendPanel';
 
 export interface ControlsProps {
   explorer: boolean;
   resetLayout: () => void;
   handleSelectionChangeFromOthers?: (node: string | null) => void;
+  handleScrollButtonClick?: () => void;
 }
 
 function Controls(props: ControlsProps) {
@@ -64,6 +66,22 @@ function Controls(props: ControlsProps) {
           <div className="react-sigma-control">
             <button onClick={props.resetLayout} title="Reset Layout">
               <RefreshIcon className="h-5 w-5 align-middle" />
+            </button>
+          </div>
+        </ControlsContainer>
+        <ControlsContainer position="bottom-right">
+          <div className="panels">
+            <LegendPanel />
+          </div>
+        </ControlsContainer>
+        <ControlsContainer position="bottom-left" className="sticky">
+          <div>
+            <button
+              onClick={props.handleScrollButtonClick}
+              className="flex p-2 items-center"
+            >
+              <ArrowDownIcon className="w-5 h-5 mr-2"></ArrowDownIcon> Show
+              Details
             </button>
           </div>
         </ControlsContainer>
