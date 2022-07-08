@@ -6,6 +6,7 @@ import {
 } from '@react-sigma/core';
 import { Attributes } from 'graphology-types';
 import { useEffect, useState } from 'react';
+import { BsXLg } from 'react-icons/bs';
 
 export interface EventControllerProps {
   explorer: boolean;
@@ -166,5 +167,25 @@ export function EventsController(props: EventControllerProps) {
     });
   }, [graph, clickedNode, hoveredNode, setSettings]);
 
-  return null;
+  // function handleCancleButtonClick () {
+  //   setselec
+  // }
+
+  return clickedNode ? (
+    <button
+      style={{
+        position: 'absolute',
+        bottom: '5px',
+        padding: '0.5rem',
+        zIndex: '100',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        fontSize: '1.3rem',
+        color: 'red',
+      }}
+      onClick={() => setClickedNode(null)}
+    >
+      <BsXLg />
+    </button>
+  ) : null;
 }

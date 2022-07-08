@@ -62,7 +62,7 @@ function Controls(props: ControlsProps) {
 
   if (props.explorer) {
     return (
-      <div>
+      <>
         <ControlsContainer position="top-right">
           <SearchControl />
         </ControlsContainer>
@@ -92,18 +92,16 @@ function Controls(props: ControlsProps) {
             <LegendPanel />
           </div>
         </ControlsContainer>
-        <ControlsContainer position="bottom-left" className="sticky">
-          <div>
-            <button
-              onClick={props.handleScrollButtonClick}
-              className="flex p-2 items-center"
-            >
-              <ArrowDownIcon className="w-5 h-5 mr-2"></ArrowDownIcon> Show
-              Details
-            </button>
-          </div>
+        <ControlsContainer position="bottom-left">
+          <button
+            onClick={props.handleScrollButtonClick}
+            className="flex p-2 items-center"
+          >
+            <ArrowDownIcon className="w-5 h-5 mr-2"></ArrowDownIcon> Show
+            Details
+          </button>
         </ControlsContainer>
-      </div>
+      </>
     );
   } else {
     return (
