@@ -9,8 +9,9 @@ import { memo } from 'react';
 import React, { useEffect } from 'react';
 import { Attributes } from 'graphology-types';
 import { useSigma } from '@react-sigma/core';
-import { LayoutForceAtlas2Control } from '@react-sigma/layout-forceatlas2';
+import { useWorkerLayoutForceAtlas2 } from '@react-sigma/layout-forceatlas2';
 import LegendPanel from './legendPanel';
+import { BsFillPlayFill, BsFillStopFill } from 'react-icons/bs';
 
 export interface ControlsProps {
   explorer: boolean;
@@ -22,6 +23,7 @@ export interface ControlsProps {
 function Controls(props: ControlsProps) {
   const sigma = useSigma();
   const graph = sigma.getGraph();
+  const { start, stop, isRunning } = useWorkerLayoutForceAtlas2({});
 
   function handleSearchChange(this: HTMLInputElement, ev: Event): unknown {
     if (!this) return;
@@ -53,6 +55,11 @@ function Controls(props: ControlsProps) {
     });
   });
 
+  function handleResetClick() {
+    if (isRunning) stop();
+    props.resetLayout();
+  }
+
   if (props.explorer) {
     return (
       <div>
@@ -62,9 +69,20 @@ function Controls(props: ControlsProps) {
         <ControlsContainer position="top-left">
           <ZoomControl />
           <FullScreenControl className="border-t border-gray-100/50" />
-          <LayoutForceAtlas2Control className="border-t border-gray-100/50"></LayoutForceAtlas2Control>
+          <div className="react-sigma-control border-t border-gray-100/50">
+            <button
+              onClick={() => (!isRunning ? start() : stop())}
+              className="h-max w-max"
+            >
+              {!isRunning ? (
+                <BsFillPlayFill className="h-8 w-8 align-middle"></BsFillPlayFill>
+              ) : (
+                <BsFillStopFill className="h-6 w-6 align-middle"></BsFillStopFill>
+              )}
+            </button>
+          </div>
           <div className="react-sigma-control">
-            <button onClick={props.resetLayout} title="Reset Layout">
+            <button onClick={handleResetClick} title="Reset Layout">
               <RefreshIcon className="h-5 w-5 align-middle" />
             </button>
           </div>

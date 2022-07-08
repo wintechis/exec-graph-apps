@@ -7,8 +7,6 @@ import {
 import { Attributes } from 'graphology-types';
 import { useEffect, useState } from 'react';
 
-const NODE_FADE_COLOR = '#bbb';
-
 export interface EventControllerProps {
   explorer: boolean;
   setSelectedObject?: (clickedNode: string | null) => void;
@@ -152,11 +150,7 @@ export function EventsController(props: EventControllerProps) {
             graph.neighbors(relevantNode).includes(node)
           ) {
             if (node === relevantNode) newAttr['highlighted'] = true;
-          } else {
-            newAttr['color'] = NODE_FADE_COLOR;
-            newAttr['highlighted'] = false;
-            newAttr['image'] = null;
-          }
+          } else newAttr['hidden'] = true;
         }
         return newAttr;
       },
