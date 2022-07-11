@@ -42,8 +42,8 @@ function LegendPanel() {
                 style={{
                   backgroundColor: iconNodes[key].color,
                   borderRadius: '50%',
-                  border: "1px solid white",
-                  padding: "2px",
+                  border: '1px solid white',
+                  padding: '2px',
                   verticalAlign: 'middle',
                   display: 'inline-block',
                   marginRight: '0.5em',
@@ -59,7 +59,7 @@ function LegendPanel() {
         })}
       </ul>
       {/* <p style={{marginTop: "0.5em"}}>Edges</p> */}
-      <ul style={{marginTop: "0.5em"}}>
+      <ul style={{ marginTop: '0.5em' }}>
         {edgeTypesInGraph.map((type) => {
           let color = '';
           for (const edge in iconEdges) {
@@ -71,10 +71,19 @@ function LegendPanel() {
           }
           return (
             <li key={type} style={{ lineHeight: 'auto' }}>
-              <div className="w-6 h-6" style={{ backgroundColor: "", borderRadius: "50%", display: 'inline-block', verticalAlign: "middle", marginRight: '0.5em'}}>
+              <div
+                className="w-6 h-6"
+                style={{
+                  backgroundColor: '',
+                  borderRadius: '50%',
+                  display: 'inline-block',
+                  verticalAlign: 'middle',
+                  marginRight: '0.5em',
+                }}
+              >
                 <div
                   style={{
-                    borderRadius: "30%",
+                    borderRadius: '30%',
                     borderBottom: `2px solid ${color}`,
                     WebkitTransform: 'translateY(0.75rem) rotate(45deg)',
                   }}

@@ -1,13 +1,6 @@
 import { Combobox } from '@headlessui/react';
 import React, { useState } from 'react';
-
-/**
- * One element in the autocomplete list of {@link RDFTermInput}
- */
-export interface Option {
-  value: string;
-  label?: string;
-}
+import { Option } from '../rdf-autocompletion.service';
 
 /**
  * Type definition of mandatory and optional properties of the {@link RDFTermInput} component

@@ -9,6 +9,8 @@ export interface TabBarProps<T> {
 
 /**
  * Creates a tab-style selector element
+ *
+ * @category React Component
  */
 export function TabBar<T>(props: TabBarProps<T>): JSX.Element {
   return (

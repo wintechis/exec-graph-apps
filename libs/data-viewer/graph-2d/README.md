@@ -1,6 +1,6 @@
-# data-viewer-graph-2d
+# Library - DataViewer 2D Graph
 
-This library was generated with [Nx](https://nx.dev).
+React components library providing a 2D graph visualisation of the graph data.
 
 ## Running unit tests
 

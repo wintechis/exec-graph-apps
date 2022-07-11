@@ -187,7 +187,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     this.detailViewRef?.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
-    })
+    });
   }
 
   /**
@@ -548,26 +548,26 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     }
     if (!this.state.selectedObject) {
       return (
-          <div className="bg-white" ref={this.detailViewRef}>
-            <div className="max-w-7xl mx-auto px-4 py-6 h-64">
-              <QuestionMarkCircleIcon className="h-6 w-6"></QuestionMarkCircleIcon>
-              <h3 className="mt-4 text-2xl font-bold">Details</h3>
-              <div className="max-w-prose">
-                Select a node in the graph to see more details.
-              </div>
+        <div className="bg-white" ref={this.detailViewRef}>
+          <div className="max-w-7xl mx-auto px-4 py-6 h-64">
+            <QuestionMarkCircleIcon className="h-6 w-6"></QuestionMarkCircleIcon>
+            <h3 className="mt-4 text-2xl font-bold">Details</h3>
+            <div className="max-w-prose">
+              Select a node in the graph to see more details.
             </div>
           </div>
+        </div>
       );
     }
     return (
-        <div ref={this.detailViewRef}>
-          <DetailView
-            mainDataSource={this.dataSource}
-            data={this.state.data}
-            selectedObject={this.state.selectedObject}
-            onSelect={this.handleSelectionChange}
-          ></DetailView>
-        </div>
+      <div ref={this.detailViewRef}>
+        <DetailView
+          mainDataSource={this.dataSource}
+          data={this.state.data}
+          selectedObject={this.state.selectedObject}
+          onSelect={this.handleSelectionChange}
+        ></DetailView>
+      </div>
     );
   }
 }

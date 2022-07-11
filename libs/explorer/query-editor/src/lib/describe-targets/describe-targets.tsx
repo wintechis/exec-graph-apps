@@ -11,7 +11,7 @@ export interface DescribeTargetsProps {
 
 /**
  * UI form element to for list of RDF Uris to include in a DESCRIBE query
- * @category React component
+ * @category React Component
  */
 export function DescribeTargets(props: DescribeTargetsProps): JSX.Element {
   /**

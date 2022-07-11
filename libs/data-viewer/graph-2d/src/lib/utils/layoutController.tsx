@@ -120,8 +120,8 @@ export function SetLayout(
 
     const edgeType = icons.edges[pred as keyof typeof icons.edges];
     graph.setEdgeAttribute(key, 'color', edgeType.color);
-    
-    const type = edgeType.type
+
+    const type = edgeType.type;
     if (graph.hasAttribute('edgeTypes')) {
       graph.updateAttribute('edgeTypes', (types) => {
         const typesArr = types as Array<string>;

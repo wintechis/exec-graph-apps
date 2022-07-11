@@ -13,7 +13,7 @@ export interface QueryModifiersProps {
  *
  * Includes: Order, Limit and Offset
  *
- * @category React component
+ * @category React Component
  */
 export function QueryModifiers(props: QueryModifiersProps): JSX.Element {
   const onChange = (mod: keyof Modifiers) => {

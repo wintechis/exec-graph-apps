@@ -1,6 +1,6 @@
-# data-viewer-table
+# Library - DataViewer Table
 
-This library was generated with [Nx](https://nx.dev).
+React components library providing a table component to visualise the graph data.
 
 ## Running unit tests
 

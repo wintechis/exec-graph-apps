@@ -33,7 +33,11 @@ function getTsConfigFile(packageEntryPoint, tsConfigNames = [null]) {
 
 function getProjectEntryPoints(rootPath, project): string[] {
   return glob.sync(
-    path.resolve(rootPath, project.sourceRoot, 'index.@(ts|js|tsx|jsx)'),
+    path.resolve(
+      rootPath,
+      project.sourceRoot,
+      '@(documentation-import|index).@(ts|js|tsx|jsx)'
+    ),
     {
       ignore: path.resolve(rootPath, project.root, 'node_modules'),
     }
@@ -53,7 +57,10 @@ function fetchDocumentationEntryProints() {
       workspace_root.workspaceRoot,
       project
     );
-    entryPointsOfProject.forEach((packageEntryPoint) => {
+    if (entryPointsOfProject.length === 0) {
+      return;
+    }
+    [entryPointsOfProject[0]].forEach((packageEntryPoint) => {
       // For each entry point we need the right tsconfig file describing the compliation environment
       const tsconfigFile = getTsConfigFile(packageEntryPoint, [
         'tsconfig.lib.json',
