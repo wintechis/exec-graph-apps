@@ -1,7 +1,7 @@
 import { DataSource } from '@exec-graph/graph/types';
-import { ChevronRightIcon, CloudDownloadIcon } from '@heroicons/react/outline';
 import Dialog from '@exec-graph/ui-react/dialog';
 import { useEffect, useState } from 'react';
+import { HiOutlineChevronRight, HiOutlineCloudDownload } from 'react-icons/hi';
 
 /**
  * Function that returns a templated query to make a keyword search on a sparql endpoint
@@ -160,7 +160,7 @@ export function SearchDialog(props: SearchDialogProps) {
             <div className="py-1 px-2">{match.label}</div>
             <div className="border-l border-gray-200 p-1 px-2 text-sm flex text-gray-600 leading-6 items-center">
               <span>Select</span>
-              <ChevronRightIcon className="w-5 h-5 ml-2" />
+              <HiOutlineChevronRight className="w-5 h-5 ml-2" />
             </div>
           </button>
         ))}
@@ -184,7 +184,7 @@ export function SearchDialog(props: SearchDialogProps) {
             <div className="py-1 px-2">{match.label}</div>
             <div className="border-l border-gray-200 p-1 px-2 text-sm flex text-gray-600 leading-6 items-center">
               <span>Select</span>
-              <CloudDownloadIcon className="w-5 h-5 ml-2" />
+              <HiOutlineCloudDownload className="w-5 h-5 ml-2" />
             </div>
           </button>
         ))}

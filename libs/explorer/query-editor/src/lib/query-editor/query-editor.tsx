@@ -1,6 +1,6 @@
 import { SparqlValidator } from '@exec-graph/graph/data-source-remote';
 import { DataSource } from '@exec-graph/graph/types';
-import { SearchIcon } from '@heroicons/react/outline';
+import { HiOutlineSearch } from 'react-icons/hi';
 import { Component } from 'react';
 import AdvancedEditor from '../advanced-editor/advanced-editor';
 import QueryLibrary from '../query-library/query-library';
@@ -190,7 +190,7 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
                   !this.state.valid ? 'bg-gray-400' : ''
                 }`}
               >
-                <SearchIcon className="w-5 h-5 mr-2"></SearchIcon>
+                <HiOutlineSearch className="w-5 h-5 mr-2" />
                 Execute
               </button>
             </div>

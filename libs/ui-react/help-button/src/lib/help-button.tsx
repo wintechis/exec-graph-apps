@@ -1,6 +1,6 @@
 import { Popover, Transition } from '@headlessui/react';
-import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { memo, useState } from 'react';
+import { HiOutlineQuestionMarkCircle } from 'react-icons/hi';
 import { usePopper } from 'react-popper';
 
 /**
@@ -54,10 +54,10 @@ export const HelpButton = memo(function HelpButton(
         onMouseEnter={() => setIsShowing(true)}
         onMouseLeave={() => setIsShowing(false)}
       >
-        <QuestionMarkCircleIcon
+        <HiOutlineQuestionMarkCircle
           className="text-fau-blue h-4 w-4"
           aria-label="Help"
-        ></QuestionMarkCircleIcon>
+        ></HiOutlineQuestionMarkCircle>
       </Popover.Button>
 
       <Transition

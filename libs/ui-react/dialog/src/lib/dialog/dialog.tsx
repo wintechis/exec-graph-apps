@@ -1,5 +1,5 @@
 import { Dialog as HeadlessDialog } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
+import { HiOutlineX } from 'react-icons/hi';
 
 /**
  * Type definition of mandatory and optional properties of the {@link Dialog} component
@@ -64,7 +64,7 @@ function Dialog(props: DialogProps): JSX.Element {
             onClick={props.close}
             className="absolute top-0 right-0 flex p-2 items-center"
           >
-            <XIcon className="w-4 h-4"></XIcon>
+            <HiOutlineX className="w-4 h-4" />
             <span className="ml-auto text-sm">Close</span>
           </button>
           {props.children}

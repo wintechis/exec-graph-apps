@@ -4,12 +4,12 @@ import {
   FetchHttpClient,
   HttpSparqlRepository,
 } from '@exec-graph/graph/data-source-remote';
-import {
-  ChevronRightIcon,
-  QuestionMarkCircleIcon,
-  ShareIcon,
-} from '@heroicons/react/outline';
 import { Component, lazy, Suspense } from 'react';
+import {
+  HiOutlineChevronRight,
+  HiOutlineQuestionMarkCircle,
+  HiOutlineShare,
+} from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import GraphStatistics from '../graph-statistics/graph-statistics';
 
@@ -97,21 +97,21 @@ export class Overview extends Component<OverviewProps> {
                   to="/about"
                   className="bg-white p-4 pt-8 font-bold rounded shadow-sm fau-link"
                 >
-                  <ChevronRightIcon className="w-6 h-6 mb-2"></ChevronRightIcon>
+                  <HiOutlineChevronRight className="w-6 h-6 mb-2" />
                   Learn more about the project
                 </Link>
                 <Link
                   to="/explore"
                   className="bg-white p-4 pt-8 font-bold rounded shadow-sm fau-link"
                 >
-                  <ShareIcon className="w-6 h-6 mb-2"></ShareIcon>
+                  <HiOutlineShare className="w-6 h-6 mb-2" />
                   Explore the graph
                 </Link>
                 <Link
                   to="/faq"
                   className="bg-white p-4 pt-8 font-bold rounded shadow-sm fau-link"
                 >
-                  <QuestionMarkCircleIcon className="w-6 h-6 mb-2"></QuestionMarkCircleIcon>
+                  <HiOutlineQuestionMarkCircle className="w-6 h-6 mb-2" />
                   Check the FAQs
                 </Link>
               </div>

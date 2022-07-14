@@ -6,8 +6,6 @@ import { Attributes } from 'graphology-types';
 import forceAtlas2 from 'graphology-layout-forceatlas2';
 import random from 'graphology-layout/random';
 import { animateNodes } from 'sigma/utils/animate';
-// import { NodeDisplayData, PartialButFor } from 'sigma/types';
-// import { Settings } from 'sigma/settings';
 import { MemorizedControls } from './controlsController';
 import { icons } from '../icons/icons';
 
@@ -24,7 +22,7 @@ function Appearance(props: AppearanceProps) {
   const { reset } = useCamera({ duration: animationDuration, factor: 1.5 });
   const settings = forceAtlas2.inferSettings(graph);
   const { positions } = useLayoutForceAtlas2({
-    iterations: 80,
+    iterations: 50,
     settings: settings,
   });
 

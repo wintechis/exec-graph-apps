@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DataSet, RdfValue } from '@exec-graph/graph/types';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { useMemo } from 'react';
 import {
   usePagination,
@@ -151,7 +151,7 @@ export function TableView(props: TableViewProps) {
                 className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
               >
                 <span className="sr-only">Previous</span>
-                <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+                <HiOutlineChevronLeft className="h-5 w-5" aria-hidden="true" />
               </button>
               {pages.map((pNr) => (
                 <button
@@ -174,7 +174,7 @@ export function TableView(props: TableViewProps) {
                 className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
               >
                 <span className="sr-only">Next</span>
-                <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+                <HiOutlineChevronRight className="h-5 w-5" aria-hidden="true" />
               </button>
             </nav>
           </div>
