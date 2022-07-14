@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import AnimateHeight from 'react-animate-height';
 
@@ -12,26 +12,36 @@ export interface PanelProps {
 
 function Panel(props: PanelProps) {
   const [isDeployed, setIsDeployed] = useState(false);
-  const dom = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (isDeployed)
-      setTimeout(() => {
-        if (dom.current)
-          dom.current.parentElement?.scrollTo({
-            top: dom.current.offsetTop - 5,
-            behavior: 'smooth',
-          });
-      }, DURATION);
-  }, [isDeployed]);
 
   return (
-    <div className={isDeployed ? 'panel opened' : 'panel closed'} ref={dom}>
-      <button type="button" onClick={() => setIsDeployed((v) => !v)}>
+    <div
+      className={isDeployed ? 'panel opened p-2 mb-2' : 'panel closed'}
+      style={isDeployed ? { width: '15vw' } : {}}
+    >
+      <button
+        className="hover:opacity-70 text-left w-full"
+        type="button"
+        onClick={() => setIsDeployed((v) => !v)}
+      >
         {props.title}
-        {isDeployed ? <MdExpandLess /> : <MdExpandMore />}
+        {isDeployed ? (
+          <MdExpandLess
+            className="align-middle inline-block text-2xl"
+            style={
+              isDeployed
+                ? { position: 'absolute', right: '0px', marginRight: '0.5rem' }
+                : {}
+            }
+          />
+        ) : (
+          <MdExpandMore className="align-middle inline-block text-2xl" />
+        )}
       </button>
-      <AnimateHeight duration={DURATION} height={isDeployed ? 'auto' : 0}>
+      <AnimateHeight
+        className={isDeployed ? 'text-sm w-max' : 'hidden'}
+        duration={DURATION}
+        height={isDeployed ? 'auto' : 0}
+      >
         {props.children}
       </AnimateHeight>
     </div>

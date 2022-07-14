@@ -94,7 +94,10 @@ function Controls(props: ControlsProps) {
           </div>
         </ControlsContainer>
         <ControlsContainer position="bottom-right">
-          <div className="panels">
+          <div
+            className="panels w-auto overflow-y-auto p-2"
+            style={{ maxHeight: '65vh' }}
+          >
             <LegendPanel />
           </div>
         </ControlsContainer>

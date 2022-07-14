@@ -23,12 +23,11 @@ function LegendPanel() {
       initiallyDeployed
       title={
         <>
-          <BsMap />
-          <p>Legend</p>
+          <BsMap className="align-middle inline-block" />
+          <p className="align-middle inline-block ml-1.5">Legend</p>
         </>
       }
     >
-      {/* <p>Nodes</p> */}
       <ul>
         {nodesInGraph.map((node) => {
           const key = node as keyof typeof iconNodes;
