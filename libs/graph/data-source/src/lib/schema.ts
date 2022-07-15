@@ -29,6 +29,9 @@ export const DEFAULT_SCHEMA: Schema = {
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#isCurrent',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#isSupervisoryBoard',
     'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#isManagementBoard',
+    'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#object',
+    'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#generalField',
+    'https://solid.ti.rw.fau.de/public/2021/execgraph/property.ttl#specificField',
     'http://schema.org/roleName',
     'http://schema.org/startDate',
     'http://schema.org/endDate',
@@ -36,8 +39,11 @@ export const DEFAULT_SCHEMA: Schema = {
     'http://schema.org/sameAs',
     'http://schema.org/dateCreated',
     'http://schema.org/endTime',
+    'http://schema.org/location', // TODO can also be an edge
     'http://schema.org/price',
     'http://schema.org/priceCurrency',
+    'http://schema.org/priceSpecification',
+    'http://schema.org/educationalCredentialAwarded',
     'http://www.wikidata.org/prop/direct/P18', // WikiData Image
     'http://www.wikidata.org/prop/direct/P154', // WikiData Logo Image
     'http://www.wikidata.org/prop/direct/P17', // WikiData Country
