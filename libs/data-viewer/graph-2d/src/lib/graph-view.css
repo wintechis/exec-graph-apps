@@ -1,3 +1,5 @@
+/* customization of the sigma.js CSS-Classes to render container individually */
+
 .graph {
   --sigma-controls-margin: 1rem;
   --sigma-controls-color: #fff;
@@ -6,9 +8,10 @@
   --sigma-controls-size: 2rem;
   --sigma-controls-zindex: 30;
   --sigma-background-color: #f3f4f6;
-
-  --panels-opened-width: 15vw;
   --border-radius: 4px;
+}
+.react-sigma-controls {
+  border: 4px solid var(--sigma-controls-border-color);
 }
 .react-sigma-controls ::-webkit-scrollbar {
   width: 5px;

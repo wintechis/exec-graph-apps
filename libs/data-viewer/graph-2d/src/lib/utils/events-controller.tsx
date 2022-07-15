@@ -166,7 +166,11 @@ export function EventsController(props: EventControllerProps) {
       edgeReducer: (edge, attributes) => {
         const newAttr: Attributes = { ...attributes, hidden: false };
 
-        if (relevantNode && !graph.extremities(edge).includes(relevantNode)) {
+        if (
+          relevantNode &&
+          graph.hasEdge(edge) &&
+          !graph.extremities(edge).includes(relevantNode)
+        ) {
           newAttr['hidden'] = true;
         }
         return newAttr;

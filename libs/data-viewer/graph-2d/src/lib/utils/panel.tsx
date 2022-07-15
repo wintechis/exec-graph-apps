@@ -15,11 +15,13 @@ function Panel(props: PanelProps) {
 
   return (
     <div
-      className={isDeployed ? 'panel opened p-2 mb-2' : 'panel closed'}
-      style={isDeployed ? { width: '15vw' } : {}}
+      className={isDeployed ? 'p-2 mb-2' : ''}
+      style={isDeployed ? { minWidth: 'fit-content', width: '15vw' } : {}}
     >
       <button
-        className="hover:opacity-70 text-left w-full"
+        className={
+          'hover:opacity-70 text-left w-full ' + (isDeployed ? 'mb-2' : '')
+        }
         type="button"
         onClick={() => setIsDeployed((v) => !v)}
       >

@@ -3,16 +3,25 @@ import { Attributes } from 'graphology-types';
 import random from 'graphology-layout/random';
 import { icons } from '../icons/icons';
 
+/**
+ * Sets the initial layout of the fetched data/graph from the remote point.
+ * It does conditional formatting of nodes and edges and sets node coordinates to random.
+ * The latter is required due to SigmaContainer demanding initial node coordinates to display the graph.
+ * @category React Component
+ */
 export function SetLayout(
   graph: Graph<Attributes, Attributes, Attributes>
 ): Graph<Attributes, Attributes, Attributes> {
   random.assign(graph);
 
   graph.forEachNode((key: string, attributes: Attributes) => {
+    // setting label attribute to the custom label attribute of the data
+    // label attribute needed for sigma.js being able to display the labels when click or hover
     const label = attributes['http://www.w3.org/2000/01/rdf-schema#label'];
     if (label) graph.setNodeAttribute(key, 'label', label.replaceAll('"', ''));
     else graph.setNodeAttribute(key, 'label', key);
 
+    // setting type attribute to the nodes to be able to format them conditionally and adress them by type
     const fullType =
       attributes['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'];
     let type: string | undefined = '';
@@ -50,6 +59,7 @@ export function SetLayout(
     } else graph.setAttribute('nodeTypes', [type]);
   });
 
+  // setting the node size depending on the count of edges the node has (= score)
   const scores = graph
     .nodes()
     .map((node) => graph.getNodeAttribute(node, 'score'));
@@ -69,6 +79,7 @@ export function SetLayout(
   );
 
   graph.forEachEdge((key: string, attributes: Attributes) => {
+    // setting predicate attribute to the nodes to be able to format them conditionally and adress them by type
     const fullPred = `${attributes['predicate']}`;
     const pred = fullPred.split('/').pop()?.split('#').pop();
 

@@ -1,6 +1,7 @@
 import {
   ControlsContainer,
   FullScreenControl,
+  useSigma,
   ZoomControl,
 } from '@react-sigma/core';
 import { memo } from 'react';
@@ -9,6 +10,7 @@ import LegendPanel from './legendPanel';
 import { BsFillPlayFill, BsFillStopFill } from 'react-icons/bs';
 import { SearchControl } from './search-control';
 import { HiOutlineRefresh } from 'react-icons/hi';
+import forceAtlas2 from 'graphology-layout-forceatlas2';
 
 export interface ControlsProps {
   decreasedInteractivity?: boolean;
@@ -18,7 +20,11 @@ export interface ControlsProps {
 }
 
 function Controls(props: ControlsProps) {
-  const { start, stop, isRunning } = useWorkerLayoutForceAtlas2({});
+  const graph = useSigma().getGraph();
+  const settings = forceAtlas2.inferSettings(graph);
+  const { start, stop, isRunning } = useWorkerLayoutForceAtlas2({
+    settings: settings,
+  });
 
   function handleResetClick(): void {
     if (isRunning) stop();

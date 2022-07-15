@@ -11,6 +11,13 @@ export interface GraphLayoutEngineHandle {
   resetLayout: () => void;
 }
 
+/**
+ * Component to set the Layout of the graph in the SigmaContainer after first render.
+ *
+ * Responsible for setting the layout algorithm and node animation.
+ *
+ * @category React Component
+ */
 export const GraphLayoutEngine = forwardRef<
   GraphLayoutEngineHandle,
   GraphLayoutEngineProps

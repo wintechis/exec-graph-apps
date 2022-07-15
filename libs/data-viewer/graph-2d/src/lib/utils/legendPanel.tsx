@@ -6,7 +6,7 @@ import Panel from './panel';
 function LegendPanel() {
   const graph = useSigma().getGraph();
   const nodesInGraph = graph.getAttribute('nodeTypes') as Array<string>;
-  nodesInGraph.sort((a, b) => {
+  nodesInGraph?.sort((a, b) => {
     if (a === 'Others') return Number.MAX_VALUE;
     if (b === 'Others') return -Number.MAX_VALUE;
 
@@ -15,7 +15,7 @@ function LegendPanel() {
   const iconNodes = icons['nodes'];
 
   const edgeTypesInGraph = graph.getAttribute('edgeTypes') as Array<string>;
-  edgeTypesInGraph.sort((a, b) => a.localeCompare(b));
+  edgeTypesInGraph?.sort((a, b) => a.localeCompare(b));
   const iconEdges = icons['edges'];
 
   return (
@@ -28,8 +28,8 @@ function LegendPanel() {
         </>
       }
     >
-      <ul>
-        {nodesInGraph.map((node) => {
+      <ol>
+        {nodesInGraph?.map((node) => {
           const key = node as keyof typeof iconNodes;
 
           return (
@@ -56,10 +56,10 @@ function LegendPanel() {
             </li>
           );
         })}
-      </ul>
+      </ol>
       {/* <p style={{marginTop: "0.5em"}}>Edges</p> */}
-      <ul style={{ marginTop: '0.5em' }}>
-        {edgeTypesInGraph.map((type) => {
+      <ol style={{ marginTop: '0.5em' }}>
+        {edgeTypesInGraph?.map((type) => {
           let color = '';
           for (const edge in iconEdges) {
             const key = edge as keyof typeof iconEdges;
@@ -94,7 +94,7 @@ function LegendPanel() {
             </li>
           );
         })}
-      </ul>
+      </ol>
     </Panel>
   );
 }

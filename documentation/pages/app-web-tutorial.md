@@ -5,7 +5,8 @@ This is the WIP end-user documentation for the exec-graph-web app. The tutorial 
 ## Interacting with the graph
 
 ### View Details
-Click to select a node in the graph. This will enable you to hide all but the direct neighbors and view attributes and connections in the detail view below the graph. 
+
+Click to select a node in the graph. This will enable you to hide all but the direct neighbors and view attributes and connections in the detail view below the graph.
 
 ## Searching for a person, entity or location
 
@@ -23,14 +24,17 @@ Note: The blue search on the graph view behaves equal to the current Graph match
 The application opens the opportunity to create a query to customize the displayed data. To open the Query Editor click the respective icon in the top bar on the explorer page. The query editor provides different options to change the query, however, in the background they all utilise SPARQL the query language.
 
 ### 1. Library
-Select a predefined query to quickly find data relating to a specific topic or if a specific kind.
+
+Select a predefined query to quickly find data relating to a specific topic or of a specific kind.
 
 ### 2. Filter
+
 This tab allows you to only include specific types (classes) of nodes in the graph. It will include all edges between them.
 
 ### 3. Advanced
-The advanced editor provides a form with autocompletion lists to create a custom SPARQL query. Please note, that basic SPARQL knowledge is required to efficently use the advanced editor-
+
+The advanced editor provides a form with autocompletion lists to create a custom SPARQL query. Please note, that basic SPARQL knowledge is required to efficiently use the advanced editor.
 
 ### 4. SPARQL
-For full flexibility you may use the free-text SPARQL editor to create a custom query.
 
+For full flexibility you may use the free-text SPARQL editor to create a custom query.

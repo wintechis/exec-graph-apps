@@ -41,9 +41,22 @@ export interface GraphViewProps {
   onLoaded?: () => void;
 }
 
+/**
+ * View component to display the graph on the website.
+ *
+ * Responsible to create the SigmaContainer with all its components in which the graph will render.
+ *
+ * @category React Component
+ */
 function GraphView(props: GraphViewProps): JSX.Element {
   type GraphLayoutEngineHandle = React.ElementRef<typeof GraphLayoutEngine>;
   const graphLayoutEngineRef = useRef<GraphLayoutEngineHandle>(null);
+
+  /**
+   * Contains solely the SigmaContainer and its components.
+   * Additionally, initial setting for the SigmaContainer are set here.
+   * @returns SigmaContainer
+   */
   return (
     <SigmaContainer
       graph={props.data.graph}
