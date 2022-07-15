@@ -3,12 +3,12 @@ import {
   FullScreenControl,
   ZoomControl,
 } from '@react-sigma/core';
-import { RefreshIcon } from '@heroicons/react/outline';
 import { memo } from 'react';
 import { useWorkerLayoutForceAtlas2 } from '@react-sigma/layout-forceatlas2';
 import LegendPanel from './legendPanel';
 import { BsFillPlayFill, BsFillStopFill } from 'react-icons/bs';
 import { SearchControl } from './search-control';
+import { HiOutlineRefresh } from 'react-icons/hi';
 
 export interface ControlsProps {
   decreasedInteractivity?: boolean;
@@ -51,20 +51,29 @@ function Controls(props: ControlsProps) {
             className="h-max w-max"
           >
             {!isRunning ? (
-              <BsFillPlayFill className="h-8 w-8 align-middle"></BsFillPlayFill>
+              <BsFillPlayFill
+                title="Run ForceAtlas2 Algorithm"
+                className="h-7 w-7 align-middle"
+              ></BsFillPlayFill>
             ) : (
-              <BsFillStopFill className="h-6 w-6 align-middle"></BsFillStopFill>
+              <BsFillStopFill
+                title="Stop ForceAtlas2 Algorithm"
+                className="h-6 w-6 align-middle"
+              ></BsFillStopFill>
             )}
           </button>
         </div>
         <div className="react-sigma-control">
           <button onClick={handleResetClick} title="Reset Layout">
-            <RefreshIcon className="h-5 w-5 align-middle" />
+            <HiOutlineRefresh className="h-5 w-5 align-middle" />
           </button>
         </div>
       </ControlsContainer>
       <ControlsContainer position="bottom-right">
-        <div className="panels">
+        <div
+          className="panels w-auto overflow-y-auto p-2"
+          style={{ maxHeight: '65vh' }}
+        >
           <LegendPanel />
         </div>
       </ControlsContainer>
