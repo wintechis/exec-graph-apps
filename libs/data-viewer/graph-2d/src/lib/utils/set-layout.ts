@@ -1,51 +1,7 @@
-import { memo, useEffect } from 'react';
-import { useCamera, useSigma } from '@react-sigma/core';
-import { useLayoutForceAtlas2 } from '@react-sigma/layout-forceatlas2';
 import Graph from 'graphology';
 import { Attributes } from 'graphology-types';
-import forceAtlas2 from 'graphology-layout-forceatlas2';
 import random from 'graphology-layout/random';
-import { animateNodes } from 'sigma/utils/animate';
-import { MemorizedControls } from './controlsController';
 import { icons } from '../icons/icons';
-
-export interface AppearanceProps {
-  explorer: boolean;
-  handleSelectionChangeFromOthers?: (uri: string | null) => void;
-  handleScrollButtonClick?: () => void;
-}
-
-function Appearance(props: AppearanceProps) {
-  const sigma = useSigma();
-  const graph = sigma.getGraph();
-  const animationDuration = 1500;
-  const { reset } = useCamera({ duration: animationDuration, factor: 1.5 });
-  const settings = forceAtlas2.inferSettings(graph);
-  const { positions } = useLayoutForceAtlas2({
-    iterations: 50,
-    settings: settings,
-  });
-
-  function setLayout() {
-    animateNodes(graph, positions(), { duration: animationDuration });
-    reset();
-  }
-
-  useEffect(() => {
-    setLayout();
-  });
-
-  return (
-    <MemorizedControls
-      explorer={props.explorer}
-      resetLayout={setLayout}
-      handleSelectionChangeFromOthers={props.handleSelectionChangeFromOthers}
-      handleScrollButtonClick={props.handleScrollButtonClick}
-    />
-  );
-}
-
-export const MemorizedAppearance = memo(Appearance);
 
 export function SetLayout(
   graph: Graph<Attributes, Attributes, Attributes>

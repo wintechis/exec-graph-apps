@@ -22,6 +22,8 @@ import {
   HiOutlineSearchCircle,
   HiOutlineRefresh,
   HiOutlineExclamationCircle,
+  HiOutlineArrowDown,
+  HiX,
 } from 'react-icons/hi';
 import DetailView from './detail-view/detail-view';
 import { QueryEditor } from '@exec-graph/explorer/query-editor';
@@ -112,7 +114,6 @@ interface ExplorerState {
    */
   status: Status;
   selectedObject?: string | null;
-  selectedObjectChangeFromOthers?: string | null;
   /**
    * Indicates which dialog should be shown to the user
    */
@@ -146,9 +147,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     this.dataSource = new RemoteDataSource(sparqlRepository);
     this.loadSparql = this.loadSparql.bind(this);
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
-    this.handleGraphSelectionChanged =
-      this.handleGraphSelectionChanged.bind(this);
-    this.loadingCompleted = this.loadingCompleted.bind(this);
+    this.viewCompletedLoading = this.viewCompletedLoading.bind(this);
     this.handleScrollButtonClick = this.handleScrollButtonClick.bind(this);
     this.detailViewRef = createRef();
   }
@@ -169,20 +168,8 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
    */
   private handleSelectionChange(uri: string | null): void {
     this.setState({
-      selectedObjectChangeFromOthers: uri,
+      selectedObject: uri,
       dialog: Dialogs.NONE,
-    });
-  }
-
-  /**
-   * Special click handler for the graph to avoid redrawing
-   *
-   * @param clickedNode the URI of the selected object in the graph  or null to remove selection
-   */
-  private handleGraphSelectionChanged(clickedNode: string | null) {
-    this.setState({
-      selectedObject: clickedNode,
-      selectedObjectChangeFromOthers: clickedNode,
     });
   }
 
@@ -199,7 +186,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
   /**
    * Marks the component as loaded once the data has been processed and is shown to the user.
    */
-  private loadingCompleted(): void {
+  private viewCompletedLoading(): void {
     this.setState({ status: Status.LOADED });
   }
 
@@ -209,13 +196,13 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
    * @param sparql valid sparql query
    */
   private loadSparql(sparql: string): void {
-    const currentSelectedNode = this.state.selectedObject;
+    // we temporarily deselect the node to work around issues if the node is not part of the graph anymore
+    const lastSelectedNode = this.state.selectedObject;
     this.setState({
       status: Status.NO_REQUEST_MADE,
       dialog: Dialogs.NONE,
       query: sparql,
       selectedObject: null,
-      selectedObjectChangeFromOthers: null,
     });
     this.dataSource
       .getForSparql(sparql, (s) => {
@@ -233,9 +220,8 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
       })
       .then((ds) => {
         this.setState({
-          selectedObject: currentSelectedNode,
-          selectedObjectChangeFromOthers: currentSelectedNode,
           status: Status.RENDERING_DATA,
+          selectedObject: lastSelectedNode,
           data: ds,
         });
       })
@@ -362,10 +348,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
                 className="-1 rounded-full text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white mr-4"
               >
                 <span className="sr-only">Help</span>
-                <HiOutlineQuestionMarkCircle
-                  className="h-6 w-6"
-                  aria-hidden="true"
-                />
+                <HiOutlineQuestionMarkCircle />
               </button>
               <button
                 onClick={this.showDialog(Dialogs.SEARCH)}
@@ -410,7 +393,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
     return [
       {
         name: 'Executing Query',
-        width: 'w-4/6',
+        width: 'w-3/6',
         status:
           this.state.status === Status.EXECUTING_QUERY
             ? LoadingStatus.PENDING
@@ -466,22 +449,37 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
    */
   private resultsView(): JSX.Element {
     if (this.state.data?.graph) {
+      const pageSpecificControls = (
+        <>
+          <button
+            onClick={this.handleScrollButtonClick}
+            className="flex p-2 items-center"
+          >
+            <HiOutlineArrowDown className="w-5 h-5 mr-2" /> Show Details
+          </button>
+          {this.state.selectedObject && (
+            <button
+              onClick={() => this.handleSelectionChange(null)}
+              className="flex p-2 items-center ml-2"
+            >
+              <HiX className="w-5 h-5 mr-2" /> Clear Selection
+            </button>
+          )}
+        </>
+      );
       return (
         <GraphView
-          explorer={true}
           data={this.state.data}
-          setSelectedObject={this.handleGraphSelectionChanged}
-          selectedObjectChangeFromOthers={
-            this.state.selectedObjectChangeFromOthers
-          }
-          handleSelectionChangeFromOthers={this.handleSelectionChange}
-          setStateLoaded={this.loadingCompleted}
-          handleScrollButtonClick={this.handleScrollButtonClick}
+          height="80vh"
+          onSelectionChange={this.handleSelectionChange}
+          selectedObject={this.state.selectedObject}
+          onLoaded={this.viewCompletedLoading}
+          pageSpecificControls={pageSpecificControls}
         ></GraphView>
       );
     }
     if (this.state.data?.tabular) {
-      this.loadingCompleted();
+      this.viewCompletedLoading();
       return (
         <div className="max-w-7xl mx-auto mb-4 mt-4">
           <TableView data={this.state?.data}></TableView>

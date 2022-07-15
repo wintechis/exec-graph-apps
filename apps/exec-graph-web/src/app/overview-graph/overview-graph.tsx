@@ -81,7 +81,10 @@ function OverviewGraph(props: OverviewGraphProps) {
   if (data) {
     return (
       <div>
-        <OverviewGraphView explorer={false} data={data}></OverviewGraphView>
+        <OverviewGraphView
+          decreasedInteractivity={true}
+          data={data}
+        ></OverviewGraphView>
       </div>
     );
   } else if (error) {

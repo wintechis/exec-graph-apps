@@ -6,13 +6,12 @@ import {
 } from '@react-sigma/core';
 import { Attributes } from 'graphology-types';
 import { useEffect, useState } from 'react';
-import { BsXLg } from 'react-icons/bs';
 
 export interface EventControllerProps {
-  explorer: boolean;
-  setSelectedObject?: (clickedNode: string | null) => void;
-  selectedObjectChangeFromOthers?: string | null;
-  setStateLoaded?: () => void;
+  decreasedInteractivity?: boolean;
+  selectedNode?: string | null;
+  onSelectionChange?: (clickedNode: string | null) => void;
+  onLoaded?: () => void;
 }
 
 export function EventsController(props: EventControllerProps) {
@@ -29,60 +28,22 @@ export function EventsController(props: EventControllerProps) {
   const [clickedNode, setClickedNode] = useState<string | null>(null);
   const [nodeDown, setNodeDown] = useState<string | null>(null);
 
+  // when the selection was set from the outside, propagate it to the graph
+  const selectedNode = props.selectedNode;
   useEffect(() => {
-    if (!props.explorer) return;
-    if (!props.setSelectedObject) return;
-
-    if (
-      props.selectedObjectChangeFromOthers &&
-      graph.hasNode(props.selectedObjectChangeFromOthers)
-    ) {
-      props.setSelectedObject(props.selectedObjectChangeFromOthers);
-      setClickedNode(props.selectedObjectChangeFromOthers);
+    if (selectedNode && graph.hasNode(selectedNode)) {
+      setClickedNode(selectedNode);
     } else {
-      props.setSelectedObject(null);
       setClickedNode(null);
     }
-
     reset();
-  }, [graph, props, reset]);
+  }, [graph, selectedNode, reset]);
 
+  const { decreasedInteractivity, onSelectionChange } = props;
   useEffect(() => {
-    if (props.explorer) {
-      registerEvents({
-        enterNode: (event) => setHoveredNode(event.node),
-        leaveNode: () => setHoveredNode(null),
-        clickNode: (event) => {
-          if (props.setSelectedObject) {
-            props.setSelectedObject(event.node);
-            setClickedNode(event.node);
-          }
-        },
-        clickStage: () => {
-          if (props.setSelectedObject) {
-            graph.forEachNode((key, attributes) => {
-              attributes['highlighted'] = false;
-            });
-            props.setSelectedObject(null);
-            setClickedNode(null);
-          }
-        },
-        downNode: (event) => setNodeDown(event.node),
-        mouseup: () => setNodeDown(null),
-        mousemove: (event) => {
-          setXCoord(event.x);
-          setYCoord(event.y);
-
-          if (nodeDown) {
-            event.preventSigmaDefault();
-            event.original.preventDefault();
-            event.original.stopPropagation();
-          } else {
-            event.sigmaDefaultPrevented = false;
-          }
-        },
-      });
-    } else {
+    if (decreasedInteractivity) {
+      // in decreased intractivity mode, we don't mouse wheel
+      // zooming and only hovering interaction with nodes
       registerEvents({
         wheel: (event) => {
           event.preventSigmaDefault();
@@ -101,18 +62,65 @@ export function EventsController(props: EventControllerProps) {
           top: window.scrollY + ev.deltaY,
         });
       });
+      return;
     }
-  }, [graph, nodeDown, props, registerEvents]);
+    registerEvents({
+      enterNode: (event) => setHoveredNode(event.node),
+      leaveNode: () => setHoveredNode(null),
+      clickNode: (event) => {
+        if (onSelectionChange) {
+          onSelectionChange(event.node);
+        }
+        setClickedNode(event.node);
+      },
+      clickStage: () => {
+        graph.forEachNode((_key, attributes) => {
+          attributes['highlighted'] = false;
+        });
+        setClickedNode(null);
+        if (onSelectionChange) {
+          onSelectionChange(null);
+        }
+      },
+      downNode: (event) => setNodeDown(event.node),
+      mouseup: () => setNodeDown(null),
+      mousemove: (event) => {
+        setXCoord(event.x);
+        setYCoord(event.y);
+
+        if (nodeDown) {
+          event.preventSigmaDefault();
+          event.original.preventDefault();
+          event.original.stopPropagation();
+        } else {
+          event.sigmaDefaultPrevented = false;
+        }
+      },
+    });
+  }, [
+    graph,
+    nodeDown,
+    onSelectionChange,
+    decreasedInteractivity,
+    registerEvents,
+  ]);
+
+  // propagate onLoaded event
+  const onLoadedCallback = props.onLoaded;
+  useEffect(() => {
+    if (onLoadedCallback) {
+      sigma.addListener('afterRender', onLoadedCallback);
+      // to ensure we always have only callback active, remove the old one before calling the effect again:
+      const oldCallback = onLoadedCallback;
+      return () => {
+        sigma.removeListener('afterRender', oldCallback);
+      };
+    }
+    return;
+  }, [onLoadedCallback, sigma]);
 
   useEffect(() => {
-    if (props.explorer)
-      sigma.addListener('afterRender', () => {
-        if (props.setStateLoaded) props.setStateLoaded();
-      });
-  }, [props, sigma]);
-
-  useEffect(() => {
-    if (props.explorer && nodeDown) {
+    if (!props.decreasedInteractivity && nodeDown) {
       const coords = {
         x: xCoord,
         y: yCoord,
@@ -121,7 +129,7 @@ export function EventsController(props: EventControllerProps) {
       graph.setNodeAttribute(nodeDown, 'x', viewportCoords.x);
       graph.setNodeAttribute(nodeDown, 'y', viewportCoords.y);
     }
-  }, [graph, nodeDown, props.explorer, sigma, xCoord, yCoord]);
+  }, [graph, nodeDown, props.decreasedInteractivity, sigma, xCoord, yCoord]);
 
   useEffect(() => {
     reset();
@@ -167,25 +175,5 @@ export function EventsController(props: EventControllerProps) {
     });
   }, [graph, clickedNode, hoveredNode, setSettings]);
 
-  // function handleCancleButtonClick () {
-  //   setselec
-  // }
-
-  return clickedNode ? (
-    <button
-      style={{
-        position: 'absolute',
-        bottom: '5px',
-        padding: '0.5rem',
-        zIndex: '100',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        fontSize: '1.3rem',
-        color: 'red',
-      }}
-      onClick={() => setClickedNode(null)}
-    >
-      <BsXLg />
-    </button>
-  ) : null;
+  return null;
 }
