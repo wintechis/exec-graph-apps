@@ -163,7 +163,6 @@ export class AdvancedEditor extends Component<
     }
 
     this.setState({
-      ...this.state,
       queryType: parsed.queryType,
       sparql: sparql,
       query: {
@@ -243,11 +242,11 @@ export class AdvancedEditor extends Component<
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const sparql = generator.stringify(queryBuilder.getQuery());
-      this.setState({ ...this.state, sparql, variables });
+      this.setState({ sparql, variables });
       this.props.onChange(sparql);
     } catch ($e) {
       console.error($e);
-      this.setState({ ...this.state, sparql: 'Invalid', variables });
+      this.setState({ sparql: 'Invalid', variables });
     }
   }
 
@@ -257,13 +256,7 @@ export class AdvancedEditor extends Component<
    * @param queryType the new query type
    */
   private handleQueryTypeChange(queryType: SparqlQueryType) {
-    this.setState(
-      {
-        ...this.state,
-        queryType,
-      },
-      () => this.buildQuery()
-    );
+    this.setState({ queryType }, () => this.buildQuery());
   }
 
   /**
@@ -274,7 +267,6 @@ export class AdvancedEditor extends Component<
   private handleDescribeTargetsChange(targets: string[]) {
     this.setState(
       {
-        ...this.state,
         query: { ...this.state.query, describeTargets: targets },
       },
       () => this.buildQuery()
@@ -284,7 +276,6 @@ export class AdvancedEditor extends Component<
   private handleModifierChange(modifiers: Modifiers) {
     this.setState(
       {
-        ...this.state,
         query: { ...this.state.query, modifiers },
       },
       () => this.buildQuery()
@@ -299,13 +290,7 @@ export class AdvancedEditor extends Component<
     }) => {
       const propertiesFilter = this.state.propertiesFilter || [];
       propertiesFilter[index] = updatedTriple;
-      this.setState(
-        {
-          ...this.state,
-          propertiesFilter,
-        },
-        () => this.buildQuery()
-      );
+      this.setState({ propertiesFilter }, () => this.buildQuery());
     };
   }
 
@@ -433,7 +418,6 @@ export class AdvancedEditor extends Component<
       constructTemplate[index] = templateRow;
       this.setState(
         {
-          ...this.state,
           query: {
             ...this.state.query,
             constructTemplate,
@@ -494,13 +478,10 @@ export class AdvancedEditor extends Component<
     } else {
       selectColumns.splice(selectColumns.indexOf(variable), 1);
     }
-    this.setState(
-      { ...this.state, query: { ...this.state.query, selectColumns } },
-      () => {
-        console.log(this.state);
-        this.buildQuery();
-      }
-    );
+    this.setState({ query: { ...this.state.query, selectColumns } }, () => {
+      console.log(this.state);
+      this.buildQuery();
+    });
   }
 
   /**
@@ -569,12 +550,12 @@ export class AdvancedEditor extends Component<
     const add = () => {
       const list = this.state.propertiesFilter || [];
       list.push({ subject: '', predicate: '', object: '' });
-      this.setState({ ...this.state, propertiesFilter: list });
+      this.setState({ propertiesFilter: list });
     };
     const remove = (index: number) => {
       const list = this.state.propertiesFilter || [];
       list.splice(index, 1);
-      this.setState({ ...this.state, propertiesFilter: list });
+      this.setState({ propertiesFilter: list });
     };
     return (
       <div>

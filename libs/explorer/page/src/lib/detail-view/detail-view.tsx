@@ -117,7 +117,6 @@ export class DetailView extends Component<DetailViewProps, DetailViewState> {
       return;
     }
     this.setState({
-      ...this.state,
       detailsStatus: LoadingStatus.PENDING,
     });
     this.props.mainDataSource
@@ -125,16 +124,13 @@ export class DetailView extends Component<DetailViewProps, DetailViewState> {
       .then((ds) => {
         this.setState(
           {
-            ...this.state,
             detailsStatus: LoadingStatus.LOADED,
             data: ds,
           },
           () => this.resolveWikiDataFor(selected, ds)
         );
       })
-      .catch(() =>
-        this.setState({ ...this.state, detailsStatus: LoadingStatus.ERROR })
-      );
+      .catch(() => this.setState({ detailsStatus: LoadingStatus.ERROR }));
   }
 
   /**
@@ -158,7 +154,6 @@ export class DetailView extends Component<DetailViewProps, DetailViewState> {
       .addInformation(graph, wikidataQuery(selected, sameAs))
       .then((ds) =>
         this.setState({
-          ...this.state,
           wikidataStatus: LoadingStatus.LOADED,
           data: ds,
         })
@@ -173,7 +168,6 @@ export class DetailView extends Component<DetailViewProps, DetailViewState> {
    */
   private setStatusOfWikiDataRequest(wikidataStatus: LoadingStatus): void {
     this.setState({
-      ...this.state,
       wikidataStatus,
     });
   }

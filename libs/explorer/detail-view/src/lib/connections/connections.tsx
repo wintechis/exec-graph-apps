@@ -73,7 +73,7 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
    * @param directionFilter the edge directionalities to include
    */
   private setDirectionFilter(directionFilter: EdgeDirection): void {
-    this.setState({ ...this.state, directionFilter });
+    this.setState({ directionFilter });
   }
 
   /**
@@ -82,7 +82,7 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
    * @param grouping the grouping method to use
    */
   private setGrouping(grouping: Grouping): void {
-    this.setState({ ...this.state, grouping });
+    this.setState({ grouping });
   }
 
   /**

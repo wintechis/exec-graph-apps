@@ -94,6 +94,9 @@ WHERE {
  * Type definition of mandatory and optional properties of the {@link QueryLibrary} component
  */
 export interface QueryLibraryProps {
+  /**
+   * invoked when user selects a predefined query
+   */
   onSelect: (sparql: string) => void;
 }
 
@@ -113,7 +116,7 @@ export function QueryLibrary(props: QueryLibraryProps): JSX.Element {
       </div>
       <div className="overflow-y-auto py-2 w-full md:w-max md:min-w-[60%]">
         {LIBRARY.map((entry) => (
-          <div className="p-4 py-2">
+          <div className="p-4 py-2" key={entry.title}>
             <button
               onClick={() => props.onSelect(entry.sparql)}
               className="block text-left w-full border border-gray-300 p-4 rounded-md bg-white hover:border-fau-blue"
@@ -121,17 +124,23 @@ export function QueryLibrary(props: QueryLibraryProps): JSX.Element {
               <Disclosure>
                 {({ open }) => (
                   <>
-                    <span className="font-bold mr-4">{entry.title}</span>
-                    <span
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      }}
-                    >
-                      <Disclosure.Button className="py-2 text-gray-600 text-sm">
-                        <>{open ? 'Hide' : 'Show'} SPARQL</>
-                      </Disclosure.Button>
-                    </span>
+                    <div className="flex">
+                      <span className="font-bold mr-4">{entry.title}</span>
+                      <span
+                        className="ml-auto"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                      >
+                        <Disclosure.Button className="border border-gray-300 rounded p-1 px-2 text-gray-600 text-sm">
+                          <>{open ? 'Hide' : 'Show'} SPARQL</>
+                        </Disclosure.Button>
+                      </span>
+                      <span className="border border-gray-300 p-1 px-2 bg-fau-blue text-white text-sm rounded ml-2">
+                        Select
+                      </span>
+                    </div>
                     <Disclosure.Panel className="text-gray-500">
                       <pre className="text-xs">{entry.sparql}</pre>
                     </Disclosure.Panel>
