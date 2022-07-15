@@ -29,19 +29,22 @@ const loadGlobalQuery = (
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 CONSTRUCT {
-   ?target ?p ?o .
-   ?o ?y ?z.
-   ?a ?c ?d.
-   ?a ?b ?target.
+  ?target ?p ?o;
+    ?p1 ?o1.
+  ?o ?y ?z.
+  ?a ?c ?d.
+  ?a ?b ?target.
 }
 WHERE {
-    ?target ?p ?o .
-    ?o ?y ?z .
-    ?a ?b ?target;
-       ?c ?d.
-    FILTER (?target = <${query}>)
-    FILTER (?c IN ( rdf:type, rdfs:label ) )
-    FILTER (?y IN ( rdf:type, rdfs:label ) )
+  ?target ?p ?o;
+    ?p1 ?o1.
+  ?o ?y ?z .
+  ?a ?b ?target;
+    ?c ?d.
+  FILTER (?target = <${query}>)
+  FILTER (?c IN ( rdf:type, rdfs:label ) )
+  FILTER (?y IN ( rdf:type, rdfs:label ) )
+  FILTER (?p1 IN ( rdf:type, rdfs:label ) )
 }`;
 
 /**
@@ -155,7 +158,7 @@ export function SearchDialog(props: SearchDialogProps) {
               props.selectLocal(match.uri);
             }}
             key={match.uri}
-            className="w-full flex justify-between border-b border-gray-300 hover:bg-gray-200"
+            className="w-full flex justify-between border-b border-gray-300 hover:bg-gray-200 text-start"
           >
             <div className="py-1 px-2">{match.label}</div>
             <div className="border-l border-gray-200 p-1 px-2 text-sm flex text-gray-600 leading-6 items-center">
@@ -179,7 +182,7 @@ export function SearchDialog(props: SearchDialogProps) {
               props.close();
             }}
             key={'global_' + match.uri}
-            className="w-full flex justify-between border-b border-gray-300 hover:bg-gray-200"
+            className="w-full flex justify-between border-b border-gray-300 hover:bg-gray-200 text-start"
           >
             <div className="py-1 px-2">{match.label}</div>
             <div className="border-l border-gray-200 p-1 px-2 text-sm flex text-gray-600 leading-6 items-center">
