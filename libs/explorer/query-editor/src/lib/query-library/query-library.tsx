@@ -1,4 +1,5 @@
 import { Disclosure } from '@headlessui/react';
+import { SparqlInput } from '@exec-graph/ui-react/sparql-input';
 import React from 'react';
 
 /**
@@ -141,8 +142,17 @@ export function QueryLibrary(props: QueryLibraryProps): JSX.Element {
                         Select
                       </span>
                     </div>
-                    <Disclosure.Panel className="text-gray-500">
-                      <pre className="text-xs">{entry.sparql}</pre>
+                    <Disclosure.Panel
+                      className="text-gray-500"
+                      onClick={(event: React.MouseEvent) =>
+                        event.stopPropagation()
+                      }
+                    >
+                      <SparqlInput
+                        className="text-xs !bg-white"
+                        value={entry.sparql}
+                        readonly={true}
+                      ></SparqlInput>
                     </Disclosure.Panel>
                   </>
                 )}

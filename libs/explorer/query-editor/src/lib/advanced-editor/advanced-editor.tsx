@@ -13,6 +13,7 @@ import {
 } from '../query-modifiers/query.types';
 import { RdfAutocompletionService } from '../rdf-autocompletion.service';
 import TripleInput from '../triple-input/triple-input';
+import { SparqlInput } from '@exec-graph/ui-react/sparql-input';
 
 /**
  * Type definition of mandatory and optional properties of the {@link AdvancedEditor} component
@@ -355,13 +356,11 @@ export class AdvancedEditor extends Component<
             }
           ></HelpButton>
         </label>
-        <textarea
-          name="sparql"
-          readOnly={true}
-          rows={3}
+        <SparqlInput
           value={this.props.sparql}
-          className="shadow-sm mt-1 bg-gray-200 text-gray-600 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
-        />
+          readonly={true}
+          className="max-h-24 overflow-auto"
+        ></SparqlInput>
       </div>
     );
   }

@@ -15,6 +15,7 @@
     "ui-react-dialog": "libs/ui-react/dialog",
     "ui-react-help-button": "libs/ui-react/help-button",
     "ui-react-loading-bar": "libs/ui-react/loading-bar",
+    "ui-react-sparql-input": "libs/ui-react/sparql-input",
     "utils": "libs/utils"
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"
