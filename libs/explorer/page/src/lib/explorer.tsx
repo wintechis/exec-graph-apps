@@ -5,7 +5,12 @@ import {
   RemoteDataSource,
   HttpError,
 } from '@exec-graph/graph/data-source-remote';
-import { DataSet, getObjectLabel, Graph } from '@exec-graph/graph/types';
+import {
+  DataSet,
+  DataSourceRequestStatus,
+  getObjectLabel,
+  Graph,
+} from '@exec-graph/graph/types';
 import GraphView, { SetLayout } from '@exec-graph/data-viewer/graph-2d';
 import { TableView } from '@exec-graph/data-viewer/table';
 import { Component, createRef, RefObject } from 'react';
@@ -43,6 +48,7 @@ export enum Status {
   NO_REQUEST_MADE,
   EXECUTING_QUERY,
   PROCESSING_RESPONSE,
+  RENDERING_DATA,
   LOADED,
   ERROR,
 }
@@ -203,18 +209,24 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
    * @param sparql valid sparql query
    */
   private loadSparql(sparql: string): void {
-    // TODO Create a loading status separation between request & response processing
     const currentSelectedNode = this.state.selectedObject;
     this.setState({
-      ...this.state,
-      status: Status.EXECUTING_QUERY,
+      status: Status.NO_REQUEST_MADE,
       dialog: Dialogs.NONE,
       query: sparql,
       selectedObject: null,
       selectedObjectChangeFromOthers: null,
     });
     this.dataSource
-      .getForSparql(sparql)
+      .getForSparql(sparql, (s) => {
+        // This state will often be deferred by react, can't do much about it...
+        this.setState({
+          status:
+            s === DataSourceRequestStatus.PROCESSING_DATA
+              ? Status.PROCESSING_RESPONSE
+              : Status.EXECUTING_QUERY,
+        });
+      })
       .then((ds) => {
         if (ds.graph) ds.graph = SetLayout(ds.graph);
         return ds;
@@ -223,6 +235,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
         this.setState({
           selectedObject: currentSelectedNode,
           selectedObjectChangeFromOthers: currentSelectedNode,
+          status: Status.RENDERING_DATA,
           data: ds,
         });
       })
@@ -406,19 +419,38 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
             : this.state.status === Status.NO_REQUEST_MADE
             ? LoadingStatus.NOT_STARTED
             : this.state.status === Status.PROCESSING_RESPONSE ||
+              this.state.status === Status.RENDERING_DATA ||
               this.state.status === Status.LOADED
             ? LoadingStatus.LOADED
             : LoadingStatus.SKIPPED,
       },
       {
         name: 'Processing Result',
-        width: 'w-2/6',
+        width: 'w-1/6',
         status:
           this.state.status === Status.PROCESSING_RESPONSE
             ? LoadingStatus.PENDING
             : this.state.status === Status.ERROR
             ? LoadingStatus.ERROR
-            : this.state.status === Status.NO_REQUEST_MADE
+            : this.state.status === Status.NO_REQUEST_MADE ||
+              this.state.status === Status.EXECUTING_QUERY
+            ? LoadingStatus.NOT_STARTED
+            : this.state.status === Status.RENDERING_DATA ||
+              this.state.status === Status.LOADED
+            ? LoadingStatus.LOADED
+            : LoadingStatus.SKIPPED,
+      },
+      {
+        name: 'Rendering Data',
+        width: 'w-2/6',
+        status:
+          this.state.status === Status.RENDERING_DATA
+            ? LoadingStatus.PENDING
+            : this.state.status === Status.ERROR
+            ? LoadingStatus.ERROR
+            : this.state.status === Status.NO_REQUEST_MADE ||
+              this.state.status === Status.EXECUTING_QUERY ||
+              this.state.status === Status.PROCESSING_RESPONSE
             ? LoadingStatus.NOT_STARTED
             : this.state.status === Status.LOADED
             ? LoadingStatus.LOADED

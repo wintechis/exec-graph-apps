@@ -5,7 +5,13 @@ import {
   GraphBuilder,
   RdfToGraphTranslator,
 } from '@exec-graph/graph/data-source';
-import { DataSet, DataSource, Schema } from '@exec-graph/graph/types';
+import {
+  DataSet,
+  DataSource,
+  Schema,
+  DataSourceRequestStatus,
+  StatusCallback,
+} from '@exec-graph/graph/types';
 import { Parser } from 'n3';
 import { SparqlRepository } from './sparql/sparql-repository';
 import { SparqlValidator } from './sparql/sparql-validator';
@@ -26,7 +32,7 @@ export class RemoteDataSource implements DataSource {
   /**
    * @inheritdoc
    */
-  getAll(): Promise<DataSet> {
+  getAll(statusCallback?: StatusCallback): Promise<DataSet> {
     const query = 'CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }';
     return this.queryGraph(query);
   }
@@ -34,14 +40,17 @@ export class RemoteDataSource implements DataSource {
   /**
    * @inheritdoc
    */
-  getForSparql(sparql: string): Promise<DataSet> {
+  getForSparql(
+    sparql: string,
+    statusCallback?: StatusCallback
+  ): Promise<DataSet> {
     const queryType = this.sparqlValidator.queryTypeOf(sparql);
     switch (queryType) {
       case 'SELECT':
-        return this.select(sparql);
+        return this.select(sparql, statusCallback);
       case 'CONSTRUCT':
       case 'DESCRIBE':
-        return this.queryGraph(sparql);
+        return this.queryGraph(sparql, statusCallback);
       default:
         throw new Error('Query type not supported');
     }
@@ -53,8 +62,13 @@ export class RemoteDataSource implements DataSource {
    * @param sparql a SPARQL CONSTRUCT or DESCRIBE query
    * @returns DataSet with graph data
    */
-  private queryGraph(sparql: string): Promise<DataSet> {
+  private queryGraph(
+    sparql: string,
+    statusCallback?: StatusCallback
+  ): Promise<DataSet> {
+    statusCallback?.(DataSourceRequestStatus.LOADING_DATA);
     return this.sparqlRepository.construct(sparql).then((res) => {
+      statusCallback?.(DataSourceRequestStatus.PROCESSING_DATA);
       const graphBuilder = new GraphBuilder(
         { multi: true, type: 'directed' },
         new RdfToGraphTranslator(DEFAULT_SCHEMA)
@@ -72,8 +86,14 @@ export class RemoteDataSource implements DataSource {
   /**
    * @inheritdoc
    */
-  public addInformation(oldGraph: g.default, sparql: string): Promise<DataSet> {
+  public addInformation(
+    oldGraph: g.default,
+    sparql: string,
+    statusCallback?: StatusCallback
+  ): Promise<DataSet> {
+    statusCallback?.(DataSourceRequestStatus.LOADING_DATA);
     return this.sparqlRepository.construct(sparql).then((res) => {
+      statusCallback?.(DataSourceRequestStatus.PROCESSING_DATA);
       const graphBuilder = new AddToGraphBuilder(
         oldGraph,
         new RdfToGraphTranslator(DEFAULT_SCHEMA)
@@ -94,8 +114,13 @@ export class RemoteDataSource implements DataSource {
    * @param sparql a SPARQL SELECT query
    * @returns DataSet with tabulae data
    */
-  private select(sparql: string): Promise<DataSet> {
+  private select(
+    sparql: string,
+    statusCallback?: StatusCallback
+  ): Promise<DataSet> {
+    statusCallback?.(DataSourceRequestStatus.LOADING_DATA);
     return this.sparqlRepository.select(sparql).then((res) => {
+      statusCallback?.(DataSourceRequestStatus.PROCESSING_DATA);
       const tabular = {
         headers: res.head.vars,
         data: res.results.bindings,
