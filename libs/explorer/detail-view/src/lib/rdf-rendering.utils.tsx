@@ -43,7 +43,7 @@ export function renderClickableObjectLabel(
     <button
       title={uri}
       onClick={() => handleSelectionChange(uri)}
-      className="fau-link"
+      className="fau-link text-start"
     >
       {getObjectLabel(uri, attributes) || uri}
     </button>
@@ -82,7 +82,6 @@ export function renderRdfTerm(
         </span>
       );
     }
-    console.log(termStr);
     if (
       typedLiteralElements[2] === 'integer' ||
       typedLiteralElements[2] === 'decimal'

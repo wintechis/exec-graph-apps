@@ -70,6 +70,12 @@ export class DetailView extends Component<DetailViewProps, DetailViewState> {
       wikidataStatus: LoadingStatus.NOT_STARTED,
     };
     this.wikidataDataSource = this.initRemoteSource(WIKIDATA_SPARQL_ENDPOINT);
+  }
+
+  /**
+   * React event hook called upon mounting the component to the page tree
+   */
+  public override componentDidMount(): void {
     this.loadDetails();
   }
 

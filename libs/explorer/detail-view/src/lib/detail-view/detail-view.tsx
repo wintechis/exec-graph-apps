@@ -99,6 +99,7 @@ export function DetailView(props: DetailViewProps) {
         <h3 className="text-lg font-bold leading-6 mb-2">Details</h3>
         {attributesToDisplay.map(([k, v]) => (
           <DetailEntry
+            key={k}
             label={formatLabel(getObjectLabelFromGraph(k))}
             value={renderRdfTerm(v, false, (uri) =>
               getObjectLabelFromGraph(uri)

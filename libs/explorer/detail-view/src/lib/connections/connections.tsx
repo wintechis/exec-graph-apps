@@ -142,7 +142,7 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
       this.mapToRelationshipFirstStructure(neighbors, edgeGetter);
     for (const [relationship, objects] of Object.entries(structure)) {
       output.push(
-        <div className="mb-4">
+        <div className="mb-4" key={relationship}>
           <span className="font-bold">
             {getObjectLabelFromGraph(relationship)} ({objects.length})
           </span>
