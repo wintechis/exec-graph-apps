@@ -41,6 +41,9 @@
       "@exec-graph/ui-react/loading-bar": [
         "libs/ui-react/loading-bar/src/index.ts"
       ],
+      "@exec-graph/ui-react/sparql-input": [
+        "libs/ui-react/sparql-input/src/index.ts"
+      ],
       "@exec-graph/utils": ["libs/utils/src/index.ts"]
     }
   },

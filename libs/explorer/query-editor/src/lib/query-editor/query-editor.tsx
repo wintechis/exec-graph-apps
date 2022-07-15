@@ -169,7 +169,7 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
             <TabBar
               selected={this.state.editorKey}
               options={[
-                { label: 'Libary', value: 'library' },
+                { label: 'Library', value: 'library' },
                 { label: 'Filter', value: 'simple' },
                 { label: 'Advanced', value: 'advanced' },
                 { label: 'SPARQL', value: 'sparql' },
