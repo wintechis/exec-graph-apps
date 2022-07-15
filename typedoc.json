@@ -25,7 +25,8 @@
         "title": "apps/exec-graph-web",
         "children": [
           { "title": "Installation", "source": "app-web-installation.md" },
-          { "title": "Tutorial", "source": "app-web-tutorial.md" }
+          { "title": "Tutorial", "source": "app-web-tutorial.md" },
+          { "title": "Update Content", "source": "app-web-update-content.md" }
         ]
       }
     ]
