@@ -125,17 +125,18 @@ export const CONTACT = {
           position: 'Research Assistant',
         },
         {
-          imgPath: 'https://via.placeholder.com/150x200?text=Placeholder',
+          imgPath:
+            environment.basepath + 'assets/people/KurzidemAnna-Sophia.JPG',
           name: 'Anna-Sophia Kurzidem, B.A.',
           position: 'Student Research Assistant',
         },
         {
-          imgPath: 'https://via.placeholder.com/150x200?text=Placeholder',
+          imgPath: 'https://via.placeholder.com/150x200/DDDDDD?text=Dominik',
           name: 'Dominik von Tucher, B.A.',
           position: 'Student Research Assistant',
         },
         {
-          imgPath: 'https://via.placeholder.com/150x200?text=Placeholder',
+          imgPath: environment.basepath + 'assets/people/JudenmannLena.JPG',
           name: 'Lena Judenmann, B.A.',
           position: 'Student Research Assistant',
         },
@@ -151,17 +152,17 @@ export const CONTACT = {
           position: null,
         },
         {
-          imgPath: 'https://via.placeholder.com/150x200?text=Placeholder',
+          imgPath: environment.basepath + 'assets/people/DenzlerTim.jpg',
           name: 'Tim Denzler, M.Sc.',
           position: 'Student Research Assistant',
         },
         {
-          imgPath: 'https://via.placeholder.com/150x200?text=Placeholder',
+          imgPath: environment.basepath + 'assets/people/KveeyanPornchana.jpg',
           name: 'Pornchana Kveeyan, M.Sc.',
           position: 'Student Research Assistant',
         },
         {
-          imgPath: 'https://via.placeholder.com/150x200?text=Placeholder',
+          imgPath: environment.basepath + 'assets/people/HacklSarah.jpg',
           name: 'Sarah Hackl, B.A.',
           position: 'Student Research Assistant',
         },
