@@ -3,15 +3,59 @@
 <a href="#installation-guide" id="installation-guide" style="color: inherit; text-decoration: none;">
   <h1>Installation Guide</h1>
 </a>
-<p>To use the app it has to be made available through a webserver. This encompasses two steps, build and deployment. If you have obtained a pre-build version you may skip the first two steps.</p>
+<p>The ExecGraph Web application consists of a frontend (this project) and the data provied by a SPARQL Endpoint. This page explains the deployment process of the frontend and contains references to GraphDB as a potential SPARQL endpoint. However, the SPARQL endpoint may be provided differently e.g. through a SaaS provider or by reusing an existing instance and is therefore not the focus of this documentation.</p>
+<p>To use the frontend it has to be made available through a webserver. This encompasses two steps, build and deployment. If you have obtained a pre-build version you may skip the first two steps.</p>
 
-<a href="#1-check-configuration" id="1-check-configuration" style="color: inherit; text-decoration: none;">
-  <h3>1. Check Configuration</h3>
+<a href="#1-prerequisites" id="1-prerequisites" style="color: inherit; text-decoration: none;">
+  <h3>1. Prerequisites</h3>
 </a>
-<p>For most deployments, you do not want to adjust the configuration. For special deployments you may want to adjust configuration items, like the URL of the Remote SPAQL endpoint. To do so modify the <code>./src/environments/environment.prod.ts</code>.</p>
+<p>To deploy the application a local environment to build the application and a server to deploy the applications to are required.</p>
+<p>Build Environment:</p>
+<ul>
+<li>Installation of NodeJS Version 16 (with npm)</li>
+<li>Installation of Git</li>
+</ul>
+<p>Server:</p>
+<ul>
+<li><a href="https://graphdb.ontotext.com/documentation/10.0/requirements.html">Support GraphDB</a>* and have enough space for the ExecGraph data</li>
+<li>Support a suitable webserver to deliver static files (Recommended: <a href="https://docs.nginx.com/nginx/technical-specs/">NGINX</a> or <a href="https://httpd.apache.org/">Apache</a>)</li>
+<li>10 MB of free space for the application</li>
+</ul>
+<p>* GraphDB can also be installed on a separate server. Also it is possible to use othr providers of SPARQL endpoints, however the application has only been tested against GraphDB.</p>
+
+<a href="#2-server-setup" id="2-server-setup" style="color: inherit; text-decoration: none;">
+  <h3>2. Server Setup</h3>
+</a>
+<p>The application requires a public facing SPARQL endpoint. This can be realised through installing GraphDB on the same server as the application or on a separate service. For more information on installing and configuring GraphDB correctly check <a href="file:///D:/development/FAU/exec-graph/dist/docs/pages/graphdb.html">this page</a>.</p>
+<p>After installing GraphDB a new repository should be created and the ExecGraph data imported. The repository must be publicly accessible in read-only mode. The data is available in a separate (private) repository.</p>
+<p>Furthermore, the server needs to deliver static files. For this a webserver is required, most commonly <a href="https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/">NGINX</a> or <a href="https://httpd.apache.org/docs/current/install.html">Apache</a> are used. Please check the linked pages for the respective installation instructions.</p>
+
+<a href="#3-get-the-application-source-code" id="3-get-the-application-source-code" style="color: inherit; text-decoration: none;">
+  <h3>3. Get the application source code</h3>
+</a>
+<p>The application needs to be build specifically for a deployment as aspects like the path to the SPARQL endpoint may vary. Therefore, there is no packaged version of the application.</p>
+<p><img src="../../media/github_clone.png" alt="GitHub Get Code"></p>
+<p>To build your own you must download the source code to your local computer or another suitable environment. There are two options to do so:</p>
+<ol>
+<li>Clone the GitHub repository
+This is recommended if regular deployments of updated versions is planned.</li>
+</ol>
+<p>To use this path, open a command shell pointing to the folder you want to clone the project into. Then run <code>git clone https://github.com/wintechis/exec-graph-apps.git</code>. Other options including the use of GitHub Desktop or SSH, see the GitHub Dialog on the screenshot for the respective information.</p>
+<ol start="2">
+<li>Download the source code from GitHub
+This may be a suitable alternative for one-time deployments or if no Git installation is available.</li>
+</ol>
+<p>On the project GitHub homepage, go to the green <code>Code</code> button and than <code>Download ZIP</code> as shown on above screenshot. Unzip the file in a suitable folder on your device.</p>
+<p>Please enter the project folder. All following commands expect to be executed in the root directoy of the project files.</p>
+
+<a href="#4-check-app-configuration" id="4-check-app-configuration" style="color: inherit; text-decoration: none;">
+  <h3>4. Check App Configuration</h3>
+</a>
+<p>Next, configure the app for your deployment. At a minimum you must set the URL of the remote SPAQL endpoint. To do so modify the <code>./src/environments/environment.prod.ts</code>.</p>
 <p>It may look like this:</p>
 <pre><code><span class="hl-9">export</span><span class="hl-1"> </span><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">environment</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-0">production:</span><span class="hl-1"> </span><span class="hl-3">true</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">basepath:</span><span class="hl-1"> </span><span class="hl-10">&#39;/&#39;</span><span class="hl-1">, </span><span class="hl-2">// The path from the webserver root to the index.html used for the router, only modify on subfolder deployments</span><br/><span class="hl-1">  </span><span class="hl-0">sparqlEndpoint:</span><span class="hl-1"> </span><span class="hl-10">&#39;https://your-webserver/path/to/endpoint&#39;</span><span class="hl-1">  </span><span class="hl-2">// SPARQL Endpoint used for all data displayed in the app</span><br/><span class="hl-1">};</span>
 </code></pre>
+<p>Other configuration changes are optional:</p>
 
 <a href="#configure-for-deployment-to-a-subfolder" id="configure-for-deployment-to-a-subfolder" style="color: inherit; text-decoration: none;">
   <h4>Configure for deployment to a subfolder</h4>
@@ -19,22 +63,46 @@
 <p>If the app is deployed to a subfolder the basepath in the <code>environment.prod.ts</code> of the application has to be set and the <code>--deployUrl</code> parameter has to be passed at step 3 of the build instructions.
 Example: <code>nx build --deployUrl &#39;/&lt;path-to-exec-graph-web&gt;/&#39;</code> (same path must be configured in the <code>environment.prod.ts</code></p>
 
-<a href="#2-build-the-application" id="2-build-the-application" style="color: inherit; text-decoration: none;">
-  <h3>2. Build the application</h3>
+<a href="#5-build-the-application" id="5-build-the-application" style="color: inherit; text-decoration: none;">
+  <h3>5. Build the application</h3>
 </a>
+<p>Please follow these steps to build the configured application.</p>
 <ol>
-<li>Clone the project to your working directory, all following commands expect to be executed in the root directoy of the project files.</li>
 <li>Make sure all dependencies are installed by executing <code>npm install</code></li>
 <li>Build the Web App by executing <code>npm run build</code></li>
 <li>The relevant application files can be found in <code>&lt;project_root&gt;/dist/apps/exec-graph-web</code></li>
 </ol>
 
-<a href="#3-deploy-the-app-to-a-webserver" id="3-deploy-the-app-to-a-webserver" style="color: inherit; text-decoration: none;">
-  <h3>3. Deploy the app to a webserver</h3>
+<a href="#6-deploy-the-app-to-a-webserver" id="6-deploy-the-app-to-a-webserver" style="color: inherit; text-decoration: none;">
+  <h3>6. Deploy the app to a webserver</h3>
 </a>
+<p>Finally, the application must be transfered to the server.</p>
+<p>Please follow these steps:</p>
 <ol>
 <li>Copy the application files from the build to your webservers public directory.</li>
 <li>If needed, configure the choosen webserver to serve the files correctly. This may include setting rewrite rules. Please review the documentation of your webserver for further instructions. Usually all requests to non-existent files should be redirected to the <code>index.html</code>.</li>
 <li>Access the folder with the index.html file through your webbrowser using the domain of your webserver.</li>
 </ol>
+
+<a href="#options-to-copy-the-application-files-to-the-webserver" id="options-to-copy-the-application-files-to-the-webserver" style="color: inherit; text-decoration: none;">
+  <h4>Options to copy the application files to the webserver</h4>
+</a>
+<p>Please request the required credentials from your hosting provider or system administrator.</p>
+<p><strong>Using FTP</strong>
+Please use the Web FTP utility of your servers hosting software or alternatively a FTP Client software like <a href="https://filezilla-project.org/">FileZilla</a>. The Windows file explorer also supports FTP Network Drives.</p>
+<p><strong>Using SCP (Secure Copy) command line utility</strong>
+SCP is available for Linux systems or as part of the Putty package for Windows users.</p>
+<p>To copy the files, run the following command. You need to add your credentials, the servers domain or IP address and eventually adjust the target folder path.
+<code>scp -rp ./dist/apps/exec-graph-web &lt;user&gt;@&lt;server&gt;:~/public_html/</code>
+You will be prompted for the password.</p>
+
+<a href="#webserver-configuration" id="webserver-configuration" style="color: inherit; text-decoration: none;">
+  <h4>Webserver Configuration</h4>
+</a>
+<p>Please find here sample configuration snippets for common webservers:</p>
+<p><strong>Apache</strong></p>
+<p>For Apache you may want to add rewrite rules to redirect all requests to non-existent files to the index.html.
+To do so, copy the following code to a .htaccess file in the webservers project directory. Don&#39;t forget to adjust the rewrite base to the subfolder you have deployed or <code>/</code> for root deployments.</p>
+<pre><code><span class="hl-1">&lt;</span><span class="hl-0">IfModule</span><span class="hl-1"> </span><span class="hl-0">mod_rewrite</span><span class="hl-1">.</span><span class="hl-0">c</span><span class="hl-1">&gt;</span><br/><span class="hl-0">RewriteEngine</span><span class="hl-1"> </span><span class="hl-0">On</span><br/><span class="hl-0">RewriteBase</span><span class="hl-1"> &lt;</span><span class="hl-0">PathToSubfolder</span><span class="hl-1">&gt;</span><br/><span class="hl-0">RewriteRule</span><span class="hl-1"> ^</span><span class="hl-0">index</span><span class="hl-1">\.</span><span class="hl-0">html$</span><span class="hl-1"> - [</span><span class="hl-6">L</span><span class="hl-1">]</span><br/><span class="hl-0">RewriteCond</span><span class="hl-1"> %{</span><span class="hl-6">REQUEST_FILENAME</span><span class="hl-1">} !-</span><span class="hl-0">f</span><br/><span class="hl-0">RewriteCond</span><span class="hl-1"> %{</span><span class="hl-6">REQUEST_FILENAME</span><span class="hl-1">} !-</span><span class="hl-0">d</span><br/><span class="hl-0">RewriteCond</span><span class="hl-1"> %{</span><span class="hl-6">REQUEST_FILENAME</span><span class="hl-1">} !-</span><span class="hl-0">l</span><br/><span class="hl-0">RewriteRule</span><span class="hl-1"> . </span><span class="hl-0">index</span><span class="hl-1">.</span><span class="hl-0">html</span><span class="hl-1"> [</span><span class="hl-6">L</span><span class="hl-1">]</span><br/><span class="hl-1">&lt;/</span><span class="hl-0">IfModule</span><span class="hl-1">&gt;</span>
+</code></pre>
 </div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class=""><a href="../../modules.html">Modules</a></li><li class=" pages-entry pages-entry-menu pages-entry-depth-0"><a>Development</a></li><li class=" pages-entry pages-entry-page pages-entry-depth-1"><a href="../../pages/dev-project-documentation.html">Project <wbr/>Documentation</a></li><li class=" pages-entry pages-entry-page pages-entry-depth-1"><a href="../../pages/dev-nx-commands.html">Nx <wbr/>Commands</a></li><li class=" pages-entry pages-entry-page pages-entry-depth-1"><a href="../../pages/graphdb.html">GraphDB</a></li><li class="current tsd-kind-module"><a href="../../modules/apps_exec_graph_web.html">apps/exec-<wbr/>graph-<wbr/>web</a><ul><li class="current pages-entry pages-entry-page pages-entry-depth-1"><a href="app-web-installation.html">Installation</a></li><li class=" pages-entry pages-entry-page pages-entry-depth-1"><a href="app-web-tutorial.html">Tutorial</a></li></ul></li><li class=" tsd-kind-module"><a href="../../modules/libs_data_viewer_graph_2d.html">libs/data-<wbr/>viewer/graph-<wbr/>2d</a></li><li class=" tsd-kind-module"><a href="../../modules/libs_data_viewer_table.html">libs/data-<wbr/>viewer/table</a></li><li class=" tsd-kind-module"><a href="../../modules/libs_explorer_detail_view.html">libs/explorer/detail-<wbr/>view</a></li><li class=" tsd-kind-module"><a href="../../modules/libs_explorer_page.html">libs/explorer/page</a></li><li class=" tsd-kind-module"><a href="../../modules/libs_explorer_query_editor.html">libs/explorer/query-<wbr/>editor</a></li><li class=" tsd-kind-module"><a href="../../modules/libs_graph_data_source.html">libs/graph/data-<wbr/>source</a></li><li class=" tsd-kind-module"><a href="../../modules/libs_graph_data_source_remote.html">libs/graph/data-<wbr/>source-<wbr/>remote</a></li><li class=" tsd-kind-module"><a href="../../modules/libs_graph_types.html">libs/graph/types</a></li><li class=" tsd-kind-module"><a href="../../modules/libs_ui_react_button_toggle.html">libs/ui-<wbr/>react/button-<wbr/>toggle</a></li><li class=" tsd-kind-module"><a href="../../modules/libs_ui_react_dialog.html">libs/ui-<wbr/>react/dialog</a></li><li class=" tsd-kind-module"><a href="../../modules/libs_ui_react_help_button.html">libs/ui-<wbr/>react/help-<wbr/>button</a></li><li class=" tsd-kind-module"><a href="../../modules/libs_ui_react_loading_bar.html">libs/ui-<wbr/>react/loading-<wbr/>bar</a></li><li class=" tsd-kind-module"><a href="../../modules/libs_utils.html">libs/utils</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li><li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li><li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li><li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a>, the 7/15/2022</p></div><div class="overlay"></div><script src="../../assets/main.js"></script></body></html>
