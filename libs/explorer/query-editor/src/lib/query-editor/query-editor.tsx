@@ -9,13 +9,14 @@ import {
   RdfAutocompletionService,
   RdfAutocompletionState,
 } from '../rdf-autocompletion.service';
+import SimpleEditor from '../simple-editor/simple-editor';
 import SparqlEditor from '../sparql-editor/sparql-editor';
 import TabBar from '../tab-bar/tab-bar';
 
 /**
  * Defines string keys for the different sub editors
  */
-type EditorKey = 'library' | 'advanced' | 'sparql';
+type EditorKey = 'library' | 'simple' | 'advanced' | 'sparql' | 'history';
 
 /**
  * Type definition of mandatory and optional properties of the {@link QueryEditor} component
@@ -70,7 +71,6 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
       rdfAutocompletion: this.rdfAutocompletionService.initState(
         (updatedState) =>
           this.setState({
-            ...this.state,
             rdfAutocompletion: {
               ...this.state.rdfAutocompletion,
               ...updatedState,
@@ -98,7 +98,6 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
    */
   private handleChange(sparql: string): void {
     this.setState({
-      ...this.state,
       sparql: sparql,
       valid: this.sparqlValidator.validate(sparql),
     });
@@ -111,7 +110,6 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
    */
   private switchTo(editorKey: EditorKey): void {
     this.setState({
-      ...this.state,
       editorKey,
     });
   }
@@ -141,6 +139,11 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
     const currentEditor =
       this.state.editorKey === 'library' ? (
         <QueryLibrary onSelect={this.handleChange}></QueryLibrary>
+      ) : this.state.editorKey === 'simple' ? (
+        <SimpleEditor
+          sparql={this.state.sparql}
+          onChange={this.handleChange}
+        ></SimpleEditor>
       ) : this.state.editorKey === 'advanced' ? (
         <AdvancedEditor
           sparql={this.state.sparql}
@@ -167,6 +170,7 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
               selected={this.state.editorKey}
               options={[
                 { label: 'Libary', value: 'library' },
+                { label: 'Filter', value: 'simple' },
                 { label: 'Advanced', value: 'advanced' },
                 { label: 'SPARQL', value: 'sparql' },
               ]}
