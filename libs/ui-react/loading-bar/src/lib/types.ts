@@ -4,11 +4,11 @@
  * Also deals with coloring the element in the right color
  */
 export enum LoadingStatus {
-  NOT_STARTED = 'bg-blue-300',
-  PENDING = 'bg-fau-blue text-white',
-  LOADED = 'bg-green-500',
-  ERROR = 'bg-fau-red text-white',
-  SKIPPED = 'bg-gray-300',
+  NOT_STARTED,
+  PENDING,
+  LOADED,
+  ERROR,
+  SKIPPED,
 }
 
 /**

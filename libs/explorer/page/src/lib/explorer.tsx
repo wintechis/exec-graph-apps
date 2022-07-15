@@ -345,37 +345,27 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
               <button
                 onClick={this.showDialog(Dialogs.HELP)}
                 type="button"
-                className="-1 rounded-full text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white mr-4"
+                className="p-1 px-2 flex rounded-full bg-gray-100 text-gray-800 hover:text-white hover:bg-fau-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white mr-2"
               >
-                <span className="sr-only">Help</span>
                 <HiOutlineQuestionMarkCircle />
+                <span className="hidden sm:inline pl-1">Help</span>
               </button>
               <button
                 onClick={this.showDialog(Dialogs.SEARCH)}
                 type="button"
-                className="-1 rounded-full text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white mr-4"
+                className="p-1 px-2 flex rounded-full bg-gray-100 text-gray-800 hover:text-white hover:bg-fau-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white mr-2"
               >
-                <span className="sr-only">Search</span>
                 <HiOutlineSearch className="h-6 w-6" aria-hidden="true" />
+                <span className="hidden sm:inline pl-1">Search</span>
               </button>
               <button
                 onClick={this.showDialog(Dialogs.QUERY_EDITOR)}
                 type="button"
-                className="-1 rounded-full text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white mr-4"
+                className="p-1 px-2 flex rounded-full bg-gray-100 text-gray-800 hover:text-white hover:bg-fau-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white mr-0"
               >
-                <span className="sr-only">Filter</span>
                 <HiOutlineFilter className="h-6 w-6" aria-hidden="true" />
+                <span className="hidden sm:inline pl-1">Filter</span>
               </button>
-              {/*
-              <button
-                onClick={this.showDialog(Dialogs.STYLE_EDITOR)}
-                type="button"
-                className="-1 rounded-full text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-              >
-                <span className="sr-only">Adjust graph design</span>
-                <AdjustmentsIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
-              */}
             </div>
           </div>
         </div>
