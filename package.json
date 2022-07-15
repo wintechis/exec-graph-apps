@@ -18,13 +18,8 @@
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.6.1",
-    "@heroicons/react": "^1.0.6",
     "@react-sigma/core": "^2.0.2",
-    "@react-sigma/layout-circlepack": "^2.0.2",
-    "@react-sigma/layout-circular": "^2.0.2",
-    "@react-sigma/layout-force": "^2.0.2",
     "@react-sigma/layout-forceatlas2": "^2.0.2",
-    "@react-sigma/layout-noverlap": "^2.0.2",
     "@react-sigma/layout-random": "^2.0.2",
     "autoprefixer": "^10.4.7",
     "core-js": "^3.6.5",

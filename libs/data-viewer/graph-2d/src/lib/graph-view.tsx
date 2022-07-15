@@ -30,6 +30,7 @@ function GraphView(props: GraphViewProps) {
         renderLabels: false,
         defaultNodeType: 'image',
         defaultNodeColor: 'white',
+        allowInvalidContainer: true,
       }}
       style={{ height: styleHeight }}
       className="graph"

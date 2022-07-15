@@ -1,6 +1,6 @@
 import { RemoteDataSource } from '@exec-graph/graph/data-source-remote';
 import { DataSet } from '@exec-graph/graph/types';
-import { RefreshIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
+import { HiRefresh, HiExclamationCircle } from 'react-icons/hi';
 import { useState, useEffect, lazy } from 'react';
 import { SetLayout } from '@exec-graph/data-viewer/graph-2d';
 
@@ -87,7 +87,7 @@ function OverviewGraph(props: OverviewGraphProps) {
   } else if (error) {
     return inlineNotification(
       <>
-        <ExclamationCircleIcon className="text-fau-red h-6 w-6"></ExclamationCircleIcon>
+        <HiExclamationCircle className="text-fau-red h-6 w-6"></HiExclamationCircle>
         <h3 className="mt-4 text-2xl text-fau-red font-bold">Error</h3>
         <div className="max-w-prose">
           Sorry, we have encountered an issue while loading the ExecGraph data.
@@ -98,7 +98,7 @@ function OverviewGraph(props: OverviewGraphProps) {
   } else if (!isLoaded) {
     return inlineNotification(
       <>
-        <RefreshIcon className="animate-spin h-6 w-6"></RefreshIcon>
+        <HiRefresh className="animate-spin h-6 w-6"></HiRefresh>
         <h3 className="mt-4 text-2xl font-bold">Loading</h3>
         <div className="max-w-prose">The ExecGraph data is being loaded.</div>
       </>
@@ -106,7 +106,7 @@ function OverviewGraph(props: OverviewGraphProps) {
   }
   return inlineNotification(
     <>
-      <ExclamationCircleIcon className="text-fau-red h-6 w-6"></ExclamationCircleIcon>
+      <HiExclamationCircle className="text-fau-red h-6 w-6"></HiExclamationCircle>
       <h3 className="mt-4 text-2xl text-fau-red font-bold">Error</h3>
       <div className="max-w-prose">
         Sorry, we have encountered an issue with displaying the graph

@@ -15,14 +15,14 @@ import GraphView, { SetLayout } from '@exec-graph/data-viewer/graph-2d';
 import { TableView } from '@exec-graph/data-viewer/table';
 import { Component, createRef, RefObject } from 'react';
 import {
-  AdjustmentsIcon,
-  ExclamationCircleIcon,
-  FilterIcon,
-  QuestionMarkCircleIcon,
-  RefreshIcon,
-  SearchCircleIcon,
-  SearchIcon,
-} from '@heroicons/react/outline';
+  HiOutlineAdjustments,
+  HiOutlineQuestionMarkCircle,
+  HiOutlineFilter,
+  HiOutlineSearch,
+  HiOutlineSearchCircle,
+  HiOutlineRefresh,
+  HiOutlineExclamationCircle,
+} from 'react-icons/hi';
 import DetailView from './detail-view/detail-view';
 import { QueryEditor } from '@exec-graph/explorer/query-editor';
 import Dialog from '@exec-graph/ui-react/dialog';
@@ -362,7 +362,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
                 className="-1 rounded-full text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white mr-4"
               >
                 <span className="sr-only">Help</span>
-                <QuestionMarkCircleIcon
+                <HiOutlineQuestionMarkCircle
                   className="h-6 w-6"
                   aria-hidden="true"
                 />
@@ -373,7 +373,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
                 className="-1 rounded-full text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white mr-4"
               >
                 <span className="sr-only">Search</span>
-                <SearchIcon className="h-6 w-6" aria-hidden="true" />
+                <HiOutlineSearch className="h-6 w-6" aria-hidden="true" />
               </button>
               <button
                 onClick={this.showDialog(Dialogs.QUERY_EDITOR)}
@@ -381,7 +381,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
                 className="-1 rounded-full text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white mr-4"
               >
                 <span className="sr-only">Filter</span>
-                <FilterIcon className="h-6 w-6" aria-hidden="true" />
+                <HiOutlineFilter className="h-6 w-6" aria-hidden="true" />
               </button>
               {/*
               <button
@@ -509,13 +509,12 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
   private resultSectionNoRequest(): JSX.Element {
     return this.inlineNotification(
       <>
-        <SearchCircleIcon className="h-6 w-6"></SearchCircleIcon>
+        <HiOutlineSearchCircle className="h-6 w-6" />
         <h3 className="mt-4 text-2xl font-bold">Exploring the ExecGraph</h3>
         <div className="max-w-prose">
           To get started make your first query with the{' '}
           <button className="fau-link inline-flex">
-            <AdjustmentsIcon className="h-5 w-4 mr-2"></AdjustmentsIcon> query
-            editor
+            <HiOutlineAdjustments className="h-5 w-4 mr-1" /> query editor
           </button>
           .
         </div>
@@ -531,7 +530,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
   private resultSectionLoading(): JSX.Element {
     return this.inlineNotification(
       <>
-        <RefreshIcon className="animate-spin h-6 w-6"></RefreshIcon>
+        <HiOutlineRefresh className="animate-spin h-6 w-6" />
         <h3 className="mt-4 text-2xl font-bold">Loading</h3>
         <div className="max-w-prose">The ExecGraph data is being loaded.</div>
       </>
@@ -546,7 +545,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
   private resultSectionError(): JSX.Element {
     return this.inlineNotification(
       <>
-        <ExclamationCircleIcon className="text-fau-red h-6 w-6"></ExclamationCircleIcon>
+        <HiOutlineExclamationCircle className="text-fau-red h-6 w-6" />
         <h3 className="mt-4 text-2xl text-fau-red font-bold">Error</h3>
         <div className="max-w-prose">
           Sorry, we have encountered an issue while loading the ExecGraph data.
@@ -582,7 +581,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
       return (
         <div className="bg-white" ref={this.detailViewRef}>
           <div className="max-w-7xl mx-auto px-4 py-6 h-64">
-            <QuestionMarkCircleIcon className="h-6 w-6"></QuestionMarkCircleIcon>
+            <HiOutlineQuestionMarkCircle className="h-6 w-6" />
             <h3 className="mt-4 text-2xl font-bold">Details</h3>
             <div className="max-w-prose">
               Select a node in the graph to see more details.
