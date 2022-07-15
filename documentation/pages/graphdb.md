@@ -29,3 +29,4 @@ Check the server fullfills the [following requirements (as of GraphDB 9.11)](htt
 ## Update data in an existing server
 
 Changes can be added via SPARQL, or in this specific case by purging/removing the repository and creating a new one.
+However, if you are able to redeploy the app, you may create a new repository, import all the data and than adjust the SPARQL endpoint configuration of the app. This will reduce the downtime caused by the unavailability of the repository.

@@ -6,6 +6,7 @@
   "customTitle": "ExecGraph Apps | Documentation",
   "footerDate": true,
   "favicon": "./documentation/assets/favicon.ico",
+  "media": "./documentation/assets/",
   "pluginPages": {
     "source": "./documentation/pages",
     "pages": [
