@@ -34,7 +34,7 @@ const WIKIDATA_JOIN_ATTRIBUTE = 'http://schema.org/sameAs';
 export interface DetailViewProps {
   selectedObject: string;
   data?: DataSet;
-  mainDataSource: DataSource;
+  mainDataSource?: DataSource;
   /**
    * Invoked if a user used the detail view to travers the graph
    */
@@ -120,8 +120,8 @@ export class DetailView extends Component<DetailViewProps, DetailViewState> {
       detailsStatus: LoadingStatus.PENDING,
     });
     this.props.mainDataSource
-      .getForSparql(detailQuery(selected))
-      .then((ds) => {
+      ?.getForSparql(detailQuery(selected))
+      .then((ds: DataSet) => {
         this.setState(
           {
             detailsStatus: LoadingStatus.LOADED,

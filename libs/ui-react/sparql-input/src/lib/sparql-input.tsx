@@ -1,9 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
 import { EditorView, basicSetup } from 'codemirror';
 import { StreamLanguage } from '@codemirror/language';
 import { EditorState, Transaction } from '@codemirror/state';
-import { sparql } from '@codemirror/legacy-modes/mode/sparql';
+import * as lang from '@codemirror/legacy-modes/mode/sparql';
 
 import './sparql-input.scss';
 
@@ -64,7 +64,7 @@ export function SparqlInput(props: SparqlInputProps): JSX.Element {
         doc: valueRef.current,
         extensions: [
           basicSetup,
-          StreamLanguage.define(sparql),
+          StreamLanguage.define(lang.sparql),
           EditorState.readOnly.of(readonly || false),
           EditorState.transactionFilter.of((tr: Transaction) => {
             const editorView = view;

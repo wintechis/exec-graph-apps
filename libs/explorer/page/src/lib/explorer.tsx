@@ -3,40 +3,28 @@ import {
   FetchHttpClient,
   HttpSparqlRepository,
   RemoteDataSource,
-  HttpError,
 } from '@exec-graph/graph/data-source-remote';
+import { getObjectLabel, Graph } from '@exec-graph/graph/types';
+import { Component } from 'react';
 import {
-  DataSet,
-  DataSourceRequestStatus,
-  getObjectLabel,
-  Graph,
-} from '@exec-graph/graph/types';
-import GraphView, { SetLayout } from '@exec-graph/data-viewer/graph-2d';
-import { TableView } from '@exec-graph/data-viewer/table';
-import { Component, createRef, RefObject } from 'react';
-import {
-  HiOutlineAdjustments,
   HiOutlineQuestionMarkCircle,
   HiOutlineFilter,
   HiOutlineSearch,
-  HiOutlineSearchCircle,
-  HiOutlineRefresh,
-  HiOutlineExclamationCircle,
-  HiOutlineArrowDown,
-  HiX,
 } from 'react-icons/hi';
-import DetailView from './detail-view/detail-view';
 import { QueryEditor } from '@exec-graph/explorer/query-editor';
-import Dialog from '@exec-graph/ui-react/dialog';
+import Dialog, { DialogErrorBoundary } from '@exec-graph/ui-react/dialog';
 import { Dialog as HeadlessDialog } from '@headlessui/react';
 import LoadingBar, {
   LoadingStatus,
   Step,
 } from '@exec-graph/ui-react/loading-bar';
 import SearchDialog, { Match } from './search-dialog/search-dialog';
-import { BsMouse } from 'react-icons/bs';
-import { FiSettings } from 'react-icons/fi';
 import ExplorerHelpText from './explorer-help-text/explorer-help-text';
+import GraphDataManager, {
+  GraphDataContext,
+  Status,
+} from './graph-data-manager/graph-data-manager';
+import ResultsView from './results-view/results-view';
 
 /**
  * Type definition of mandatory and optional properties of the {@link Explorer} component
@@ -44,18 +32,6 @@ import ExplorerHelpText from './explorer-help-text/explorer-help-text';
 export interface ExplorerProps {
   /** URL pointing to a remote SPARQL dndpoint */
   sparqlEndpoint: string;
-}
-
-/**
- * Indicates the loading status of the graph/table data on the explore page
- */
-export enum Status {
-  NO_REQUEST_MADE,
-  EXECUTING_QUERY,
-  PROCESSING_RESPONSE,
-  RENDERING_DATA,
-  LOADED,
-  ERROR,
 }
 
 /**
@@ -73,15 +49,18 @@ enum Dialogs {
 /**
  * This is the inital query executed upon opening
  */
-const DEFAULT_QUERY = `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+const DEFAULT_QUERY = {
+  title: 'Default Query',
+  sparql: `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 PREFIX schema: <http://schema.org/>
 
 CONSTRUCT {?s ?p ?o}
 WHERE {
     ?s ?p ?o.
     ?s rdf:type ?c.
-    FILTER (?c IN ( schema:City,schema:Person, schema:Organization,schema:CollegeOrUniversity ) )
-}`;
+    FILTER (?c IN ( schema:City, schema:Person, schema:Organization, schema:CollegeOrUniversity ) )
+}`,
+};
 
 /**
  * Function for local search of the current graph
@@ -103,25 +82,9 @@ function searchGraph(graph: Graph): (query: string) => Match[] {
  */
 interface ExplorerState {
   /**
-   * stores the currently loaded data
-   */
-  data?: DataSet;
-  /**
-   * stores the error if an error during loading of the data occured
-   */
-  error?: {
-    message: string;
-  };
-  /**
-   * Loading status indicator
-   */
-  status: Status;
-  selectedObject?: string | null;
-  /**
    * Indicates which dialog should be shown to the user
    */
   dialog: Dialogs;
-  query: string;
 }
 
 /**
@@ -133,111 +96,16 @@ interface ExplorerState {
  */
 export class Explorer extends Component<ExplorerProps, ExplorerState> {
   private dataSource: RemoteDataSource;
-  private detailViewRef: RefObject<HTMLDivElement>;
 
   constructor(props: ExplorerProps) {
     super(props);
-    this.state = {
-      status: Status.NO_REQUEST_MADE,
-      dialog: Dialogs.NONE,
-      query: '',
-    };
+    this.state = { dialog: Dialogs.NONE };
     const httpClient: HttpClient = new FetchHttpClient();
     const sparqlRepository = new HttpSparqlRepository(
       props.sparqlEndpoint,
       httpClient
     );
     this.dataSource = new RemoteDataSource(sparqlRepository);
-    this.loadSparql = this.loadSparql.bind(this);
-    this.handleSelectionChange = this.handleSelectionChange.bind(this);
-    this.viewCompletedLoading = this.viewCompletedLoading.bind(this);
-    this.handleScrollButtonClick = this.handleScrollButtonClick.bind(this);
-    this.detailViewRef = createRef();
-  }
-
-  /**
-   * React-Lifecycle-Hook used to initiate loading of default query once the component after the page was opened.
-   */
-  override componentDidMount(): void {
-    this.loadSparql(DEFAULT_QUERY);
-  }
-
-  /**
-   * Selects the given uri across the whole page
-   *
-   * Closes any open dialog to return focus to the base page with the new selection
-   *
-   * @param uri the URI of the selected object in the graph or null to remove selection
-   */
-  private handleSelectionChange(uri: string | null): void {
-    this.setState({
-      selectedObject: uri,
-      dialog: Dialogs.NONE,
-    });
-  }
-
-  /**
-   * Click handler on scroll button for scrolling to the detail view
-   */
-  private handleScrollButtonClick() {
-    this.detailViewRef?.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
-  }
-
-  /**
-   * Marks the component as loaded once the data has been processed and is shown to the user.
-   */
-  private viewCompletedLoading(): void {
-    this.setState({ status: Status.LOADED });
-  }
-
-  /**
-   * Takes changed queries from the SPARQL editor and executes them through the set data source
-   *
-   * @param sparql valid sparql query
-   */
-  private loadSparql(sparql: string): void {
-    // we temporarily deselect the node to work around issues if the node is not part of the graph anymore
-    const lastSelectedNode = this.state.selectedObject;
-    this.setState({
-      status: Status.NO_REQUEST_MADE,
-      dialog: Dialogs.NONE,
-      query: sparql,
-      selectedObject: null,
-    });
-    this.dataSource
-      .getForSparql(sparql, (s) => {
-        // This state will often be deferred by react, can't do much about it...
-        this.setState({
-          status:
-            s === DataSourceRequestStatus.PROCESSING_DATA
-              ? Status.PROCESSING_RESPONSE
-              : Status.EXECUTING_QUERY,
-        });
-      })
-      .then((ds) => {
-        if (ds.graph) ds.graph = SetLayout(ds.graph);
-        return ds;
-      })
-      .then((ds) => {
-        this.setState({
-          status: Status.RENDERING_DATA,
-          selectedObject: lastSelectedNode,
-          data: ds,
-        });
-      })
-      .catch((e) => {
-        if (e instanceof HttpError) {
-          this.setState({
-            error: { message: e.message },
-            status: Status.ERROR,
-          });
-          return;
-        }
-        throw e;
-      });
   }
 
   /**
@@ -246,14 +114,16 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
    */
   public override render(): JSX.Element {
     return (
-      <>
+      <GraphDataManager
+        dataSource={this.dataSource}
+        defaultQuery={DEFAULT_QUERY}
+      >
         {this.renderHeader()}
         <main>
-          {this.resultsView()}
-          {this.detailView()}
+          <ResultsView />
         </main>
         {this.renderDialogs()}
-      </>
+      </GraphDataManager>
     );
   }
 
@@ -275,35 +145,50 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
             width="max-w-3xl"
             title="Welcome to the explorer!"
           >
-            <ExplorerHelpText className="overflow-y-auto sm:pr-24" style={{ height: '70vh' }} />
+            <ExplorerHelpText
+              className="overflow-y-auto sm:pr-24"
+              style={{ height: '70vh' }}
+            />
           </Dialog>
-          <SearchDialog
-            show={this.state.dialog === Dialogs.SEARCH}
-            close={this.showDialog(Dialogs.NONE)}
-            dataSource={this.dataSource}
-            queryLocal={
-              this.state.data?.graph
-                ? searchGraph(this.state.data?.graph)
-                : undefined
-            }
-            selectLocal={this.handleSelectionChange}
-            runSparql={this.loadSparql}
-          ></SearchDialog>
+          <GraphDataContext.Consumer>
+            {(value) => (
+              <SearchDialog
+                show={this.state.dialog === Dialogs.SEARCH}
+                close={this.showDialog(Dialogs.NONE)}
+                dataSource={this.dataSource}
+                queryLocal={
+                  value.data?.graph ? searchGraph(value.data?.graph) : undefined
+                }
+                selectLocal={value.selectObject}
+                runSparql={(sparql: string) => {
+                  this.showDialog(Dialogs.NONE);
+                  value.setQuery({ sparql, title: 'Search' });
+                }}
+              ></SearchDialog>
+            )}
+          </GraphDataContext.Consumer>
           <Dialog
             show={this.state.dialog === Dialogs.QUERY_EDITOR}
             close={this.showDialog(Dialogs.NONE)}
             width="max-w-5xl"
           >
-            <QueryEditor
-              dataSource={this.dataSource}
-              sparql={this.state.query}
-              onSubmit={this.loadSparql}
-              title={
-                <HeadlessDialog.Title className="p-4 pb-0 text-xl font-bold leading-6 mb-4">
-                  Query Editor
-                </HeadlessDialog.Title>
-              }
-            ></QueryEditor>
+            <GraphDataContext.Consumer>
+              {(value) => (
+                <QueryEditor
+                  dataSource={this.dataSource}
+                  sparql={value.query?.sparql || DEFAULT_QUERY.sparql}
+                  onSubmit={(sparql: string) => {
+                    this.showDialog(Dialogs.NONE);
+                    value.setQuery({ sparql, title: 'some Query' });
+                  }}
+                  title={
+                    <HeadlessDialog.Title className="p-4 pb-0 text-xl font-bold leading-6 mb-4">
+                      Query Editor
+                    </HeadlessDialog.Title>
+                  }
+                ></QueryEditor>
+              )}
+            </GraphDataContext.Consumer>
           </Dialog>
           <Dialog
             show={this.state.dialog === Dialogs.STYLE_EDITOR}
@@ -327,12 +212,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
    * @param dialog reference to the dialog to show
    */
   private showDialog(dialog: Dialogs): () => void {
-    return () =>
-      this.setState({
-        ...this.state,
-        dialog,
-        // selectedObjectChangeFromOthers: null,
-      });
+    return () => this.setState({ dialog });
   }
 
   /**
@@ -377,7 +257,11 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
             </div>
           </div>
         </div>
-        <LoadingBar steps={this.loadingStatus()}></LoadingBar>
+        <GraphDataContext.Consumer>
+          {({ status }) => (
+            <LoadingBar steps={this.loadingStatus(status)}></LoadingBar>
+          )}
+        </GraphDataContext.Consumer>
       </header>
     );
   }
@@ -387,21 +271,21 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
    *
    * @returns list of steps for each part of the loading process
    */
-  private loadingStatus(): Step[] {
+  private loadingStatus(status: Status): Step[] {
     return [
       {
         name: 'Executing Query',
         width: 'w-3/6',
         status:
-          this.state.status === Status.EXECUTING_QUERY
+          status === Status.EXECUTING_QUERY
             ? LoadingStatus.PENDING
-            : this.state.status === Status.ERROR
+            : status === Status.ERROR
             ? LoadingStatus.ERROR
-            : this.state.status === Status.NO_REQUEST_MADE
+            : status === Status.NO_REQUEST_MADE
             ? LoadingStatus.NOT_STARTED
-            : this.state.status === Status.PROCESSING_RESPONSE ||
-              this.state.status === Status.RENDERING_DATA ||
-              this.state.status === Status.LOADED
+            : status === Status.PROCESSING_RESPONSE ||
+              status === Status.RENDERING_DATA ||
+              status === Status.LOADED
             ? LoadingStatus.LOADED
             : LoadingStatus.SKIPPED,
       },
@@ -409,15 +293,14 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
         name: 'Processing Result',
         width: 'w-1/6',
         status:
-          this.state.status === Status.PROCESSING_RESPONSE
+          status === Status.PROCESSING_RESPONSE
             ? LoadingStatus.PENDING
-            : this.state.status === Status.ERROR
+            : status === Status.ERROR
             ? LoadingStatus.ERROR
-            : this.state.status === Status.NO_REQUEST_MADE ||
-              this.state.status === Status.EXECUTING_QUERY
+            : status === Status.NO_REQUEST_MADE ||
+              status === Status.EXECUTING_QUERY
             ? LoadingStatus.NOT_STARTED
-            : this.state.status === Status.RENDERING_DATA ||
-              this.state.status === Status.LOADED
+            : status === Status.RENDERING_DATA || status === Status.LOADED
             ? LoadingStatus.LOADED
             : LoadingStatus.SKIPPED,
       },
@@ -425,177 +308,19 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
         name: 'Rendering Data',
         width: 'w-2/6',
         status:
-          this.state.status === Status.RENDERING_DATA
+          status === Status.RENDERING_DATA
             ? LoadingStatus.PENDING
-            : this.state.status === Status.ERROR
+            : status === Status.ERROR
             ? LoadingStatus.ERROR
-            : this.state.status === Status.NO_REQUEST_MADE ||
-              this.state.status === Status.EXECUTING_QUERY ||
-              this.state.status === Status.PROCESSING_RESPONSE
+            : status === Status.NO_REQUEST_MADE ||
+              status === Status.EXECUTING_QUERY ||
+              status === Status.PROCESSING_RESPONSE
             ? LoadingStatus.NOT_STARTED
-            : this.state.status === Status.LOADED
+            : status === Status.LOADED
             ? LoadingStatus.LOADED
             : LoadingStatus.SKIPPED,
       },
     ];
-  }
-
-  /**
-   * Creates the section displaying the result (dataset or status)
-   *
-   * @returns the upper section with the results
-   */
-  private resultsView(): JSX.Element {
-    if (this.state.data?.graph) {
-      const pageSpecificControls = (
-        <>
-          <button
-            onClick={this.handleScrollButtonClick}
-            className="flex p-2 items-center"
-          >
-            <HiOutlineArrowDown className="w-5 h-5 mr-2" /> Show Details
-          </button>
-          {this.state.selectedObject && (
-            <button
-              onClick={() => this.handleSelectionChange(null)}
-              className="flex p-2 items-center ml-2"
-            >
-              <HiX className="w-5 h-5 mr-2" /> Clear Selection
-            </button>
-          )}
-        </>
-      );
-      return (
-        <GraphView
-          data={this.state.data}
-          height="80vh"
-          onSelectionChange={this.handleSelectionChange}
-          selectedObject={this.state.selectedObject}
-          onLoaded={this.viewCompletedLoading}
-          pageSpecificControls={pageSpecificControls}
-        ></GraphView>
-      );
-    }
-    if (this.state.data?.tabular) {
-      this.viewCompletedLoading();
-      return (
-        <div className="max-w-7xl mx-auto mb-4 mt-4">
-          <TableView data={this.state?.data}></TableView>
-        </div>
-      );
-    }
-    // no data available, check status:
-    if (this.state.status === Status.ERROR) {
-      return this.resultSectionError();
-    } else if (
-      this.state.status === Status.EXECUTING_QUERY ||
-      this.state.status === Status.PROCESSING_RESPONSE
-    ) {
-      return this.resultSectionLoading();
-    }
-    // Status should now be NO_REQUEST_MADE
-    return this.resultSectionNoRequest();
-  }
-
-  /**
-   * Creates an inline notification to indicate that no data was loaded
-   *
-   * @returns inline notification fragement
-   */
-  private resultSectionNoRequest(): JSX.Element {
-    return this.inlineNotification(
-      <>
-        <HiOutlineSearchCircle className="h-6 w-6" />
-        <h3 className="mt-4 text-2xl font-bold">Exploring the ExecGraph</h3>
-        <div className="max-w-prose">
-          To get started make your first query with the{' '}
-          <button className="fau-link inline-flex">
-            <HiOutlineAdjustments className="h-5 w-4 mr-1" /> query editor
-          </button>
-          .
-        </div>
-      </>
-    );
-  }
-
-  /**
-   * Creates an inline notification to indicate that data is being loaded
-   *
-   * @returns inline notification fragement
-   */
-  private resultSectionLoading(): JSX.Element {
-    return this.inlineNotification(
-      <>
-        <HiOutlineRefresh className="animate-spin h-6 w-6" />
-        <h3 className="mt-4 text-2xl font-bold">Loading</h3>
-        <div className="max-w-prose">The ExecGraph data is being loaded.</div>
-      </>
-    );
-  }
-
-  /**
-   * Creates an inline notification to indicate that data failed to load
-   *
-   * @returns inline notification fragement
-   */
-  private resultSectionError(): JSX.Element {
-    return this.inlineNotification(
-      <>
-        <HiOutlineExclamationCircle className="text-fau-red h-6 w-6" />
-        <h3 className="mt-4 text-2xl text-fau-red font-bold">Error</h3>
-        <div className="max-w-prose">
-          Sorry, we have encountered an issue while loading the ExecGraph data.
-        </div>
-        <pre className="max-w-prose mt-4">{this.state.error?.message}</pre>
-      </>
-    );
-  }
-
-  /**
-   * Creates an inline notification template
-   *
-   * @returns inline notification container
-   */
-  private inlineNotification(content: JSX.Element): JSX.Element {
-    return (
-      <div className="px-4 py-6 max-w-5xl mx-auto">
-        <div className="bg-white h-64 p-8 max-w-4xl">{content}</div>
-      </div>
-    );
-  }
-
-  /**
-   * Adds the section to show details of the selected object
-   *
-   * @returns detail view or help when detail view is supported by current data or null if not
-   */
-  private detailView(): JSX.Element | null {
-    if (!this.state.data?.graph) {
-      return null; // only enable details when in graph view
-    }
-    if (!this.state.selectedObject) {
-      return (
-        <div className="bg-white" ref={this.detailViewRef}>
-          <div className="max-w-7xl mx-auto px-4 py-6 h-64">
-            <HiOutlineQuestionMarkCircle className="h-6 w-6" />
-            <h3 className="mt-4 text-2xl font-bold">Details</h3>
-            <div className="max-w-prose">
-              Select a node in the graph to see more details.
-            </div>
-          </div>
-        </div>
-      );
-    }
-    return (
-      <div ref={this.detailViewRef}>
-        <DetailView
-          mainDataSource={this.dataSource}
-          data={this.state.data}
-          selectedObject={this.state.selectedObject}
-          onSelect={this.handleSelectionChange}
-        ></DetailView>
-      </div>
-    );
   }
 }
 
