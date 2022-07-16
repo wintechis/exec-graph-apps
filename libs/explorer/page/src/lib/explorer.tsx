@@ -36,6 +36,7 @@ import LoadingBar, {
 import SearchDialog, { Match } from './search-dialog/search-dialog';
 import { BsMouse } from 'react-icons/bs';
 import { FiSettings } from 'react-icons/fi';
+import ExplorerHelpText from './explorer-help-text/explorer-help-text';
 
 /**
  * Type definition of mandatory and optional properties of the {@link Explorer} component
@@ -271,136 +272,10 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
           <Dialog
             show={this.state.dialog === Dialogs.HELP}
             close={this.showDialog(Dialogs.NONE)}
-            width="max-w-5xl"
+            width="max-w-3xl"
             title="Welcome to the explorer!"
           >
-            <div className="overflow-y-auto" style={{ height: '70vh' }}>
-              <p className="pl-4 pr-4">
-                The explorer enables the opportunity to explore the data and
-                interact with the knowledge graph.
-              </p>
-              <div className="pl-4 pr-4 pt-2">
-                <p className="pb-1 underline">Mouse Interaction:</p>
-                <div className="w-full inline-flex">
-                  <div className="w-1/12">
-                    <BsMouse className="w-full h-full"></BsMouse>
-                  </div>
-                  <p className="pl-6 w-11/12">
-                    <ol className="list-disc">
-                      <li>
-                        Hover over/click on nodes to reduce graph to subgraph
-                        with that node
-                      </li>
-                      <li>Zoom in and out using mouse wheel</li>
-                      <li>Drag the graph background to move the graph</li>
-                      <li>Drag node to move node</li>
-                      <li>
-                        Click on a node to display details section below the
-                        graph
-                      </li>
-                    </ol>
-                  </p>
-                </div>
-                <p className="pt-1">
-                  The details section displays information about the clicked
-                  node and its relations to others.
-                </p>
-              </div>
-              <div className="pl-4 pr-4 pt-2">
-                <p className="pb-1 underline">Controls:</p>
-                <div className="w-full inline-flex">
-                  <div className="w-1/12">
-                    <FiSettings className="w-full h-full"></FiSettings>
-                  </div>
-                  <p className="pl-6 w-11/12">
-                    <ol className="list-disc">
-                      <li>
-                        On the upper left, you can zoom, center the camera,
-                        enter full screen mode and run/stop the Layout Algorithm
-                        (ForceAtlas2)
-                      </li>
-                      <li>
-                        On the upper right, you can search for nodes in the
-                        graph
-                      </li>
-                      <li>
-                        On the lower left, you can press the button to scroll to
-                        the details
-                      </li>
-                      <li>On the lower right, you can access the legend</li>
-                    </ol>
-                  </p>
-                </div>
-              </div>
-              <div className="pl-4 pr-4 pt-2">
-                <p className="pb-1 underline">Search:</p>
-                <div className="w-full inline-flex">
-                  <div className="w-1/12">
-                    <HiOutlineSearch className="w-full h-full"></HiOutlineSearch>
-                  </div>
-                  <p className="pl-6 w-11/12">
-                    Above the graph is a button to open the search dialog.{' '}
-                    <br />
-                    You can enter a keyword and may get two kinds of results:
-                    <ol className="pl-8 pt-1 pb-1 list-decimal">
-                      <li>Matches in the current graph</li>
-                      <li>Matches in the entire graph</li>
-                    </ol>
-                    Selecting from the first list will select a node in the
-                    current graph (like the other search field)
-                    <br />
-                    Selecting from the second will issue a query to load only
-                    information related to the object.
-                  </p>
-                </div>
-              </div>
-              <div className="pl-4 pr-4 pb-4 pt-2">
-                <p className="pb-1 underline">Query Editor:</p>
-                <div className="w-full inline-flex">
-                  <div className="w-1/12">
-                    <HiOutlineFilter className="w-full h-full"></HiOutlineFilter>
-                  </div>
-                  <p className="pl-6 w-11/12">
-                    Above the graph is a button to open the filter dialog.
-                    <br />
-                    The dialog consists of four tabs:
-                    <ol className="pl-8 pt-1 pb-1 list-decimal">
-                      <li className="font-bold">
-                        Library
-                        <p className="font-normal">
-                          It contains pre-defined queries to quickly find data
-                          relating to a specific topic or of a specific kind.
-                        </p>
-                      </li>
-                      <li className="font-bold">
-                        Filter
-                        <p className="font-normal">
-                          The simple filter allows to easily filter objects
-                          according to their type.
-                        </p>
-                      </li>
-                      <li className="font-bold">
-                        Advanced
-                        <p className="font-normal">
-                          The advanced editor provides a form with
-                          autocompletion lists to create a custom SPARQL query.{' '}
-                          <br />
-                          Please note, that basic SPARQL knowledge is required
-                          to efficiently use the advanced editor.
-                        </p>
-                      </li>
-                      <li className="font-bold">
-                        SPARQL
-                        <p className="font-normal">
-                          For full flexibility you may use the free-text SPARQL
-                          editor to create a custom query.
-                        </p>
-                      </li>
-                    </ol>
-                  </p>
-                </div>
-              </div>
-            </div>
+            <ExplorerHelpText className="overflow-y-auto sm:pr-24" style={{ height: '70vh' }} />
           </Dialog>
           <SearchDialog
             show={this.state.dialog === Dialogs.SEARCH}
