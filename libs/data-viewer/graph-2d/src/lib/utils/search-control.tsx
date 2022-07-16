@@ -118,7 +118,7 @@ export const SearchControl = memo((props: SearchControlsProps) => {
         type="text"
         placeholder={searchPlaceholder}
         onFocus={() => setSearchPlaceholder('')}
-        onBlur={() => setSearchPlaceholder('Search...')}
+        onBlur={() => setSearchPlaceholder('Search nodes...')}
         list={`${inputId}-datalist`}
         value={search}
         onChange={onInputChange}
