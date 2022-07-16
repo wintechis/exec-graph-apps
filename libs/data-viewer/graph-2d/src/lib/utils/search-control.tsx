@@ -39,7 +39,7 @@ export const SearchControl = memo((props: SearchControlsProps) => {
   const [inputId, setInputId] = useState<string>('');
   // placeholder for the search field
   const [searchPlaceholder, setSearchPlaceholder] =
-    useState<string>('Search...');
+    useState<string>('Search nodes...');
 
   /**
    * When component mount, we set a random input id.
@@ -118,7 +118,7 @@ export const SearchControl = memo((props: SearchControlsProps) => {
         type="text"
         placeholder={searchPlaceholder}
         onFocus={() => setSearchPlaceholder('')}
-        onBlur={() => setSearchPlaceholder('Search nodes...')}
+        onBlur={() => setSearchPlaceholder(searchPlaceholder)}
         list={`${inputId}-datalist`}
         value={search}
         onChange={onInputChange}

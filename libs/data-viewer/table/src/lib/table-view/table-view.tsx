@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DataSet, RdfValue } from '@exec-graph/graph/types';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
   usePagination,
   useTable,
@@ -13,7 +13,14 @@ import {
  * Type definition of mandatory and optional properties of the {@link TableView} component
  */
 export interface TableViewProps {
+  /**
+   * The data to visualise
+   */
   data: DataSet;
+  /**
+   * Invoked once the graph started displaying the data
+   */
+  onLoaded?: () => void;
 }
 
 /**
@@ -22,14 +29,22 @@ export interface TableViewProps {
  * @category React Component
  */
 export function TableView(props: TableViewProps) {
+  const { data, onLoaded } = props;
   const columns = useMemo(
     () =>
-      props.data?.tabular?.headers.map((header) => ({
+      data?.tabular?.headers.map((header) => ({
         Header: header,
         accessor: (row: { [varkey: string]: RdfValue }) => row[header].value,
       })),
-    [props.data?.tabular]
+    [data?.tabular]
   );
+
+  // Views must invoke the onLoaded callback, even if they don't need more time
+  useEffect(() => {
+    if (onLoaded) {
+      onLoaded();
+    }
+  }, [onLoaded]);
 
   const {
     getTableProps,
