@@ -1,5 +1,4 @@
-import { RemoteDataSource } from '@exec-graph/graph/data-source-remote';
-import { DataSet } from '@exec-graph/graph/types';
+import { DataSet, DataSource } from '@exec-graph/graph/types';
 import { HiRefresh, HiExclamationCircle } from 'react-icons/hi';
 import { useState, useEffect, lazy } from 'react';
 import { SetLayout } from '@exec-graph/data-viewer/graph-2d';
@@ -10,6 +9,9 @@ const OverviewGraphView = lazy(
   () => import('@exec-graph/data-viewer/graph-2d')
 );
 
+/**
+ * SPARQL Query to define what is shown on the overview pages graph
+ */
 const OVERVIEW_QUERY = `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 PREFIX schema: <http://schema.org/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -29,7 +31,7 @@ WHERE {
  * Type definition of mandatory and optional properties of the {@link OverviewGraph} component
  */
 export interface OverviewGraphProps {
-  dataSource: RemoteDataSource;
+  dataSource: DataSource;
 }
 
 /**

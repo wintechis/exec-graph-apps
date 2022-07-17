@@ -1,10 +1,5 @@
-import {
-  HttpClient,
-  FetchHttpClient,
-  HttpSparqlRepository,
-  RemoteDataSource,
-} from '@exec-graph/graph/data-source-remote';
-import { getObjectLabel, Graph } from '@exec-graph/graph/types';
+import { RemoteDataSourceFactory } from '@exec-graph/graph/data-source-remote';
+import { DataSource, getObjectLabel, Graph } from '@exec-graph/graph/types';
 import { Component } from 'react';
 import {
   HiOutlineQuestionMarkCircle,
@@ -25,6 +20,7 @@ import GraphDataManager, {
   Status,
 } from './graph-data-manager/graph-data-manager';
 import ResultsView from './results-view/results-view';
+import { DEFAULT_SCHEMA } from '@exec-graph/graph/data-source';
 
 /**
  * Type definition of mandatory and optional properties of the {@link Explorer} component
@@ -95,17 +91,15 @@ interface ExplorerState {
  * @category React Component
  */
 export class Explorer extends Component<ExplorerProps, ExplorerState> {
-  private dataSource: RemoteDataSource;
+  private dataSource: DataSource;
 
   constructor(props: ExplorerProps) {
     super(props);
     this.state = { dialog: Dialogs.NONE };
-    const httpClient: HttpClient = new FetchHttpClient();
-    const sparqlRepository = new HttpSparqlRepository(
+    this.dataSource = RemoteDataSourceFactory(
       props.sparqlEndpoint,
-      httpClient
+      DEFAULT_SCHEMA
     );
-    this.dataSource = new RemoteDataSource(sparqlRepository);
   }
 
   /**

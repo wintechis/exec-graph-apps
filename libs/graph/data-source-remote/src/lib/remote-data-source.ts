@@ -34,7 +34,7 @@ export class RemoteDataSource implements DataSource {
    */
   getAll(statusCallback?: StatusCallback): Promise<DataSet> {
     const query = 'CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }';
-    return this.queryGraph(query);
+    return this.queryGraph(query, statusCallback);
   }
 
   /**

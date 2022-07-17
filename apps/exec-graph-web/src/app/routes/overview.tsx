@@ -1,9 +1,6 @@
-import {
-  RemoteDataSource,
-  HttpClient,
-  FetchHttpClient,
-  HttpSparqlRepository,
-} from '@exec-graph/graph/data-source-remote';
+import { DEFAULT_SCHEMA } from '@exec-graph/graph/data-source';
+import { RemoteDataSourceFactory } from '@exec-graph/graph/data-source-remote';
+import { DataSource } from '@exec-graph/graph/types';
 import { Component, lazy, Suspense } from 'react';
 import {
   HiOutlineChevronRight,
@@ -32,16 +29,14 @@ interface OverviewProps {
  * @category React Component
  */
 export class Overview extends Component<OverviewProps> {
-  private dataSource: RemoteDataSource;
+  private dataSource: DataSource;
 
   constructor(props: OverviewProps) {
     super(props);
-    const httpClient: HttpClient = new FetchHttpClient();
-    const sparqlRepository = new HttpSparqlRepository(
+    this.dataSource = RemoteDataSourceFactory(
       props.sparqlEndpoint,
-      httpClient
+      DEFAULT_SCHEMA
     );
-    this.dataSource = new RemoteDataSource(sparqlRepository);
   }
 
   /**
