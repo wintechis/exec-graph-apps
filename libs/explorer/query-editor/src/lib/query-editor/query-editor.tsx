@@ -1,8 +1,10 @@
 import { SparqlValidator } from '@exec-graph/graph/data-source-remote';
 import { DataSource } from '@exec-graph/graph/types';
+import { History, Query } from '@exec-graph/explorer/types';
 import { HiOutlineSearch } from 'react-icons/hi';
 import { Component } from 'react';
 import AdvancedEditor from '../advanced-editor/advanced-editor';
+import QueryHistory from '../query-history/query-history';
 import QueryLibrary from '../query-library/query-library';
 import {
   RdfAutocompletionContext,
@@ -29,16 +31,20 @@ export interface QueryEditorProps {
   /**
    * the currently selected query (used as starting point)
    */
-  sparql: string;
+  query: Query;
   /**
    * Invoked when user selected/confirmed a query
    * @param sparql the selected query
    */
-  onSubmit: (sparql: string) => void;
+  onSubmit: (query: Query) => void;
   /**
    * Title of the form, modifiable in case the form is embedded in a different context (e.g. dialog)
    */
   title?: string | JSX.Element;
+  /**
+   * Enables the selection of previously executed queries
+   */
+  history: History;
 }
 
 /**
@@ -46,6 +52,7 @@ export interface QueryEditorProps {
  */
 interface QueryEditorState {
   editorKey: EditorKey;
+  title: string;
   sparql: string;
   valid: boolean;
   rdfAutocompletion: RdfAutocompletionState;
@@ -66,8 +73,9 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
     );
     this.state = {
       editorKey: 'library',
-      sparql: props.sparql,
-      valid: this.sparqlValidator.validate(props.sparql),
+      title: props.query.title,
+      sparql: props.query.sparql,
+      valid: this.sparqlValidator.validate(props.query.sparql),
       rdfAutocompletion: this.rdfAutocompletionService.initState(
         (updatedState) =>
           this.setState({
@@ -96,10 +104,11 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
    *
    * @param sparql sparql query
    */
-  private handleChange(sparql: string): void {
+  private handleChange(query: Query): void {
     this.setState({
-      sparql: sparql,
-      valid: this.sparqlValidator.validate(sparql),
+      title: query.title,
+      sparql: query.sparql,
+      valid: this.sparqlValidator.validate(query.sparql),
     });
   }
 
@@ -121,7 +130,7 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
    */
   private handleSubmit(event: React.FormEvent): void {
     event.preventDefault();
-    this.props.onSubmit(this.state.sparql);
+    this.props.onSubmit({ title: this.state.title, sparql: this.state.sparql });
   }
 
   /**
@@ -150,6 +159,17 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
           onChange={this.handleChange}
           rdfAutocompletionService={this.rdfAutocompletionService}
         ></AdvancedEditor>
+      ) : this.state.editorKey === 'history' ? (
+        <QueryHistory
+          localStorageEnabled={this.props.history.storedLocally}
+          history={this.props.history.queries}
+          onSelect={this.handleChange}
+          toggleLocalStorage={(event: boolean) =>
+            event
+              ? this.props.history.enableLocalStorage()
+              : this.props.history.disableLocalStorage()
+          }
+        ></QueryHistory>
       ) : (
         <SparqlEditor
           sparql={this.state.sparql}
@@ -173,6 +193,7 @@ export class QueryEditor extends Component<QueryEditorProps, QueryEditorState> {
                 { label: 'Filter', value: 'simple' },
                 { label: 'Advanced', value: 'advanced' },
                 { label: 'SPARQL', value: 'sparql' },
+                { label: 'History', value: 'history' },
               ]}
               onChange={this.switchTo}
             ></TabBar>

@@ -1,4 +1,5 @@
 import { SparqlInput } from '@exec-graph/ui-react/sparql-input';
+import { Query } from '@exec-graph/explorer/types';
 
 /**
  * Type definition of mandatory and optional properties of the {@link SparqlEditor} component
@@ -11,7 +12,7 @@ export interface SparqlEditorProps {
   /**
    * Triggered when the user changed the sparql query
    */
-  onChange: (sparql: string) => void;
+  onChange: (query: Query) => void;
 }
 
 /**
@@ -31,7 +32,9 @@ export function SparqlEditor(props: Readonly<SparqlEditorProps>): JSX.Element {
         </label>
         <SparqlInput
           value={props.sparql}
-          onChange={props.onChange}
+          onChange={(sparql) =>
+            props.onChange({ sparql, title: 'Custom SPARQL Query' })
+          }
         ></SparqlInput>
       </div>
     </div>

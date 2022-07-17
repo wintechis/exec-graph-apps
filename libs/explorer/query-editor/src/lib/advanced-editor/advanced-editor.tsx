@@ -1,5 +1,6 @@
 import { ButtonToggle } from '@exec-graph/ui-react/button-toggle';
 import { HelpButton } from '@exec-graph/ui-react/help-button';
+import { Query } from '@exec-graph/explorer/types';
 import { Component } from 'react';
 import { Generator, Parser, SparqlQuery } from 'sparqljs';
 import DescribeTargets from '../describe-targets/describe-targets';
@@ -21,7 +22,7 @@ import { SparqlInput } from '@exec-graph/ui-react/sparql-input';
 export interface AdvancedEditorProps {
   rdfAutocompletionService: RdfAutocompletionService;
   sparql: string;
-  onChange: (sparql: string) => void;
+  onChange: (query: Query) => void;
 }
 
 /**
@@ -244,7 +245,10 @@ export class AdvancedEditor extends Component<
       // @ts-ignore
       const sparql = generator.stringify(queryBuilder.getQuery());
       this.setState({ sparql, variables });
-      this.props.onChange(sparql);
+      this.props.onChange({
+        sparql,
+        title: 'Custom ' + this.state.queryType + ' Query',
+      });
     } catch ($e) {
       console.error($e);
       this.setState({ sparql: 'Invalid', variables });

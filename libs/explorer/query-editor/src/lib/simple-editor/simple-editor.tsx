@@ -1,3 +1,4 @@
+import { Query } from '@exec-graph/explorer/types';
 import { useEffect, useState } from 'react';
 
 function query(classFilter: string) {
@@ -23,7 +24,7 @@ export interface SimpleEditorProps {
   /**
    * Triggered when the user changed the sparql query
    */
-  onChange: (sparql: string) => void;
+  onChange: (query: Query) => void;
 }
 
 interface Option {
@@ -85,8 +86,6 @@ const EXEC_GRAPH_CLASSES: Option[] = [
 
 export function SimpleEditor(props: SimpleEditorProps) {
   const [classes, setClasses] = useState(EXEC_GRAPH_CLASSES);
-  // 1. parse input sparql
-  // 2. get list of classes & connections
 
   useEffect(() => {
     let selectedClasses =
@@ -109,20 +108,16 @@ export function SimpleEditor(props: SimpleEditorProps) {
     );
   }, [props.sparql]);
 
-  // 3. show lists with current selection
-  // 4. build new query
-
   /**
    * Updates the selected value of the given class
    * @param uri URI to identify the class
    * @param checked Checkbox value
    */
   function updateQuery(cs: Option[]): void {
-    const classFilter = cs
-      .filter((c) => c.selected)
-      .map((c) => '<' + c.uri + '>')
-      .join(',');
-    props.onChange(query(classFilter));
+    const selectedClasses = cs.filter((c) => c.selected);
+    const classFilter = selectedClasses.map((c) => '<' + c.uri + '>').join(',');
+    const classNames = selectedClasses.map((c) => c.label).join(', ');
+    props.onChange({ sparql: query(classFilter), title: classNames });
   }
 
   /**

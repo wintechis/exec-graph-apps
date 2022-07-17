@@ -5,13 +5,30 @@ import {
   DataSource,
   DataSourceRequestStatus,
 } from '@exec-graph/graph/types';
+import { DateTime } from 'luxon';
 import { createContext, useEffect, useState } from 'react';
+import {
+  Query,
+  ExecutedQuery,
+  SPARQL,
+  History,
+} from '@exec-graph/explorer/types';
+import { LocalStorageQueryHistoryAdapter } from './local-storage-query-history.adapter';
 
-type SPARQL = string;
-
-interface Query {
-  sparql: SPARQL;
-  title: string;
+/**
+ * Converts a query to a history entry and adds it to the existing list
+ */
+function recordQueryExecution(
+  currentHistory: ExecutedQuery[],
+  query: Query
+): ExecutedQuery[] {
+  return [
+    {
+      ...query,
+      executedAt: DateTime.utc().toISO(),
+    },
+    ...currentHistory,
+  ];
 }
 
 /**
@@ -55,11 +72,7 @@ export interface GraphDataContextProperties {
   /**
    * keeps track of the latest queries
    */
-  history: {
-    // TODO enable/disable local storage
-    storedLocally: false;
-    queries: [];
-  };
+  history: History;
   /**
    * the data source queries are run against, may be used to make follow-up queries
    */
@@ -87,6 +100,8 @@ export const DEFAULT_GRAPH_DATA_CONTEXT: GraphDataContextProperties = {
   status: Status.NO_REQUEST_MADE,
   history: {
     storedLocally: false,
+    disableLocalStorage: () => null,
+    enableLocalStorage: () => null,
     queries: [],
   },
   setQuery: () => null,
@@ -142,7 +157,37 @@ export function GraphDataManager(props: GraphDataManagerProps): JSX.Element {
       selectObject: (selectedObject) =>
         setSharedState((state) => ({ ...state, selectedObject })),
       viewCompletedLoading: () =>
-        setSharedState((state) => ({ ...state, status: Status.LOADED })),
+        setSharedState((state) =>
+          state.status === Status.RENDERING_DATA
+            ? { ...state, status: Status.LOADED }
+            : state
+        ),
+      history: {
+        storedLocally: LocalStorageQueryHistoryAdapter.gavePermissionToStore(),
+        enableLocalStorage: () => {
+          setSharedState((state) => {
+            LocalStorageQueryHistoryAdapter.enableLocalStorage(
+              state.history.queries
+            );
+            return {
+              ...state,
+              history: { ...state.history, storedLocally: true },
+            };
+          });
+        },
+        disableLocalStorage: () => {
+          setSharedState((state) => {
+            LocalStorageQueryHistoryAdapter.disableLocalStorage();
+            return {
+              ...state,
+              history: { ...state.history, storedLocally: false },
+            };
+          });
+        },
+        queries:
+          LocalStorageQueryHistoryAdapter.getStoredHistory() ||
+          sharedState.history.queries,
+      },
     }));
   }, [setSharedState, dataSourceProp, defaultQuery]);
 
@@ -157,7 +202,10 @@ export function GraphDataManager(props: GraphDataManagerProps): JSX.Element {
       ...state,
       status: Status.NO_REQUEST_MADE,
       selectedObject: null,
-      // TODO update history
+      history: {
+        ...state.history,
+        queries: recordQueryExecution(state.history.queries, query),
+      },
     }));
     dataSource
       .getForSparql(query.sparql, (s) => {

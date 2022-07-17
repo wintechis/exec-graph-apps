@@ -8,6 +8,7 @@
     "explorer-detail-view": "libs/explorer/detail-view",
     "explorer-page": "libs/explorer/page",
     "explorer-query-editor": "libs/explorer/query-editor",
+    "explorer-types": "libs/explorer/types",
     "graph-data-source": "libs/graph/data-source",
     "graph-data-source-remote": "libs/graph/data-source-remote",
     "graph-types": "libs/graph/types",

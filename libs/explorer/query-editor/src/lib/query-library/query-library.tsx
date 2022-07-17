@@ -1,14 +1,7 @@
 import { Disclosure } from '@headlessui/react';
 import { SparqlInput } from '@exec-graph/ui-react/sparql-input';
 import React from 'react';
-
-/**
- * Type definition for predefined queries in the library
- */
-interface Query {
-  title: string;
-  sparql: string;
-}
+import { Query } from '@exec-graph/explorer/types';
 
 /**
  * Predefined list of queries relating to the ExecGraph knowledge graph
@@ -98,7 +91,7 @@ export interface QueryLibraryProps {
   /**
    * invoked when user selects a predefined query
    */
-  onSelect: (sparql: string) => void;
+  onSelect: (query: Query) => void;
 }
 
 /**
@@ -119,7 +112,7 @@ export function QueryLibrary(props: QueryLibraryProps): JSX.Element {
         {LIBRARY.map((entry) => (
           <div className="p-4 py-2" key={entry.title}>
             <button
-              onClick={() => props.onSelect(entry.sparql)}
+              onClick={() => props.onSelect(entry)}
               className="block text-left w-full border border-gray-300 p-4 rounded-md bg-white hover:border-fau-blue"
             >
               <Disclosure>

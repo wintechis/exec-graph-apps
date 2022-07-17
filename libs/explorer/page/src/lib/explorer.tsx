@@ -21,6 +21,7 @@ import GraphDataManager, {
 } from './graph-data-manager/graph-data-manager';
 import ResultsView from './results-view/results-view';
 import { DEFAULT_SCHEMA } from '@exec-graph/graph/data-source';
+import { Query } from '@exec-graph/explorer/types';
 
 /**
  * Type definition of mandatory and optional properties of the {@link Explorer} component
@@ -169,6 +170,7 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
             <GraphDataContext.Consumer>
               {(value) => (
                 <QueryEditor
+                  history={value.history}
                   dataSource={this.dataSource}
                   sparql={value.query?.sparql || DEFAULT_QUERY.sparql}
                   onSubmit={(sparql: string) => {
