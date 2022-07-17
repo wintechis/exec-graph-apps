@@ -1,4 +1,5 @@
 import { Disclosure, Transition } from '@headlessui/react';
+import { HiOutlineChevronRight, HiOutlineChevronDown } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import { FAQS } from '../../contents/faq';
 
@@ -25,21 +26,31 @@ export function FAQ() {
           {FAQS.map((item) => (
             <div className="max-w-3xl p-4 bg-white mb-4">
               <Disclosure>
-                <Disclosure.Button className="py-2 font-bold">
-                  {item.title}
-                </Disclosure.Button>
-                <Transition
-                  enter="transition duration-100 ease-out"
-                  enterFrom="transform scale-95 opacity-0"
-                  enterTo="transform scale-100 opacity-100"
-                  leave="transition duration-75 ease-out"
-                  leaveFrom="transform scale-100 opacity-100"
-                  leaveTo="transform scale-95 opacity-0"
-                >
-                  <Disclosure.Panel className="pb-4">
-                    {item.body}
-                  </Disclosure.Panel>
-                </Transition>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="py-2 font-bold flex">
+                      {!open && (
+                        <HiOutlineChevronRight className="w-5 h-5 mr-4 self-center" />
+                      )}
+                      {open && (
+                        <HiOutlineChevronDown className="w-5 h-5 mr-4 self-center" />
+                      )}{' '}
+                      {item.title}
+                    </Disclosure.Button>
+                    <Transition
+                      enter="transition duration-100 ease-out"
+                      enterFrom="transform scale-95 opacity-0"
+                      enterTo="transform scale-100 opacity-100"
+                      leave="transition duration-75 ease-out"
+                      leaveFrom="transform scale-100 opacity-100"
+                      leaveTo="transform scale-95 opacity-0"
+                    >
+                      <Disclosure.Panel className="pb-4">
+                        {item.body}
+                      </Disclosure.Panel>
+                    </Transition>
+                  </>
+                )}
               </Disclosure>
             </div>
           ))}
