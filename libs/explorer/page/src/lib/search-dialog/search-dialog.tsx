@@ -42,9 +42,9 @@ WHERE {
   ?a ?b ?target;
     ?c ?d.
   FILTER (?target = <${query}>)
-  #FILTER (?c IN ( rdf:type, rdfs:label ) )
-  #FILTER (?y IN ( rdf:type, rdfs:label ) )
-  #FILTER (?p1 IN ( rdf:type, rdfs:label ) )
+  FILTER (?c IN ( rdf:type, rdfs:label ) )
+  FILTER (?y IN ( rdf:type, rdfs:label ) )
+  FILTER (?p1 IN ( rdf:type, rdfs:label ) )
 }`;
 
 /**

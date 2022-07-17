@@ -43,10 +43,8 @@ function resultSectionNoRequest(): JSX.Element {
       <h3 className="mt-4 text-2xl font-bold">Exploring the ExecGraph</h3>
       <div className="max-w-prose">
         To get started make your first query with the{' '}
-        <button className="fau-link inline-flex">
-          <HiOutlineAdjustments className="h-5 w-4 mr-1" /> query editor
-        </button>
-        .
+        <HiOutlineAdjustments className="h-5 w-4 mr-1" /> filter &amp; query
+        editor.
       </div>
     </>
   );

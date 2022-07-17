@@ -224,7 +224,7 @@ export function GraphDataManager(props: GraphDataManagerProps): JSX.Element {
       })
       .then((ds) => {
         if (ds.graph && !ds.graph.hasNode(lastSelectedNode)) {
-          lastSelectedNode = null
+          lastSelectedNode = null;
         }
         setSharedState((state) => ({
           ...state,
