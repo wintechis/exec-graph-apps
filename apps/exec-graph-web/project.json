@@ -21,7 +21,7 @@
         ],
         "styles": ["apps/exec-graph-web/src/styles.scss"],
         "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "webpackConfig": "apps/exec-graph-web/custom-webpack.config.js"
       },
       "configurations": {
         "development": {
