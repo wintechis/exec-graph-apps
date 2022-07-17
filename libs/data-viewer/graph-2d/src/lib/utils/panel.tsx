@@ -2,11 +2,18 @@ import React, { ReactNode, useState } from 'react';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import AnimateHeight from 'react-animate-height';
 
-const DURATION = 300;
+// duration forthe panel animation opening 
+const DURATION = 600;
 
+/**
+ * Type definition of optional properties of the {@link SearchControl} component
+ */
 export interface PanelProps {
+  // title for the panel, always displayed
   title: JSX.Element | string;
+  // whether the panel should be deployed initially
   initiallyDeployed?: boolean;
+  // children nodes to render 
   children?: ReactNode;
 }
 

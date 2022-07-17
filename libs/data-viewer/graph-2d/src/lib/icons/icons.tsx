@@ -15,7 +15,7 @@ export const icons = {
     },
     CollegeOrUniversity: {
       image: college,
-      color: '#666600',
+      color: '#b3b300',
       label: 'College or university',
     },
     Others: { image: questionmark, color: '#666666', label: 'Others' },
