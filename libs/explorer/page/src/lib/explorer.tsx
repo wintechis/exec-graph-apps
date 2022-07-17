@@ -7,7 +7,8 @@ import {
   HiOutlineSearch,
 } from 'react-icons/hi';
 import { QueryEditor } from '@exec-graph/explorer/query-editor';
-import Dialog, { DialogErrorBoundary } from '@exec-graph/ui-react/dialog';
+import Dialog from '@exec-graph/ui-react/dialog';
+import { DialogErrorBoundary } from '@exec-graph/ui-react/dialog';
 import { Dialog as HeadlessDialog } from '@headlessui/react';
 import LoadingBar, {
   LoadingStatus,
