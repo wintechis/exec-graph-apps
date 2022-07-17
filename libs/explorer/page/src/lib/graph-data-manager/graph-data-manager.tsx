@@ -197,7 +197,7 @@ export function GraphDataManager(props: GraphDataManagerProps): JSX.Element {
       return;
     }
     // we temporarily deselect the node to work around issues if the node is not part of the graph anymore
-    const lastSelectedNode = selectedObject;
+    let lastSelectedNode = selectedObject;
     setSharedState((state) => ({
       ...state,
       status: Status.NO_REQUEST_MADE,
@@ -223,6 +223,9 @@ export function GraphDataManager(props: GraphDataManagerProps): JSX.Element {
         return ds;
       })
       .then((ds) => {
+        if (ds.graph && !ds.graph.hasNode(lastSelectedNode)) {
+          lastSelectedNode = null
+        }
         setSharedState((state) => ({
           ...state,
           status: Status.RENDERING_DATA,

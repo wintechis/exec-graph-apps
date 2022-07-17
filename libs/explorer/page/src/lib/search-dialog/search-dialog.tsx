@@ -38,13 +38,13 @@ CONSTRUCT {
 WHERE {
   ?target ?p ?o;
     ?p1 ?o1.
-  ?o ?y ?z .
+  ?o ?y ?z.
   ?a ?b ?target;
     ?c ?d.
   FILTER (?target = <${query}>)
-  FILTER (?c IN ( rdf:type, rdfs:label ) )
-  FILTER (?y IN ( rdf:type, rdfs:label ) )
-  FILTER (?p1 IN ( rdf:type, rdfs:label ) )
+  #FILTER (?c IN ( rdf:type, rdfs:label ) )
+  #FILTER (?y IN ( rdf:type, rdfs:label ) )
+  #FILTER (?p1 IN ( rdf:type, rdfs:label ) )
 }`;
 
 /**
