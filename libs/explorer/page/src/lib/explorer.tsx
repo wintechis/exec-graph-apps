@@ -154,11 +154,14 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
                 queryLocal={
                   value.data?.graph ? searchGraph(value.data?.graph) : undefined
                 }
-                selectLocal={value.selectObject}
-                runSparql={(sparql: string) => {
-                  this.showDialog(Dialogs.NONE);
-                  value.setQuery({ sparql, title: 'Search' });
-                }}
+                selectLocal={(uri) =>
+                  this.closeDialogAnd(() => value.selectObject(uri))
+                }
+                runSparql={(sparql: string) =>
+                  this.closeDialogAnd(() =>
+                    value.setQuery({ sparql, title: 'Search' })
+                  )
+                }
               ></SearchDialog>
             )}
           </GraphDataContext.Consumer>
@@ -172,11 +175,10 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
                 <QueryEditor
                   history={value.history}
                   dataSource={this.dataSource}
-                  sparql={value.query?.sparql || DEFAULT_QUERY.sparql}
-                  onSubmit={(sparql: string) => {
-                    this.showDialog(Dialogs.NONE);
-                    value.setQuery({ sparql, title: 'some Query' });
-                  }}
+                  query={value.query || DEFAULT_QUERY}
+                  onSubmit={(query: Query) =>
+                    this.closeDialogAnd(() => value.setQuery(query))
+                  }
                   title={
                     <HeadlessDialog.Title className="p-4 pb-0 text-xl font-bold leading-6 mb-4">
                       Query Editor
@@ -209,6 +211,15 @@ export class Explorer extends Component<ExplorerProps, ExplorerState> {
    */
   private showDialog(dialog: Dialogs): () => void {
     return () => this.setState({ dialog });
+  }
+
+  /**
+   * Closes the current dialog and executes a function afterwards
+   *
+   * @param callbacFn function to execute after closing the dialog
+   */
+  private closeDialogAnd(callbackFn?: () => void): void {
+    return this.setState({ dialog: Dialogs.NONE }, callbackFn);
   }
 
   /**
