@@ -140,14 +140,22 @@ export class Connections extends Component<ConnectionsProps, ConnectionsState> {
     const output: JSX.Element[] = [];
     const structure: RelationshipFirstStructure =
       this.mapToRelationshipFirstStructure(neighbors, edgeGetter);
-    for (const [relationship, objects] of Object.entries(structure)) {
+    // now they should be mapped by their name (label)
+    const entries = Object.entries(structure)
+      .map((e) => ({
+        relationship: e[0],
+        objects: e[1],
+        label: getObjectLabelFromGraph(e[0]),
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+    for (const entry of entries) {
       output.push(
-        <div className="mb-4" key={relationship}>
+        <div className="mb-4" key={entry.relationship}>
           <span className="font-bold">
-            {getObjectLabelFromGraph(relationship)} ({objects.length})
+            {entry.label} ({entry.objects.length})
           </span>
           <div className="flex flex-wrap">
-            {objects.map(({ neighbor, attributes }) => (
+            {entry.objects.map(({ neighbor, attributes }) => (
               <div className="mr-4" key={neighbor}>
                 {renderClickableObjectLabel(
                   neighbor,
