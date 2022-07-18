@@ -1,10 +1,13 @@
-import college from '../icons/CollegeOrUniversity.svg';
-import organization from '../icons/Organization.svg';
-import city from '../icons/City.svg';
-import questionmark from '../icons/QuestionMark.svg';
-import person from '../icons/Person.svg';
+import college from './CollegeOrUniversity.svg';
+import organization from './Organization.svg';
+import city from './City.svg';
+import questionmark from './QuestionMark.svg';
+import person from './Person.svg';
 
-export const icons = {
+/**
+ * property which holds all information for the visual design of the nodes and edges
+ */
+export const GraphDesign = {
   nodes: {
     City: { image: city, color: '#000066', label: 'City' },
     Person: { image: person, color: '#006600', label: 'Person' },

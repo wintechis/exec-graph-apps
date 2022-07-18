@@ -9,4 +9,4 @@ export * from './lib/utils/events-controller';
 export * from './lib/utils/graph-layout-engine';
 export * from './lib/utils/legendPanel';
 export * from './lib/utils/panel';
-export * from './lib/icons/icons';
+export * from './lib/assets/design';

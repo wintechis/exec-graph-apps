@@ -5,7 +5,7 @@ import { Attributes } from 'graphology-types';
 import { useSigma } from '@react-sigma/core';
 
 /**
- * Type definition of mandatory and optional properties of the {@link SearchControl} component
+ * Type definition of optional properties of the {@link SearchControl} component
  */
 export interface SearchControlsProps {
   /**
@@ -65,7 +65,7 @@ export const SearchControl = memo((props: SearchControlsProps) => {
         });
     }
     setValues(newValues);
-  }, [search, selected]);
+  }, [search, selected, sigma]);
 
   /**
    * When the selected item changes, highlighted the node and center the camera on it.
@@ -90,7 +90,7 @@ export const SearchControl = memo((props: SearchControlsProps) => {
         props.onSelectionChange(null);
       }
     };
-  }, [selected, props]);
+  }, [selected, props, sigma, gotoNode]);
 
   /**
    * On change event handler for the search input, to set the state.

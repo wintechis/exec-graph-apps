@@ -1,7 +1,7 @@
 import Graph from 'graphology';
 import { Attributes } from 'graphology-types';
 import random from 'graphology-layout/random';
-import { icons } from '../icons/icons';
+import { GraphDesign } from '../assets/design';
 
 /**
  * Sets the initial layout of the fetched data/graph from the remote point.
@@ -12,6 +12,7 @@ import { icons } from '../icons/icons';
 export function SetLayout(
   graph: Graph<Attributes, Attributes, Attributes>
 ): Graph<Attributes, Attributes, Attributes> {
+  // sets the x and y value of each node on the fetched graph randomly, so the SigmaContainer can display the graph initially
   random.assign(graph);
 
   graph.forEachNode((key: string, attributes: Attributes) => {
@@ -32,17 +33,18 @@ export function SetLayout(
         const splitType = strType.split('/');
         return splitType.pop();
       });
-      type = types.find((type) => type && type in icons.nodes);
+      type = types.find((type) => type && type in GraphDesign.nodes);
     } else {
       const strType = `${fullType}`;
       const splitType = strType.split('/');
       type = splitType.pop();
-      if (!type || !(type in icons.nodes)) type = undefined;
+      if (!type || !(type in GraphDesign.nodes)) type = undefined;
     }
 
     if (!type) type = 'Others';
 
-    const iconNodeAttributes = icons.nodes[type as keyof typeof icons.nodes];
+    const iconNodeAttributes =
+      GraphDesign.nodes[type as keyof typeof GraphDesign.nodes];
 
     graph.setNodeAttribute(key, 'image', iconNodeAttributes.image);
     graph.setNodeAttribute(key, 'color', iconNodeAttributes.color);
@@ -83,7 +85,7 @@ export function SetLayout(
     const fullPred = `${attributes['predicate']}`;
     const pred = fullPred.split('/').pop()?.split('#').pop();
 
-    const edgeType = icons.edges[pred as keyof typeof icons.edges];
+    const edgeType = GraphDesign.edges[pred as keyof typeof GraphDesign.edges];
     graph.setEdgeAttribute(key, 'color', edgeType.color);
 
     const type = edgeType.type;

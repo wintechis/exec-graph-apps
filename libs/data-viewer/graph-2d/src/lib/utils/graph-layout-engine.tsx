@@ -7,6 +7,9 @@ import { animateNodes } from 'sigma/utils/animate';
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface GraphLayoutEngineProps {}
 
+/**
+ * Interface to forward the ref on the resetLayout function to the {@link GraphView} component
+ */
 export interface GraphLayoutEngineHandle {
   resetLayout: () => void;
 }

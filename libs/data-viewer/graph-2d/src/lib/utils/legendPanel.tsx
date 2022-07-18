@@ -1,8 +1,15 @@
 import { useSigma } from '@react-sigma/core';
 import { BsMap } from 'react-icons/bs';
-import { icons } from '../icons/icons';
+import { GraphDesign } from '../assets/design';
 import Panel from './panel';
 
+/**
+ * View component to display the legend for the graph.
+ *
+ * Responsible to generate the legend dynamically based on the currently shown graph.
+ *
+ * @category React Component
+ */
 function LegendPanel() {
   const graph = useSigma().getGraph();
   const nodesInGraph = graph.getAttribute('nodeTypes') as Array<string>;
@@ -12,12 +19,16 @@ function LegendPanel() {
 
     return a.localeCompare(b);
   });
-  const iconNodes = icons['nodes'];
+  const iconNodes = GraphDesign['nodes'];
 
   const edgeTypesInGraph = graph.getAttribute('edgeTypes') as Array<string>;
   edgeTypesInGraph?.sort((a, b) => a.localeCompare(b));
-  const iconEdges = icons['edges'];
+  const iconEdges = GraphDesign['edges'];
 
+  /**
+   * Dynamically generates list items to be shown in the legend
+   * @returns Legend
+   */
   return (
     <Panel
       initiallyDeployed
@@ -28,7 +39,7 @@ function LegendPanel() {
         </>
       }
     >
-      <ol>
+      <ul>
         {nodesInGraph?.map((node) => {
           const key = node as keyof typeof iconNodes;
 
@@ -56,9 +67,8 @@ function LegendPanel() {
             </li>
           );
         })}
-      </ol>
-      {/* <p style={{marginTop: "0.5em"}}>Edges</p> */}
-      <ol style={{ marginTop: '0.5em' }}>
+      </ul>
+      <ul style={{ marginTop: '0.5em' }}>
         {edgeTypesInGraph?.map((type) => {
           let color = '';
           for (const edge in iconEdges) {
@@ -94,7 +104,7 @@ function LegendPanel() {
             </li>
           );
         })}
-      </ol>
+      </ul>
     </Panel>
   );
 }

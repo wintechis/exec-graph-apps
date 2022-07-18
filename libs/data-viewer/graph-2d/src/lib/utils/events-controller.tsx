@@ -7,13 +7,33 @@ import {
 import { Attributes } from 'graphology-types';
 import { useEffect, useState } from 'react';
 
+/**
+ * Type definition of optional properties of the {@link EventsController} component
+ */
 export interface EventControllerProps {
+  /**
+   * property to determine whether the graph is with decreased interactivity (e.g. graph on overview page)
+   */
   decreasedInteractivity?: boolean;
+  /**
+   * property to store the currently selected node
+   */
   selectedNode?: string | null;
+  /**
+   * method to be called when the component records a change of the selected node
+   */
   onSelectionChange?: (clickedNode: string | null) => void;
+  /**
+   * method to trigger when graph is loaded
+   */
   onLoaded?: () => void;
 }
 
+/**
+ * Component to control the events on the graph.
+ *
+ * @category React Component
+ */
 export function EventsController(props: EventControllerProps) {
   const sigma = useSigma();
   const graph = sigma.getGraph();
@@ -179,5 +199,8 @@ export function EventsController(props: EventControllerProps) {
     });
   }, [graph, clickedNode, hoveredNode, setSettings]);
 
+  /**
+   * @returns null
+   */
   return null;
 }

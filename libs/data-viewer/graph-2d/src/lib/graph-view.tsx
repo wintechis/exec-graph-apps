@@ -12,6 +12,9 @@ import { MemorizedControls } from './utils/controls';
 import '@react-sigma/core/lib/react-sigma.min.css';
 import './graph-view.css';
 
+/**
+ * Type definition of mandatory and optional properties of the {@link Explorer} component
+ */
 export interface GraphViewProps {
   /**
    * Denotes if the graph view should disable certain interactions, like mouse wheel zoom.
@@ -49,11 +52,12 @@ export interface GraphViewProps {
  * @category React Component
  */
 function GraphView(props: GraphViewProps): JSX.Element {
+  // ref to get access to the GraphLayoutEngine function resetLayout in the controls component
   type GraphLayoutEngineHandle = React.ElementRef<typeof GraphLayoutEngine>;
   const graphLayoutEngineRef = useRef<GraphLayoutEngineHandle>(null);
 
   /**
-   * Contains solely the SigmaContainer and its components.
+   * Contains the SigmaContainer and its components.
    * Additionally, initial setting for the SigmaContainer are set here.
    * @returns SigmaContainer
    */

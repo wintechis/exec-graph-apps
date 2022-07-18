@@ -12,13 +12,33 @@ import { SearchControl } from './search-control';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import forceAtlas2 from 'graphology-layout-forceatlas2';
 
+/**
+ * Type definition of mandatory and optional properties of the {@link Controls} component
+ */
 export interface ControlsProps {
+  /**
+   * property to determine whether the graph is with decreased interactivity (e.g. graph on overview page)
+   */
   decreasedInteractivity?: boolean;
+  /**
+   * method to reset the layout
+   */
   resetLayout: () => void;
+  /**
+   * method to trigger when selection in graph was changed
+   */
   onSelectionChange?: (node: string | null) => void;
+  /**
+   * element to render as an control on the graph
+   */
   pageSpecificControls?: JSX.Element | null;
 }
 
+/**
+ * Component to set the controls on the graph.
+ *
+ * @category React Component
+ */
 function Controls(props: ControlsProps) {
   const graph = useSigma().getGraph();
   const settings = forceAtlas2.inferSettings(graph);
@@ -26,11 +46,19 @@ function Controls(props: ControlsProps) {
     settings: settings,
   });
 
+  /**
+   * method to call when Reset button is clicked
+   */
   function handleResetClick(): void {
     if (isRunning) stop();
     props.resetLayout();
   }
 
+  /**
+   * returns the controls on the stage of the graph based on the allowed interactivity
+   *
+   * @returns controls on the graph stage
+   */
   if (props.decreasedInteractivity) {
     // in decreased interactivity mode, only allow zoom controls
     return (
@@ -92,4 +120,7 @@ function Controls(props: ControlsProps) {
   );
 }
 
+/**
+ * React.memo used so the component does not rerender without its props being changed
+ */
 export const MemorizedControls = memo(Controls);

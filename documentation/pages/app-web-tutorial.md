@@ -1,16 +1,31 @@
 # Tutorial
 
-This is the WIP end-user documentation for the exec-graph-web app. The tutorial focuses on explaining the interaction with the graphs and the Explore page.
+This is the WIP end-user documentation for the exec-graph-web app. The tutorial focuses on explaining the interaction with the graph and the Explore page.
 
 ## Interacting with the graph
 
-### View Details
+### Mouse Interaction
 
-Click to select a node in the graph. This will enable you to hide all but the direct neighbors and view attributes and connections in the detail view below the graph.
+The interaction with the graph is designed to be done only with a mouse. You have several interaction options:
 
-## Searching for a person, entity or location
+- Hover over/click on nodes to reduce the graph to a subgraph with that node
+- Zoom in and out using mouse wheel
+- Drag the graph background to move the graph
+- Drag a node to move it
+- Click on a node to display the details section below the graph which displays information about the clicked node and its relations to others
 
-Through the search icon at the top right you may open a search dialog. Enter your keyword into the search field. You may get two kinds of result.
+## Using the controls of the graph
+
+There are four groups of controls:
+
+- On the upper left, you can zoom, center the camera, enter full screen mode and run/stop the Layout Algorithm (ForceAtlas2)
+- On the upper right, you can search for nodes in the graph
+- On the lower left, you can press the button to scroll to the details and clear a selection you have made before
+- On the lower right, you can access the legend
+
+## Search
+
+Through the search icon at the top right above the graph you may open a search dialog. Enter your keyword into the search field and you may get two kinds of result:
 
 1. Matches in the current graph
 2. Matches in the entire graph
@@ -38,3 +53,8 @@ The advanced editor provides a form with autocompletion lists to create a custom
 ### 4. SPARQL
 
 For full flexibility you may use the free-text SPARQL editor to create a custom query.
+
+## Exploring the details
+
+When you have clicked on a node, its details will open under the graph and all information from the ExecGraph project and selected information of the Link to WIKIDATA will be displayed.
+The connections in shown in the details section are configurable and interactive. You may click on objects of connections and the details section will present all information about the clicked object. Also the graph is then updated, so that the clicked object is selected in the graph.

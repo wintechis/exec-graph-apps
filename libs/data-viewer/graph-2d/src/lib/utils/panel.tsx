@@ -2,24 +2,42 @@ import React, { ReactNode, useState } from 'react';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import AnimateHeight from 'react-animate-height';
 
-// duration forthe panel animation opening 
+// duration forthe panel animation opening
 const DURATION = 600;
 
 /**
  * Type definition of optional properties of the {@link SearchControl} component
  */
 export interface PanelProps {
-  // title for the panel, always displayed
+  /**
+   ** title for the panel, always displayed
+   */
   title: JSX.Element | string;
-  // whether the panel should be deployed initially
+  /**
+   ** whether the panel should be deployed initially
+   */
   initiallyDeployed?: boolean;
-  // children nodes to render 
+  /**
+   ** children nodes to render
+   */
   children?: ReactNode;
 }
 
+/**
+ * View component to display the graph on the website.
+ *
+ * Responsible to create the SigmaContainer with all its components in which the graph will render.
+ *
+ * @category React Component
+ */
 function Panel(props: PanelProps) {
+  // state to hold whether the panel is deployed
   const [isDeployed, setIsDeployed] = useState(false);
 
+  /**
+   * Renders the panel with the children nodes
+   * @returns Panel
+   */
   return (
     <div
       className={isDeployed ? 'p-2 mb-2' : ''}

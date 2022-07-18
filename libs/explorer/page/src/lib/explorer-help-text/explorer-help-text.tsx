@@ -56,7 +56,7 @@ export function ExplorerHelpText(props: React.HTMLProps<HTMLDivElement>) {
               <li>On the upper right, you can search for nodes in the graph</li>
               <li>
                 On the lower left, you can press the button to scroll to the
-                details
+                details and clear a selection you have made before
               </li>
               <li>On the lower right, you can access the legend</li>
             </ol>
