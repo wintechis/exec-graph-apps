@@ -13,7 +13,7 @@ import '@react-sigma/core/lib/react-sigma.min.css';
 import './graph-view.css';
 
 /**
- * Type definition of mandatory and optional properties of the {@link Explorer} component
+ * Type definition of mandatory and optional properties of the {@link GraphView} component
  */
 export interface GraphViewProps {
   /**
