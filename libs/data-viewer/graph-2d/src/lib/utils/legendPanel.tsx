@@ -10,7 +10,7 @@ import Panel from './panel';
  *
  * @category React Component
  */
-function LegendPanel() {
+export function LegendPanel() {
   const graph = useSigma().getGraph();
   const nodesInGraph = graph.getAttribute('nodeTypes') as Array<string>;
   nodesInGraph?.sort((a, b) => {

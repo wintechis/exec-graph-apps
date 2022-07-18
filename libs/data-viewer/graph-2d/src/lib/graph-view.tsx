@@ -51,7 +51,7 @@ export interface GraphViewProps {
  *
  * @category React Component
  */
-function GraphView(props: GraphViewProps): JSX.Element {
+export function GraphView(props: GraphViewProps): JSX.Element {
   // ref to get access to the GraphLayoutEngine function resetLayout in the controls component
   type GraphLayoutEngineHandle = React.ElementRef<typeof GraphLayoutEngine>;
   const graphLayoutEngineRef = useRef<GraphLayoutEngineHandle>(null);

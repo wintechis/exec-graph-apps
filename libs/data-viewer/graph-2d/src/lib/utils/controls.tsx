@@ -39,7 +39,7 @@ export interface ControlsProps {
  *
  * @category React Component
  */
-function Controls(props: ControlsProps) {
+export function Controls(props: ControlsProps) {
   const graph = useSigma().getGraph();
   const settings = forceAtlas2.inferSettings(graph);
   const { start, stop, isRunning } = useWorkerLayoutForceAtlas2({

@@ -30,7 +30,7 @@ export interface PanelProps {
  *
  * @category React Component
  */
-function Panel(props: PanelProps) {
+export function Panel(props: PanelProps) {
   // state to hold whether the panel is deployed
   const [isDeployed, setIsDeployed] = useState(false);
 
