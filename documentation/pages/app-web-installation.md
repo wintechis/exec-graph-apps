@@ -23,7 +23,7 @@ Server:
 
 ### 2. Server Setup
 
-The application requires a public facing SPARQL endpoint. This can be realised through installing GraphDB on the same server as the application or on a separate service. For more information on installing and configuring GraphDB correctly check [this page](file:///D:/development/FAU/exec-graph/dist/docs/pages/graphdb.html).
+The application requires a public facing SPARQL endpoint. This can be realised through installing GraphDB on the same server as the application or on a separate service. For more information on installing and configuring GraphDB correctly check {@page ~~/graphdb.md}[this page].
 
 After installing GraphDB a new repository should be created and the ExecGraph data imported. The repository must be publicly accessible in read-only mode. The data is available in a separate (private) repository.
 
