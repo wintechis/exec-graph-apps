@@ -1,9 +1,12 @@
 import { Disclosure } from '@headlessui/react';
-import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
+import {
+  HiOutlineCubeTransparent,
+  HiOutlineMenu,
+  HiOutlineX,
+} from 'react-icons/hi';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import Footer from './footer';
 
-import fauLogoSvg from '../assets/FAU_Logo_Bildmarke.svg';
 import { Suspense } from 'react';
 
 /**
@@ -40,11 +43,8 @@ export function App(): JSX.Element {
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <Link to="/">
-                      <img
-                        className="h-16 w-16"
-                        src={fauLogoSvg}
-                        alt="FAU Logo"
-                      />
+                      {/* Here is space for the logo, which has been removed for legal reasons from this public repository */}
+                      <HiOutlineCubeTransparent className="text-white h-7 w-7" />
                     </Link>
                   </div>
                   <div className="hidden md:block">

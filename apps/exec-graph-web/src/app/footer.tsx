@@ -1,4 +1,4 @@
-import fauLogoSvg from '../assets/FAU_Logo_Bildmarke.svg';
+import { HiOutlineCubeTransparent } from 'react-icons/hi';
 
 /**
  * Renders the FAU styled footer
@@ -10,7 +10,8 @@ export function Footer(): JSX.Element {
     <footer className="bg-fau-red text-white py-8 md:text-sm">
       <div className="footer-row flex flex-wrap px-8 max-w-7xl m-auto">
         <div className="footer-logo w-80 pb-4">
-          <img height="55px" width="144px" src={fauLogoSvg} alt="FAU Logo" />
+          {/* Here is space for the logo, which has been removed for legal reasons from this public repository */}
+          <HiOutlineCubeTransparent className="text-white h-20 w-20" />
         </div>
         <div className="footer-address mr-4 pb-4">
           <address itemType="http://schema.org/PostalAddress">
